@@ -22,16 +22,21 @@ import {
 } from '@angular/fire/remote-config';
 import { provideStorage, getStorage } from '@angular/fire/storage';
 
+// PrimeNg
+import { StepsModule } from 'primeng/steps';
+
 // Components
 import { AppComponent } from './app.component';
 import { QuestionsService } from './shared/questions.service';
-import { QuestionsComponent } from './questions/questions.component';
+import { QuestionComponent } from './question/question.component';
+import { QuizComponent } from './quiz/quiz.component';
 
 @NgModule({
-  declarations: [AppComponent, QuestionsComponent],
+  declarations: [AppComponent, QuestionComponent, QuizComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    StepsModule,
     AngularFireModule.initializeApp(environment.firebase),
     // provideFirebaseApp(() => initializeApp(environment.firebase)),
     // provideAnalytics(() => getAnalytics()),
