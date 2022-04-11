@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
+import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 
 // AngularFire
@@ -24,6 +24,8 @@ import { provideStorage, getStorage } from '@angular/fire/storage';
 
 // PrimeNg
 import { StepsModule } from 'primeng/steps';
+import { RadioButtonModule } from 'primeng/radiobutton';
+import { ButtonModule } from 'primeng/button';
 
 // Components
 import { AppComponent } from './app.component';
@@ -36,7 +38,10 @@ import { QuizComponent } from './quiz/quiz.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
+    FormsModule,
     StepsModule,
+    RadioButtonModule,
+    ButtonModule,
     AngularFireModule.initializeApp(environment.firebase),
     // provideFirebaseApp(() => initializeApp(environment.firebase)),
     // provideAnalytics(() => getAnalytics()),

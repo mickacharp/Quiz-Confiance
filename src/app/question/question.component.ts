@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { Question } from '../models/question.model';
 import { QuestionsService } from '../shared/questions.service';
@@ -12,12 +12,17 @@ import { QuestionsService } from '../shared/questions.service';
 export class QuestionComponent implements OnInit {
   xPosition: number = 0;
   yPosition: number = 0;
+  answer: string = '';
 
   currentQuestion: Question = new Question(0, '', '', '', '', '');
 
+  checked1: boolean = false;
+  checked2: boolean = false;
+
   constructor(
     private questionsService: QuestionsService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -30,6 +35,13 @@ export class QuestionComponent implements OnInit {
     const id: number = parseInt(
       this.route.snapshot.paramMap.get('id') as string
     );
-    this.currentQuestion = this.questionsService.questions[id];
+    this.questionsService.questions[id];
+  }
+
+  nextQuestion(): void {
+    const id: number = parseInt(
+      this.route.snapshot.paramMap.get('id') as string
+    );
+    this.router.navigate([`questions/${id + 1}`]);
   }
 }
