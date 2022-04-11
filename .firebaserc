@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "quiz-confiance"
+  },
+  "targets": {
+    "quiz-confiance": {
+      "hosting": {
+        "quiz-confiance": [
+          "quiz-confiance"
+        ]
+      }
+    }
+  }
+}
