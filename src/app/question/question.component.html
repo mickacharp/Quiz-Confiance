@@ -1,0 +1,43 @@
+<p>{{ currentQuestion.name }}</p>
+<div class="field-radiobutton">
+  <p-radioButton
+    name="answer"
+    value="{{ currentQuestion.valueA }}"
+    [(ngModel)]="answer"
+    inputId="answerA"
+  ></p-radioButton>
+  <label for="answerA">oui, tout à fait</label>
+</div>
+<div class="field-radiobutton">
+  <p-radioButton
+    name="answer"
+    value="{{ currentQuestion.valueB }}"
+    [(ngModel)]="answer"
+    inputId="answerB"
+  ></p-radioButton>
+  <label for="answerB">oui</label>
+</div>
+<div class="field-radiobutton">
+  <p-radioButton
+    name="answer"
+    value="{{ currentQuestion.valueC }}"
+    [(ngModel)]="answer"
+    inputId="answerC"
+  ></p-radioButton>
+  <label for="answerC">non</label>
+</div>
+<div class="field-radiobutton">
+  <p-radioButton
+    name="answer"
+    value="{{ currentQuestion.valueD }}"
+    [(ngModel)]="answer"
+    inputId="answerD"
+  ></p-radioButton>
+  <label for="answerD">non, absolument pas</label>
+</div>
+<p-button
+  label="Next"
+  (onClick)="nextQuestion()"
+  icon="pi pi-angle-right"
+  iconPos="right"
+></p-button>
