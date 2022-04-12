@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { questionsList } from 'src/assets/questions-list';
 import { Question } from '../models/question.model';
 
@@ -7,25 +8,27 @@ import { Question } from '../models/question.model';
 })
 export class QuestionsService {
   questions: Question[] = questionsList;
-  oneA: number = 1;
-  oneC: number = 4;
-  twoA: number = 3;
-  twoC: number = 2;
-  poA: number = 2;
-  poC: number = 3;
-  pdA: number = 2;
-  pdC: number = 1;
-  aoA: number = 2;
-  aoC: number = 2;
-  adA: number = 3;
-  adC: number = 1;
-  threeA: number = 2;
-  threeC: number = 1;
-  fourA: number = 1;
-  fourC: number = 4;
+  // Counters of points according to user's answers
+  oneA: number = 0;
+  oneC: number = 0;
+  twoA: number = 0;
+  twoC: number = 0;
+  poA: number = 0;
+  poC: number = 0;
+  pdA: number = 0;
+  pdC: number = 0;
+  aoA: number = 0;
+  aoC: number = 0;
+  adA: number = 0;
+  adC: number = 0;
+  threeA: number = 0;
+  threeC: number = 0;
+  fourA: number = 0;
+  fourC: number = 0;
 
   constructor() {}
 
+  // Formulas given by the client
   calculateXPosition(): number {
     return (
       (this.twoA +

@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { filter } from 'rxjs';
 
 import { Question } from '../models/question.model';
+import { Answer } from '../models/answer.model';
 import { QuestionsService } from '../shared/questions.service';
 
 @Component({
@@ -10,14 +12,33 @@ import { QuestionsService } from '../shared/questions.service';
   styleUrls: ['./question.component.scss'],
 })
 export class QuestionComponent implements OnInit {
-  xPosition: number = 0;
-  yPosition: number = 0;
-  answer: string = '';
-
   currentQuestion: Question = new Question(0, '', '', '', '', '');
-
-  checked1: boolean = false;
-  checked2: boolean = false;
+  answers: Answer[] = [
+    new Answer(0, ''),
+    new Answer(0, ''),
+    new Answer(0, ''),
+    new Answer(0, ''),
+    new Answer(0, ''),
+    new Answer(0, ''),
+    new Answer(0, ''),
+    new Answer(0, ''),
+    new Answer(0, ''),
+    new Answer(0, ''),
+    new Answer(0, ''),
+    new Answer(0, ''),
+    new Answer(0, ''),
+    new Answer(0, ''),
+    new Answer(0, ''),
+    new Answer(0, ''),
+    new Answer(0, ''),
+    new Answer(0, ''),
+    new Answer(0, ''),
+    new Answer(0, ''),
+    new Answer(0, ''),
+    new Answer(0, ''),
+    new Answer(0, ''),
+    new Answer(0, ''),
+  ];
 
   constructor(
     private questionsService: QuestionsService,
@@ -26,22 +47,69 @@ export class QuestionComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.xPosition = this.questionsService.calculateXPosition();
-    this.yPosition = this.questionsService.calculateYPosition();
-    this.getOneQuestion();
+    this.getQuestion();
+    this.getStorageValues();
+    // call getQuestion() at each changes in URL if it includes "questions" in it
+    if (this.router.url.includes('questions')) {
+      this.router.events
+        .pipe(filter((event) => event instanceof NavigationEnd))
+        .subscribe(() => {
+          this.getQuestion();
+        });
+    }
   }
 
-  getOneQuestion(): void {
+  getQuestion(): void {
     const id: number = parseInt(
       this.route.snapshot.paramMap.get('id') as string
     );
-    this.questionsService.questions[id];
+    this.currentQuestion = this.questionsService.questions[id - 1];
+  }
+
+  previousQuestion(): void {
+    const id: number = parseInt(
+      this.route.snapshot.paramMap.get('id') as string
+    );
+    if (id > 1) {
+      this.router.navigate([`questions/${id - 1}`]);
+    }
   }
 
   nextQuestion(): void {
     const id: number = parseInt(
       this.route.snapshot.paramMap.get('id') as string
     );
-    this.router.navigate([`questions/${id + 1}`]);
+    if (id < 24) {
+      this.router.navigate([`questions/${id + 1}`]);
+    }
+  }
+
+  // save user's answer of the current question to localStorage
+  saveAnswerToStorage(): void {
+    const currentAnswer: Answer = {
+      questionNb: this.currentQuestion.nb,
+      answer: this.answers[this.currentQuestion.nb - 1].answer,
+    };
+    localStorage.setItem(
+      JSON.stringify(currentAnswer.questionNb),
+      JSON.stringify(currentAnswer.answer)
+    );
+  }
+
+  // will loop through localStorage keys and associated values and affecting them to the answers
+  // this will make the user to not lose any progression if he closes/refreshes the app
+  getStorageValues(): void {
+    for (let i = 0; i < localStorage.length; i++) {
+      const storageKey: string | null = localStorage.key(i);
+      if (storageKey != null) {
+        const storageValue: string | null = localStorage.getItem(storageKey);
+        if (storageValue != null) {
+          this.answers[parseInt(storageKey) - 1] = {
+            questionNb: JSON.parse(storageKey),
+            answer: JSON.parse(storageValue),
+          };
+        }
+      }
+    }
   }
 }

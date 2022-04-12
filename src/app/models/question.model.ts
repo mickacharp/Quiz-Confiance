@@ -8,3 +8,5 @@ export class Question {
     public valueD: string
   ) {}
 }
+
+// list of all 24 questions in 'src/assets/questions-list.ts'
