@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { filter, Observable } from 'rxjs';
+import { filter } from 'rxjs';
 
 import { Question } from '../models/question.model';
+import { Answer } from '../models/answer.model';
 import { QuestionsService } from '../shared/questions.service';
 
 @Component({
@@ -13,10 +14,35 @@ import { QuestionsService } from '../shared/questions.service';
 export class QuestionComponent implements OnInit {
   xPosition: number = 0;
   yPosition: number = 0;
-  answer: string = '';
-
+  allAnswers: Answer[] = [];
+  storageKeys: any[] = [];
   currentQuestion: Question = new Question(0, '', '', '', '', '');
-
+  answers: string[] = [
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+  ];
   checked1: boolean = false;
   checked2: boolean = false;
 
@@ -64,4 +90,47 @@ export class QuestionComponent implements OnInit {
       this.router.navigate([`questions/${id + 1}`]);
     }
   }
+
+  saveAnswer(): void {
+    const currentAnswer: Answer = {
+      questionNb: this.currentQuestion.nb,
+      answer: this.answers[this.currentQuestion.nb - 1],
+    };
+    const indexOfAnswerThatAlreadyExists: number = this.allAnswers.findIndex(
+      (element) => element.questionNb === this.currentQuestion.nb
+    );
+    if (indexOfAnswerThatAlreadyExists != -1) {
+      this.allAnswers[indexOfAnswerThatAlreadyExists].answer =
+        this.answers[this.currentQuestion.nb - 1];
+      localStorage.setItem(
+        JSON.stringify(currentAnswer.questionNb),
+        JSON.stringify(this.answers[this.currentQuestion.nb - 1])
+      );
+    } else {
+      this.allAnswers.push(currentAnswer);
+      localStorage.setItem(
+        JSON.stringify(currentAnswer.questionNb),
+        JSON.stringify(currentAnswer.answer)
+      );
+    }
+    console.log(this.allAnswers);
+  }
+
+  // getStorageKeys(): void {
+  //   this.storageKeys = [];
+  //   for (let i = 0; i < localStorage.length; i++) {
+  //     this.storageKeys.push(localStorage.key(i));
+  //   }
+  // }
+
+  // reinitializeAnswerChoice(): void {
+  //   this.getStorageKeys();
+  //   const id: number = parseInt(
+  //     this.route.snapshot.paramMap.get('id') as string
+  //   );
+
+  //   if (!this.storageKeys.some((key) => key == id + 1)) {
+  //     this.answer = '';
+  //   }
+  // }
 }

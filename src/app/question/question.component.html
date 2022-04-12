@@ -3,7 +3,7 @@
   <p-radioButton
     name="answer"
     value="{{ currentQuestion.valueA }}"
-    [(ngModel)]="answer"
+    [(ngModel)]="answers[currentQuestion.nb - 1]"
     inputId="answerA"
   ></p-radioButton>
   <label for="answerA">oui, tout à fait</label>
@@ -12,7 +12,7 @@
   <p-radioButton
     name="answer"
     value="{{ currentQuestion.valueB }}"
-    [(ngModel)]="answer"
+    [(ngModel)]="answers[currentQuestion.nb - 1]"
     inputId="answerB"
   ></p-radioButton>
   <label for="answerB">oui</label>
@@ -21,7 +21,7 @@
   <p-radioButton
     name="answer"
     value="{{ currentQuestion.valueC }}"
-    [(ngModel)]="answer"
+    [(ngModel)]="answers[currentQuestion.nb - 1]"
     inputId="answerC"
   ></p-radioButton>
   <label for="answerC">non</label>
@@ -30,20 +30,20 @@
   <p-radioButton
     name="answer"
     value="{{ currentQuestion.valueD }}"
-    [(ngModel)]="answer"
+    [(ngModel)]="answers[currentQuestion.nb - 1]"
     inputId="answerD"
   ></p-radioButton>
   <label for="answerD">non, absolument pas</label>
 </div>
 <p-button
   label="Précédent"
-  (onClick)="previousQuestion()"
-  icon="pi pi-angle-right"
-  iconPos="right"
+  (onClick)="previousQuestion(); saveAnswer()"
+  icon="pi pi-angle-left"
+  iconPos="left"
 ></p-button>
 <p-button
   label="Suivant"
-  (onClick)="nextQuestion()"
+  (onClick)="nextQuestion(); saveAnswer()"
   icon="pi pi-angle-right"
   iconPos="right"
 ></p-button>
