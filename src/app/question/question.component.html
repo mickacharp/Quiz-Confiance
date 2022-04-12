@@ -3,7 +3,7 @@
   <p-radioButton
     name="answer"
     value="{{ currentQuestion.valueA }}"
-    [(ngModel)]="answersValues[currentQuestion.nb - 1]"
+    [(ngModel)]="answers[currentQuestion.nb - 1].answer"
     inputId="answerA"
   ></p-radioButton>
   <label for="answerA">oui, tout à fait</label>
@@ -12,7 +12,7 @@
   <p-radioButton
     name="answer"
     value="{{ currentQuestion.valueB }}"
-    [(ngModel)]="answersValues[currentQuestion.nb - 1]"
+    [(ngModel)]="answers[currentQuestion.nb - 1].answer"
     inputId="answerB"
   ></p-radioButton>
   <label for="answerB">oui</label>
@@ -21,7 +21,7 @@
   <p-radioButton
     name="answer"
     value="{{ currentQuestion.valueC }}"
-    [(ngModel)]="answersValues[currentQuestion.nb - 1]"
+    [(ngModel)]="answers[currentQuestion.nb - 1].answer"
     inputId="answerC"
   ></p-radioButton>
   <label for="answerC">non</label>
@@ -30,7 +30,7 @@
   <p-radioButton
     name="answer"
     value="{{ currentQuestion.valueD }}"
-    [(ngModel)]="answersValues[currentQuestion.nb - 1]"
+    [(ngModel)]="answers[currentQuestion.nb - 1].answer"
     inputId="answerD"
   ></p-radioButton>
   <label for="answerD">non, absolument pas</label>

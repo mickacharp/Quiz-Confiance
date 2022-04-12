@@ -13,31 +13,31 @@ import { QuestionsService } from '../shared/questions.service';
 })
 export class QuestionComponent implements OnInit {
   currentQuestion: Question = new Question(0, '', '', '', '', '');
-  answersValues: string[] = [
-    '',
-    '',
-    '',
-    '',
-    '',
-    '',
-    '',
-    '',
-    '',
-    '',
-    '',
-    '',
-    '',
-    '',
-    '',
-    '',
-    '',
-    '',
-    '',
-    '',
-    '',
-    '',
-    '',
-    '',
+  answers: Answer[] = [
+    new Answer(0, ''),
+    new Answer(0, ''),
+    new Answer(0, ''),
+    new Answer(0, ''),
+    new Answer(0, ''),
+    new Answer(0, ''),
+    new Answer(0, ''),
+    new Answer(0, ''),
+    new Answer(0, ''),
+    new Answer(0, ''),
+    new Answer(0, ''),
+    new Answer(0, ''),
+    new Answer(0, ''),
+    new Answer(0, ''),
+    new Answer(0, ''),
+    new Answer(0, ''),
+    new Answer(0, ''),
+    new Answer(0, ''),
+    new Answer(0, ''),
+    new Answer(0, ''),
+    new Answer(0, ''),
+    new Answer(0, ''),
+    new Answer(0, ''),
+    new Answer(0, ''),
   ];
 
   constructor(
@@ -84,10 +84,11 @@ export class QuestionComponent implements OnInit {
     }
   }
 
+  // save user's answer of the current question to localStorage
   saveAnswerToStorage(): void {
     const currentAnswer: Answer = {
       questionNb: this.currentQuestion.nb,
-      answer: this.answersValues[this.currentQuestion.nb - 1],
+      answer: this.answers[this.currentQuestion.nb - 1].answer,
     };
     localStorage.setItem(
       JSON.stringify(currentAnswer.questionNb),
@@ -95,14 +96,18 @@ export class QuestionComponent implements OnInit {
     );
   }
 
+  // will loop through localStorage keys and associated values and affecting them to the answers
+  // this will make the user to not lose any progression if he closes/refreshes the app
   getStorageValues(): void {
     for (let i = 0; i < localStorage.length; i++) {
       const storageKey: string | null = localStorage.key(i);
       if (storageKey != null) {
         const storageValue: string | null = localStorage.getItem(storageKey);
         if (storageValue != null) {
-          this.answersValues[parseInt(storageKey) - 1] =
-            JSON.parse(storageValue);
+          this.answers[parseInt(storageKey) - 1] = {
+            questionNb: JSON.parse(storageKey),
+            answer: JSON.parse(storageValue),
+          };
         }
       }
     }
