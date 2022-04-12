@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { filter } from 'rxjs';
+import { filter, Observable } from 'rxjs';
 
 import { Question } from '../models/question.model';
 import { QuestionsService } from '../shared/questions.service';
@@ -28,7 +28,7 @@ export class QuestionComponent implements OnInit {
 
   ngOnInit(): void {
     this.getQuestion();
-    // call getQuestion at each changes in URL if it includes "questions" in it
+    // call getQuestion() at each changes in URL if it includes "questions" in it
     if (this.router.url.includes('questions')) {
       this.router.events
         .pipe(filter((event) => event instanceof NavigationEnd))
@@ -44,13 +44,24 @@ export class QuestionComponent implements OnInit {
     const id: number = parseInt(
       this.route.snapshot.paramMap.get('id') as string
     );
-    this.currentQuestion = this.questionsService.questions[id];
+    this.currentQuestion = this.questionsService.questions[id - 1];
+  }
+
+  previousQuestion(): void {
+    const id: number = parseInt(
+      this.route.snapshot.paramMap.get('id') as string
+    );
+    if (id > 1) {
+      this.router.navigate([`questions/${id - 1}`]);
+    }
   }
 
   nextQuestion(): void {
     const id: number = parseInt(
       this.route.snapshot.paramMap.get('id') as string
     );
-    this.router.navigate([`questions/${id + 1}`]);
+    if (id < 24) {
+      this.router.navigate([`questions/${id + 1}`]);
+    }
   }
 }

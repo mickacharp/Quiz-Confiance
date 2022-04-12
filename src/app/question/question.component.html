@@ -36,7 +36,13 @@
   <label for="answerD">non, absolument pas</label>
 </div>
 <p-button
-  label="Next"
+  label="Précédent"
+  (onClick)="previousQuestion()"
+  icon="pi pi-angle-right"
+  iconPos="right"
+></p-button>
+<p-button
+  label="Suivant"
   (onClick)="nextQuestion()"
   icon="pi pi-angle-right"
   iconPos="right"
