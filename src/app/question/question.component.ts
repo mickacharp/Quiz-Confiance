@@ -54,6 +54,7 @@ export class QuestionComponent implements OnInit {
 
   ngOnInit(): void {
     this.getQuestion();
+    this.getStorageKeys();
     // call getQuestion() at each changes in URL if it includes "questions" in it
     if (this.router.url.includes('questions')) {
       this.router.events
@@ -64,6 +65,7 @@ export class QuestionComponent implements OnInit {
     }
     this.xPosition = this.questionsService.calculateXPosition();
     this.yPosition = this.questionsService.calculateYPosition();
+    console.log(this.answers);
   }
 
   getQuestion(): void {
@@ -116,12 +118,17 @@ export class QuestionComponent implements OnInit {
     console.log(this.allAnswers);
   }
 
-  // getStorageKeys(): void {
-  //   this.storageKeys = [];
-  //   for (let i = 0; i < localStorage.length; i++) {
-  //     this.storageKeys.push(localStorage.key(i));
-  //   }
-  // }
+  getStorageKeys(): void {
+    for (let i = 0; i < localStorage.length; i++) {
+      const key: string | null = localStorage.key(i);
+      if (key != null) {
+        const value: string | null = localStorage.getItem(key);
+        if (value != null) {
+          this.answers[parseInt(key) - 1] = JSON.parse(value);
+        }
+      }
+    }
+  }
 
   // reinitializeAnswerChoice(): void {
   //   this.getStorageKeys();
