@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { filter } from 'rxjs';
 
 import { Question } from '../models/question.model';
 import { QuestionsService } from '../shared/questions.service';
@@ -26,16 +27,24 @@ export class QuestionComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.getQuestion();
+    // call getQuestion at each changes in URL if it includes "questions" in it
+    if (this.router.url.includes('questions')) {
+      this.router.events
+        .pipe(filter((event) => event instanceof NavigationEnd))
+        .subscribe(() => {
+          this.getQuestion();
+        });
+    }
     this.xPosition = this.questionsService.calculateXPosition();
     this.yPosition = this.questionsService.calculateYPosition();
-    this.getOneQuestion();
   }
 
-  getOneQuestion(): void {
+  getQuestion(): void {
     const id: number = parseInt(
       this.route.snapshot.paramMap.get('id') as string
     );
-    this.questionsService.questions[id];
+    this.currentQuestion = this.questionsService.questions[id];
   }
 
   nextQuestion(): void {
