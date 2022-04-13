@@ -49,14 +49,7 @@ export class QuestionComponent implements OnInit {
   ngOnInit(): void {
     this.getQuestion();
     this.getStorageValues();
-    // call getQuestion() at each changes in URL if it includes "questions" in it
-    if (this.router.url.includes('questions')) {
-      this.router.events
-        .pipe(filter((event) => event instanceof NavigationEnd))
-        .subscribe(() => {
-          this.getQuestion();
-        });
-    }
+    this.getQuestionWhenUrlChanges();
   }
 
   getQuestion(): void {
@@ -64,6 +57,17 @@ export class QuestionComponent implements OnInit {
       this.route.snapshot.paramMap.get('id') as string
     );
     this.currentQuestion = this.questionsService.questions[id - 1];
+  }
+
+  // call getQuestion() at each changes in URL if it includes "questions" in it
+  getQuestionWhenUrlChanges(): void {
+    if (this.router.url.includes('questions')) {
+      this.router.events
+        .pipe(filter((event) => event instanceof NavigationEnd))
+        .subscribe(() => {
+          this.getQuestion();
+        });
+    }
   }
 
   previousQuestion(): void {
