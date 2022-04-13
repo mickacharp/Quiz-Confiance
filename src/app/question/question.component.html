@@ -141,6 +141,16 @@
       icon="pi pi-angle-right"
       iconPos="right"
       [disabled]="questionForm.valid === false"
+      *ngIf="currentQuestion.nb != 24"
+    ></p-button>
+    <p-button
+      type="submit"
+      label="Envoyer mes réponses"
+      (onClick)="saveAnswerToStorage()"
+      icon="pi pi-angle-right"
+      iconPos="right"
+      [disabled]="questionForm.valid === false"
+      *ngIf="currentQuestion.nb === 24"
     ></p-button>
   </form>
 </ng-container>
