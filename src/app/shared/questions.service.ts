@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
 import { questionsList } from 'src/assets/questions-list';
 import { Question } from '../models/question.model';
 

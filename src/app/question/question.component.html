@@ -1,5 +1,8 @@
 <p>{{ currentQuestion.name }}</p>
-<form (ngSubmit)="questionForm.valid && onSubmit()" #questionForm="ngForm">
+<form
+  (ngSubmit)="questionForm.valid && saveAnswerToStorage()"
+  #questionForm="ngForm"
+>
   <div class="field-radiobutton">
     <p-radioButton
       #answerA="ngModel"
