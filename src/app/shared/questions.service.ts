@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { questionsList } from 'src/assets/questions-list';
 import { Question } from '../models/question.model';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { Answer } from '../models/answer.model';
 
 @Injectable({
   providedIn: 'root',
@@ -25,7 +27,13 @@ export class QuestionsService {
   fourA: number = 0;
   fourC: number = 0;
 
-  constructor() {}
+  constructor(private afs: AngularFirestore) {}
+
+  saveTestInDatabase(newTest: Answer[]): void {
+    this.afs
+      .collection<Answer>('tests')
+      .add(JSON.parse(JSON.stringify(newTest))); // we need to JSON the file before pushing it to Firebase
+  }
 
   // Formulas given by the client
   calculateXPosition(): number {

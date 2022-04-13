@@ -132,4 +132,8 @@ export class QuestionComponent implements OnInit {
       }
     }
   }
+
+  saveTestInDatabase(): void {
+    this.questionsService.saveTestInDatabase(this.answers);
+  }
 }

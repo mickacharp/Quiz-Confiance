@@ -18,7 +18,10 @@
   "
 >
   <p>{{ currentQuestion.name }}</p>
-  <form #questionForm="ngForm">
+  <form
+    (ngSubmit)="questionForm.valid && saveTestInDatabase()"
+    #questionForm="ngForm"
+  >
     <div class="field-radiobutton">
       <p-radioButton
         #answerA="ngModel"
