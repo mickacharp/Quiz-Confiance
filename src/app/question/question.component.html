@@ -147,6 +147,7 @@
       type="submit"
       label="Envoyer mes réponses"
       (onClick)="saveAnswerToStorage()"
+      routerLink="/results"
       icon="pi pi-angle-right"
       iconPos="right"
       [disabled]="questionForm.valid === false"

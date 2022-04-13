@@ -32,9 +32,10 @@ import { AppComponent } from './app.component';
 import { QuestionsService } from './shared/questions.service';
 import { QuestionComponent } from './question/question.component';
 import { QuizComponent } from './quiz/quiz.component';
+import { ResultsComponent } from './results/results.component';
 
 @NgModule({
-  declarations: [AppComponent, QuestionComponent, QuizComponent],
+  declarations: [AppComponent, QuestionComponent, QuizComponent, ResultsComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

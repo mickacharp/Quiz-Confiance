@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import {
+  ActivatedRoute,
+  NavigationEnd,
+  NavigationStart,
+  Router,
+} from '@angular/router';
 import { filter } from 'rxjs';
 
 import { Question } from '../models/question.model';
@@ -50,6 +55,7 @@ export class QuestionComponent implements OnInit {
     this.getQuestion();
     this.getStorageValues();
     this.getQuestionWhenUrlChanges();
+    this.saveAnswerToStorageWhenUrlChanges();
   }
 
   getQuestion(): void {
@@ -66,6 +72,16 @@ export class QuestionComponent implements OnInit {
         .pipe(filter((event) => event instanceof NavigationEnd))
         .subscribe(() => {
           this.getQuestion();
+        });
+    }
+  }
+
+  saveAnswerToStorageWhenUrlChanges(): void {
+    if (this.router.url.includes('questions')) {
+      this.router.events
+        .pipe(filter((event) => event instanceof NavigationStart))
+        .subscribe(() => {
+          this.saveAnswerToStorage();
         });
     }
   }
