@@ -112,4 +112,8 @@ export class QuestionComponent implements OnInit {
       }
     }
   }
+
+  onSubmit(): void {
+    this.saveAnswerToStorage();
+  }
 }
