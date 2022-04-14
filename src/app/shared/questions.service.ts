@@ -3,6 +3,8 @@ import { questionsList } from 'src/assets/questions-list';
 import { Question } from '../models/question.model';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Answer } from '../models/answer.model';
+import { User } from '../models/user.model';
+import { Test } from '../models/test.model';
 
 @Injectable({
   providedIn: 'root',
@@ -29,10 +31,12 @@ export class QuestionsService {
 
   constructor(private afs: AngularFirestore) {}
 
-  saveTestInDatabase(newTest: Answer[]): void {
-    this.afs
-      .collection<Answer>('tests')
-      .add(JSON.parse(JSON.stringify(newTest))); // we need to JSON the file before pushing it to Firebase
+  saveUserInDatabase(newUser: User): void {
+    this.afs.collection<User>('users').add(JSON.parse(JSON.stringify(newUser))); // we need to JSON the file before pushing it to Firebase
+  }
+
+  saveTestInDatabase(newTest: Test): void {
+    this.afs.collection<Test>('tests').add(JSON.parse(JSON.stringify(newTest)));
   }
 
   // Formulas given by the client

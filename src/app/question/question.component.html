@@ -19,7 +19,7 @@
 >
   <p>{{ currentQuestion.name }}</p>
   <form
-    (ngSubmit)="questionForm.valid && saveTestInDatabase()"
+    (ngSubmit)="questionForm.valid && saveAnswerToStorage()"
     #questionForm="ngForm"
   >
     <div class="field-radiobutton">
@@ -149,8 +149,6 @@
     <p-button
       type="submit"
       label="Envoyer mes réponses"
-      (onClick)="saveAnswerToStorage()"
-      routerLink="/results"
       icon="pi pi-angle-right"
       iconPos="right"
       [disabled]="questionForm.valid === false"

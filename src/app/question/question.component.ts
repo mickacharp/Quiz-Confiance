@@ -10,6 +10,8 @@ import { filter } from 'rxjs';
 import { Question } from '../models/question.model';
 import { Answer } from '../models/answer.model';
 import { QuestionsService } from '../shared/questions.service';
+import { User } from '../models/user.model';
+import { Test } from '../models/test.model';
 
 @Component({
   selector: 'app-question',
@@ -133,7 +135,20 @@ export class QuestionComponent implements OnInit {
     }
   }
 
+  // saveUserInDatabase(): void {
+  //   this.questionsService.saveUserInDatabase(NEW USER HERE);
+  // }
+
   saveTestInDatabase(): void {
-    this.questionsService.saveTestInDatabase(this.answers);
+    // initialize a Test object and loop through it: then affect it the value and the answer of each question
+    const testToSave: Test = new Test([]);
+    for (let i = 0; i < this.answers.length; i++) {
+      testToSave.answers[i] = {
+        questionNb: i + 1,
+        answer: this.answers[i].answer,
+      };
+    }
+
+    this.questionsService.saveTestInDatabase(testToSave);
   }
 }
