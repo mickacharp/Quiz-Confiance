@@ -1,10 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import {
+  ActivatedRoute,
+  NavigationEnd,
+  NavigationStart,
+  Router,
+} from '@angular/router';
 import { filter } from 'rxjs';
 
 import { Question } from '../models/question.model';
 import { Answer } from '../models/answer.model';
 import { QuestionsService } from '../shared/questions.service';
+import { User } from '../models/user.model';
+import { Test } from '../models/test.model';
 
 @Component({
   selector: 'app-question',
@@ -50,6 +57,7 @@ export class QuestionComponent implements OnInit {
     this.getQuestion();
     this.getStorageValues();
     this.getQuestionWhenUrlChanges();
+    this.saveAnswerToStorageWhenUrlChanges();
   }
 
   getQuestion(): void {
@@ -66,6 +74,16 @@ export class QuestionComponent implements OnInit {
         .pipe(filter((event) => event instanceof NavigationEnd))
         .subscribe(() => {
           this.getQuestion();
+        });
+    }
+  }
+
+  saveAnswerToStorageWhenUrlChanges(): void {
+    if (this.router.url.includes('questions')) {
+      this.router.events
+        .pipe(filter((event) => event instanceof NavigationStart))
+        .subscribe(() => {
+          this.saveAnswerToStorage();
         });
     }
   }
@@ -115,5 +133,22 @@ export class QuestionComponent implements OnInit {
         }
       }
     }
+  }
+
+  // saveUserInDatabase(): void {
+  //   this.questionsService.saveUserInDatabase(NEW USER HERE);
+  // }
+
+  saveTestInDatabase(): void {
+    // initialize a Test object and loop through it: then affect it the value and the answer of each question
+    const testToSave: Test = new Test([]);
+    for (let i = 0; i < this.answers.length; i++) {
+      testToSave.answers[i] = {
+        questionNb: i + 1,
+        answer: this.answers[i].answer,
+      };
+    }
+
+    this.questionsService.saveTestInDatabase(testToSave);
   }
 }

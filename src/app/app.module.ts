@@ -5,6 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 
 // AngularFire
 import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { environment } from '../environments/environment';
 import {
@@ -32,9 +33,15 @@ import { AppComponent } from './app.component';
 import { QuestionsService } from './shared/questions.service';
 import { QuestionComponent } from './question/question.component';
 import { QuizComponent } from './quiz/quiz.component';
+import { ResultsComponent } from './results/results.component';
 
 @NgModule({
-  declarations: [AppComponent, QuestionComponent, QuizComponent],
+  declarations: [
+    AppComponent,
+    QuestionComponent,
+    QuizComponent,
+    ResultsComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -43,6 +50,10 @@ import { QuizComponent } from './quiz/quiz.component';
     RadioButtonModule,
     ButtonModule,
     AngularFireModule.initializeApp(environment.firebase),
+    AngularFirestoreModule,
+    // provideDatabase(() => getDatabase()),
+    // provideMessaging(() => getMessaging()),
+    // providePerformance(() => getPerformance()),
     // provideFirebaseApp(() => initializeApp(environment.firebase)),
     // provideAnalytics(() => getAnalytics()),
     // provideAuth(() => getAuth()),
