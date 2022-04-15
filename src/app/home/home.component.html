@@ -19,7 +19,7 @@
 >
   Si vous avez déjà fait un test et enregistré vos résultats, vous pouvez les
   consulter à nouveau en entrant votre email ci-dessous :
-  <form #emailForm="ngForm" (ngSubmit)="emailForm.valid && getTestsOfUser()">
+  <form #emailForm="ngForm" (ngSubmit)="emailForm.valid && getUserByEmail()">
     <label for="user-email">Votre email : </label>
     <input
       pInputText
@@ -35,9 +35,15 @@
       label="Accéder à mes tests"
       icon="pi pi-angle-right"
       iconPos="right"
-      [disabled]="
-        emailForm.valid === false || email.value.includes('@') === false
-      "
+      [disabled]="emailForm.valid === false"
+    ></p-button>
+    <p-button
+      type="button"
+      label="envoyer mail"
+      icon="pi pi-angle-right"
+      iconPos="right"
+      [disabled]="emailForm.valid === false"
+      (onClick)="getUserByEmail()"
     ></p-button>
   </form>
 </p-dialog>

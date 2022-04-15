@@ -5,6 +5,7 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Answer } from '../models/answer.model';
 import { User } from '../models/user.model';
 import { Test } from '../models/test.model';
+import { map, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -38,6 +39,25 @@ export class QuestionsService {
   saveTestInDatabase(newTest: Test): void {
     this.afs.collection<Test>('tests').add(JSON.parse(JSON.stringify(newTest)));
   }
+
+  getUserByEmail(userEmail: string): Observable<User[]> {
+    return this.afs
+      .collection<User>('users', (ref) => ref.where('email', '==', userEmail))
+      .snapshotChanges()
+      .pipe(
+        map((changes) =>
+          changes.map((c) => {
+            const data = c.payload.doc.data() as User;
+            const id = c.payload.doc.id;
+            return { id, ...data };
+          })
+        )
+      );
+  }
+
+  // getTestsOfUser(userTest: string): Test {
+  //   return this.afs.collection<Test>('tests').doc(userTest).ref.get();
+  // }
 
   // Formulas given by the client
   calculateXPosition(): number {
