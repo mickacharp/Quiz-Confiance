@@ -12,7 +12,7 @@ export class HomeComponent implements OnInit {
   displayModal: boolean = false;
   userEmail: string = '';
   user: User = new User('', '', '', []);
-  userTests: Test[] = [new Test([])];
+  userTests: Test[] = [];
 
   showModalDialog(): void {
     this.displayModal = true;
@@ -32,9 +32,20 @@ export class HomeComponent implements OnInit {
   getUserByEmail(): void {
     this.questionsService
       .getUserByEmail(this.userEmail)
-      .subscribe((userFound) => (this.user = userFound[0]));
-    setTimeout(() => {
-      console.log(this.user);
-    }, 2000);
+      .subscribe((userFound) => {
+        this.user = userFound[0];
+        this.getUserTests();
+      });
+  }
+
+  getUserTests(): void {
+    if (this.user.tests && this.user.tests.length > 0) {
+      this.user.tests.forEach((testKey) => {
+        this.questionsService.getTestsOfUser(testKey).subscribe((test) => {
+          this.userTests.push(test);
+          console.log(this.userTests);
+        });
+      });
+    }
   }
 }

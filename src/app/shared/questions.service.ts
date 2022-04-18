@@ -55,9 +55,10 @@ export class QuestionsService {
       );
   }
 
-  // getTestsOfUser(userTest: string): Test {
-  //   return this.afs.collection<Test>('tests').doc(userTest).ref.get();
-  // }
+  getTestsOfUser(testKey: string): Observable<Test> {
+    const myTest = this.afs.doc<Test>('tests/' + testKey);
+    return myTest.valueChanges() as Observable<Test>;
+  }
 
   // Formulas given by the client
   calculateXPosition(): number {
