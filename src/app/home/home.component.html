@@ -1,0 +1,44 @@
+<p-button
+  label="Démarrer un test"
+  icon="pi pi-angle-right"
+  iconPos="right"
+></p-button>
+<p (click)="showModalDialog()">Vous avez déjà fait un test ? Cliquez ici</p>
+
+<!-- <label for="user-firstname">Votre prénom : </label>
+<input type="text" name="user-firstname" id="user-firstname" />
+<label for="user-lastname">Votre nom : </label>
+<input type="text" name="user-lastname" id="user-lastname" /> -->
+<p-dialog
+  header="Accéder à mes tests"
+  [(visible)]="displayModal"
+  [modal]="true"
+  [style]="{ width: '50vw' }"
+  [draggable]="false"
+  [resizable]="false"
+>
+  Si vous avez déjà fait un test et enregistré vos résultats, vous pouvez les
+  consulter à nouveau en entrant votre email ci-dessous :
+  <form
+    #emailForm="ngForm"
+    (ngSubmit)="emailForm.valid && getUserAndHisTests()"
+  >
+    <label for="user-email">Votre email : </label>
+    <input
+      pInputText
+      type="text"
+      name="user-email"
+      id="user-email"
+      required
+      #email="ngModel"
+      [(ngModel)]="userEmail"
+    />
+    <p-button
+      type="submit"
+      label="Accéder à mes tests"
+      icon="pi pi-angle-right"
+      iconPos="right"
+      [disabled]="emailForm.valid === false"
+    ></p-button>
+  </form>
+</p-dialog>
