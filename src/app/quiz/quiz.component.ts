@@ -23,7 +23,7 @@ export class QuizComponent implements OnInit {
     for (let i: number = 0; i < this.questions.length; i++) {
       this.stepItems.push({
         label: `Q${this.questions[i].nb}`,
-        routerLink: `questions/${this.questions[i].nb}`,
+        routerLink: `/questions/${this.questions[i].nb}`,
       });
     }
   }

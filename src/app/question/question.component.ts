@@ -10,7 +10,6 @@ import { filter } from 'rxjs';
 import { Question } from '../models/question.model';
 import { Answer } from '../models/answer.model';
 import { QuestionsService } from '../shared/questions.service';
-import { User } from '../models/user.model';
 import { Test } from '../models/test.model';
 
 @Component({
