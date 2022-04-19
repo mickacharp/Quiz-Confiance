@@ -128,7 +128,7 @@ export class QuestionComponent implements OnInit {
     for (let i = 0; i < localStorage.length; i++) {
       const storageKey: string | null = localStorage.key(i);
       if (storageKey != null) {
-        this.quiz.stepItems[parseInt(storageKey)].disabled = false;
+        this.quiz.stepItems[parseInt(storageKey) - 1].disabled = false;
       }
     }
   }
