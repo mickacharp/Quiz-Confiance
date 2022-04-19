@@ -17,19 +17,12 @@ export class HomeComponent implements OnInit {
   showModalDialog(): void {
     this.displayModal = true;
   }
+
   constructor(private questionsService: QuestionsService) {}
 
   ngOnInit(): void {}
 
-  // getTestsOfUser(): void {
-  //   for (let i = 0; i < this.user.tests.length; i++)
-  //   {
-  //     this.questionsService
-  //     .getTestsOfUser(this.user.tests[i]).then(test => this.userTests.push(test))
-  //    }
-  // }
-
-  getUserByEmail(): void {
+  getUserAndHisTests(): void {
     this.questionsService
       .getUserByEmail(this.userEmail)
       .subscribe((userFound) => {
@@ -43,7 +36,6 @@ export class HomeComponent implements OnInit {
       this.user.tests.forEach((testKey) => {
         this.questionsService.getTestsOfUser(testKey).subscribe((test) => {
           this.userTests.push(test);
-          console.log(this.userTests);
         });
       });
     }

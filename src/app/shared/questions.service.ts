@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { questionsList } from 'src/assets/questions-list';
 import { Question } from '../models/question.model';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { Answer } from '../models/answer.model';
 import { User } from '../models/user.model';
 import { Test } from '../models/test.model';
 import { map, Observable } from 'rxjs';
