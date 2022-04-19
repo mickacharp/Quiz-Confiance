@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {
   ActivatedRoute,
   NavigationEnd,
@@ -11,6 +11,7 @@ import { Question } from '../models/question.model';
 import { Answer } from '../models/answer.model';
 import { QuestionsService } from '../shared/questions.service';
 import { Test } from '../models/test.model';
+import { QuizComponent } from '../quiz/quiz.component';
 
 @Component({
   selector: 'app-question',
@@ -57,7 +58,12 @@ export class QuestionComponent implements OnInit {
     this.getStorageValues();
     this.getQuestionWhenUrlChanges();
     this.saveAnswerToStorageWhenUrlChanges();
+    setTimeout(() => this.enableQuestionsAnswered(), 1);
   }
+
+  @ViewChild(QuizComponent) quiz: QuizComponent = new QuizComponent(
+    this.questionsService
+  );
 
   getQuestion(): void {
     const id: number = parseInt(
@@ -83,6 +89,7 @@ export class QuestionComponent implements OnInit {
         .pipe(filter((event) => event instanceof NavigationStart))
         .subscribe(() => {
           this.saveAnswerToStorage();
+          this.enableNextQuestion();
         });
     }
   }
@@ -115,6 +122,19 @@ export class QuestionComponent implements OnInit {
       JSON.stringify(currentAnswer.questionNb),
       JSON.stringify(currentAnswer.answer)
     );
+  }
+
+  enableQuestionsAnswered(): void {
+    for (let i = 0; i < localStorage.length; i++) {
+      const storageKey: string | null = localStorage.key(i);
+      if (storageKey != null) {
+        this.quiz.stepItems[parseInt(storageKey)].disabled = false;
+      }
+    }
+  }
+
+  enableNextQuestion(): void {
+    this.quiz.stepItems[this.currentQuestion.nb - 1].disabled = false;
   }
 
   // will loop through localStorage keys and associated values and affecting them to the answers

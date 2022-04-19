@@ -20,10 +20,16 @@ export class QuizComponent implements OnInit {
   }
 
   generateStepItems(): void {
-    for (let i: number = 0; i < this.questions.length; i++) {
+    this.stepItems.push({
+      label: `Q1`,
+      routerLink: `/questions/1`,
+      disabled: false,
+    });
+    for (let i: number = 1; i < this.questions.length; i++) {
       this.stepItems.push({
         label: `Q${this.questions[i].nb}`,
         routerLink: `/questions/${this.questions[i].nb}`,
+        disabled: true,
       });
     }
   }
