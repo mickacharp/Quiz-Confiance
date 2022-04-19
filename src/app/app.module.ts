@@ -30,10 +30,12 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
+import { ChartModule } from 'primeng/chart';
 
 // Components
 import { AppComponent } from './app.component';
 import { QuestionsService } from './shared/questions.service';
+import { ResultsService } from './shared/results.service';
 import { QuestionComponent } from './question/question.component';
 import { QuizComponent } from './quiz/quiz.component';
 import { ResultsComponent } from './results/results.component';
@@ -57,6 +59,7 @@ import { HomeComponent } from './home/home.component';
     BrowserAnimationsModule, // needed for PrimeNg p-dialog Modal to work
     DialogModule,
     InputTextModule,
+    ChartModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
     // provideDatabase(() => getDatabase()),
@@ -70,7 +73,12 @@ import { HomeComponent } from './home/home.component';
     // provideRemoteConfig(() => getRemoteConfig()),
     // provideStorage(() => getStorage()),
   ],
-  providers: [ScreenTrackingService, UserTrackingService, QuestionsService],
+  providers: [
+    ScreenTrackingService,
+    UserTrackingService,
+    QuestionsService,
+    ResultsService,
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
