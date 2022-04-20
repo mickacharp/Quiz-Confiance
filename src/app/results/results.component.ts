@@ -7,11 +7,15 @@ import { ResultsService } from '../shared/results.service';
   styleUrls: ['./results.component.scss'],
 })
 export class ResultsComponent implements OnInit {
+  xCoordinate: number = this.resultsService.calculateXPosition();
+  yCoordinate: number = this.resultsService.calculateYPosition();
+
   data: any = {
     datasets: [
       {
-        label: 'First Dataset',
-        data: [0],
+        label: 'Votre résultat',
+        data: [{ x: this.xCoordinate, y: this.yCoordinate, r: 10 }],
+        backgroundColor: '#f2440f',
       },
     ],
   };
@@ -19,10 +23,31 @@ export class ResultsComponent implements OnInit {
   options: any = {
     scales: {
       x: {
+        min: -4,
+        max: 4,
         position: 'center',
+        width: 50,
+        ticks: {
+          display: false,
+        },
+        grid: {
+          borderWidth: 2,
+          borderColor: 'black',
+          lineWidth: 1,
+        },
       },
       y: {
+        min: -4,
+        max: 4,
         position: 'center',
+        ticks: {
+          display: false,
+        },
+        grid: {
+          borderWidth: 2,
+          borderColor: 'black',
+          lineWidth: 1,
+        },
       },
     },
     plugins: {
@@ -33,7 +58,7 @@ export class ResultsComponent implements OnInit {
         color: '#15a608',
       },
       legend: {
-        position: 'bottom',
+        display: false,
       },
     },
   };

@@ -6,9 +6,9 @@ import { Injectable } from '@angular/core';
 export class ResultsService {
   // Counters of points according to user's answers
   oneA: number = 0;
-  oneC: number = 0;
+  oneC: number = 10;
   twoA: number = 0;
-  twoC: number = 0;
+  twoC: number = 2;
   poA: number = 0;
   poC: number = 0;
   pdA: number = 0;
@@ -17,10 +17,10 @@ export class ResultsService {
   aoC: number = 0;
   adA: number = 0;
   adC: number = 0;
-  threeA: number = 0;
-  threeC: number = 0;
+  threeA: number = 2;
+  threeC: number = 4;
   fourA: number = 0;
-  fourC: number = 0;
+  fourC: number = 2;
 
   constructor() {}
 
