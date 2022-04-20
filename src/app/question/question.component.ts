@@ -159,7 +159,7 @@ export class QuestionComponent implements OnInit {
   calculateResults(): void {
     // we reset the counters before calculating final results
     this.resultsService.resetResultsCounters();
-    // then, depending on the answer's value, we increment the associated result value
+    // then, depending on the answer's value, we increment the associated result counter
     for (let i = 0; i < this.answers.length; i++) {
       switch (this.answers[i].answer) {
         case '1a':

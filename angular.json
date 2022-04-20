@@ -29,7 +29,7 @@
             "assets": ["src/favicon.ico", "src/assets"],
             "styles": [
               "node_modules/primeicons/primeicons.css",
-              "node_modules/primeng/resources/themes/arya-green/theme.css",
+              "node_modules/primeng/resources/themes/saga-green/theme.css",
               "node_modules/primeng/resources/primeng.min.css",
               "src/styles/styles.scss"
             ],

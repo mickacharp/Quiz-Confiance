@@ -3,7 +3,60 @@
 <!-- <button type="button" pButton (click)="update($event)"></button> -->
 <p-button
   label="Sauvegarder mon test"
-  (onClick)="saveTestInDatabase()"
+  (onClick)="showModalDialog()"
   icon="pi pi-angle-right"
   iconPos="right"
 ></p-button>
+<p-dialog
+  header="Sauvegarder mon test"
+  [(visible)]="displayModal"
+  [modal]="true"
+  [style]="{ width: '50vw' }"
+  [draggable]="false"
+  [resizable]="false"
+>
+  Si vous souhaitez sauvegarder vos résultats pour y accéder plus tard,
+  renseignez les champs ci-dessous.*
+  <form #saveTestForm="ngForm" (ngSubmit)="saveTestInDatabase()">
+    <label for="user-firstname">Votre prénom : </label>
+    <input
+      pInputText
+      type="text"
+      name="user-firstname"
+      id="user-firstname"
+      required
+      #firstname="ngModel"
+      [(ngModel)]="userFirstname"
+    />
+    <label for="user-lastname">Votre nom : </label>
+    <input
+      pInputText
+      type="text"
+      name="user-lastname"
+      id="user-lastname"
+      required
+      #lastname="ngModel"
+      [(ngModel)]="userLastname"
+    />
+    <label for="user-email">Votre email : </label>
+    <input
+      pInputText
+      type="text"
+      name="user-email"
+      id="user-email"
+      required
+      #email="ngModel"
+      [(ngModel)]="userEmail"
+    />
+    <p-button
+      type="submit"
+      label="Sauvegarder mes réponses"
+      icon="pi pi-angle-right"
+      iconPos="right"
+      [disabled]="saveTestForm.valid === false"
+    ></p-button>
+  </form>
+  *Nous n'aurons pas accès à vos informations, elles vous serviront juste
+  d'identifiant pour que nous puissions retrouver votre test dans notre base de
+  données.
+</p-dialog>

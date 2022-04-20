@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Test } from '../models/test.model';
+import { User } from '../models/user.model';
 import { QuestionsService } from '../shared/questions.service';
 import { ResultsService } from '../shared/results.service';
 
@@ -65,6 +66,15 @@ export class ResultsComponent implements OnInit {
     },
   };
 
+  displayModal: boolean = false;
+  showModalDialog(): void {
+    this.displayModal = true;
+  }
+
+  userFirstname: string = '';
+  userLastname: string = '';
+  userEmail: string = '';
+
   constructor(
     private questionsService: QuestionsService,
     private resultsService: ResultsService
@@ -73,7 +83,14 @@ export class ResultsComponent implements OnInit {
   ngOnInit(): void {}
 
   saveTestInDatabase(): void {
+    const userToSave: User = new User(
+      this.userEmail,
+      this.userFirstname,
+      this.userLastname,
+      []
+    );
     const testToSave: Test = new Test([]);
+
     for (let i = 0; i < localStorage.length; i++) {
       const storageKey: string | null = localStorage.key(i);
       if (storageKey != null) {
@@ -86,11 +103,11 @@ export class ResultsComponent implements OnInit {
         }
       }
     }
-
     // sort the test to save so the answers are sorted by question number
     testToSave.answers.sort((a, b) => {
       return a.questionNb - b.questionNb;
     });
-    this.questionsService.saveTestInDatabase(testToSave);
+
+    this.questionsService.saveTestInDatabase(testToSave, userToSave);
   }
 }

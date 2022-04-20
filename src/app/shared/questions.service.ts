@@ -18,8 +18,17 @@ export class QuestionsService {
     this.afs.collection<User>('users').add(JSON.parse(JSON.stringify(newUser))); // we need to JSON the file before pushing it to Firebase
   }
 
-  saveTestInDatabase(newTest: Test): void {
-    this.afs.collection<Test>('tests').add(JSON.parse(JSON.stringify(newTest)));
+  saveTestInDatabase(newTest: Test, newUser: User): void {
+    this.afs
+      .collection<Test>('tests')
+      .add(JSON.parse(JSON.stringify(newTest)))
+      .then((docRef) =>
+        this.saveUserInDatabase(
+          new User(newUser.email, newUser.firstname, newUser.lastname, [
+            docRef.id,
+          ])
+        )
+      );
   }
 
   getUserByEmail(userEmail: string): Observable<User[]> {
