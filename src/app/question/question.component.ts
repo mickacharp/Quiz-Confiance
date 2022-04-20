@@ -12,6 +12,7 @@ import { Answer } from '../models/answer.model';
 import { QuestionsService } from '../shared/questions.service';
 import { Test } from '../models/test.model';
 import { QuizComponent } from '../quiz/quiz.component';
+import { ResultsService } from '../shared/results.service';
 
 @Component({
   selector: 'app-question',
@@ -49,6 +50,7 @@ export class QuestionComponent implements OnInit {
 
   constructor(
     private questionsService: QuestionsService,
+    private resultsService: ResultsService,
     private route: ActivatedRoute,
     private router: Router
   ) {}
@@ -169,5 +171,60 @@ export class QuestionComponent implements OnInit {
     }
 
     this.questionsService.saveTestInDatabase(testToSave);
+  }
+
+  gatherResults(): void {
+    for (let i = 0; i < this.answers.length; i++) {
+      switch (this.answers[i].answer) {
+        case '1a':
+          this.resultsService.oneA++;
+          break;
+        case '1C':
+          this.resultsService.oneC++;
+          break;
+        case '2a':
+          this.resultsService.twoA++;
+          break;
+        case '2C':
+          this.resultsService.twoC++;
+          break;
+        case '3a':
+          this.resultsService.threeA++;
+          break;
+        case '3C':
+          this.resultsService.threeC++;
+          break;
+        case '4a':
+          this.resultsService.fourA++;
+          break;
+        case '4C':
+          this.resultsService.fourC++;
+          break;
+        case 'Poa':
+          this.resultsService.poA++;
+          break;
+        case 'PoC':
+          this.resultsService.poC++;
+          break;
+        case 'Pda':
+          this.resultsService.pdA++;
+          break;
+        case 'PdC':
+          this.resultsService.pdC++;
+          break;
+        case 'Aoa':
+          this.resultsService.aoA++;
+          break;
+        case 'AoC':
+          this.resultsService.aoC++;
+          break;
+        case 'Ada':
+          this.resultsService.adA++;
+          break;
+        case 'AdC':
+          this.resultsService.adC++;
+          break;
+      }
+    }
   }
 }
