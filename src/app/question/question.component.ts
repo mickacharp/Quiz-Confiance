@@ -10,9 +10,8 @@ import { filter } from 'rxjs';
 import { Question } from '../models/question.model';
 import { Answer } from '../models/answer.model';
 import { QuestionsService } from '../shared/questions.service';
-import { Test } from '../models/test.model';
-import { QuizComponent } from '../quiz/quiz.component';
 import { ResultsService } from '../shared/results.service';
+import { QuizComponent } from '../quiz/quiz.component';
 
 @Component({
   selector: 'app-question',
@@ -85,6 +84,18 @@ export class QuestionComponent implements OnInit {
     }
   }
 
+  // save user's answer of the current question to localStorage
+  saveAnswerToStorage(): void {
+    const currentAnswer: Answer = {
+      questionNb: this.currentQuestion.nb,
+      answer: this.answers[this.currentQuestion.nb - 1].answer,
+    };
+    localStorage.setItem(
+      JSON.stringify(currentAnswer.questionNb),
+      JSON.stringify(currentAnswer.answer)
+    );
+  }
+
   saveAnswerToStorageWhenUrlChanges(): void {
     if (this.router.url.includes('questions')) {
       this.router.events
@@ -93,6 +104,23 @@ export class QuestionComponent implements OnInit {
           this.saveAnswerToStorage();
           this.enableNextQuestion();
         });
+    }
+  }
+
+  // will loop through localStorage keys and associated values and affecting them to the answers
+  // this will make the user to not lose any progression if he closes/refreshes the app
+  getStorageValues(): void {
+    for (let i = 0; i < localStorage.length; i++) {
+      const storageKey: string | null = localStorage.key(i);
+      if (storageKey != null) {
+        const storageValue: string | null = localStorage.getItem(storageKey);
+        if (storageValue != null) {
+          this.answers[parseInt(storageKey) - 1] = {
+            questionNb: JSON.parse(storageKey),
+            answer: JSON.parse(storageValue),
+          };
+        }
+      }
     }
   }
 
@@ -114,18 +142,7 @@ export class QuestionComponent implements OnInit {
     }
   }
 
-  // save user's answer of the current question to localStorage
-  saveAnswerToStorage(): void {
-    const currentAnswer: Answer = {
-      questionNb: this.currentQuestion.nb,
-      answer: this.answers[this.currentQuestion.nb - 1].answer,
-    };
-    localStorage.setItem(
-      JSON.stringify(currentAnswer.questionNb),
-      JSON.stringify(currentAnswer.answer)
-    );
-  }
-
+  // look in localStorage if some questions have been answered and if so, make them clickable in steps
   enableQuestionsAnswered(): void {
     for (let i = 0; i < localStorage.length; i++) {
       const storageKey: string | null = localStorage.key(i);
@@ -137,40 +154,6 @@ export class QuestionComponent implements OnInit {
 
   enableNextQuestion(): void {
     this.quiz.stepItems[this.currentQuestion.nb - 1].disabled = false;
-  }
-
-  // will loop through localStorage keys and associated values and affecting them to the answers
-  // this will make the user to not lose any progression if he closes/refreshes the app
-  getStorageValues(): void {
-    for (let i = 0; i < localStorage.length; i++) {
-      const storageKey: string | null = localStorage.key(i);
-      if (storageKey != null) {
-        const storageValue: string | null = localStorage.getItem(storageKey);
-        if (storageValue != null) {
-          this.answers[parseInt(storageKey) - 1] = {
-            questionNb: JSON.parse(storageKey),
-            answer: JSON.parse(storageValue),
-          };
-        }
-      }
-    }
-  }
-
-  // saveUserInDatabase(): void {
-  //   this.questionsService.saveUserInDatabase(NEW USER HERE);
-  // }
-
-  saveTestInDatabase(): void {
-    // initialize a Test object and loop through it: then affect it the value and the answer of each question
-    const testToSave: Test = new Test([]);
-    for (let i = 0; i < this.answers.length; i++) {
-      testToSave.answers[i] = {
-        questionNb: i + 1,
-        answer: this.answers[i].answer,
-      };
-    }
-
-    this.questionsService.saveTestInDatabase(testToSave);
   }
 
   calculateResults(): void {

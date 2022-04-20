@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Test } from '../models/test.model';
+import { QuestionsService } from '../shared/questions.service';
 import { ResultsService } from '../shared/results.service';
 
 @Component({
@@ -63,7 +65,32 @@ export class ResultsComponent implements OnInit {
     },
   };
 
-  constructor(private resultsService: ResultsService) {}
+  constructor(
+    private questionsService: QuestionsService,
+    private resultsService: ResultsService
+  ) {}
 
   ngOnInit(): void {}
+
+  saveTestInDatabase(): void {
+    const testToSave: Test = new Test([]);
+    for (let i = 0; i < localStorage.length; i++) {
+      const storageKey: string | null = localStorage.key(i);
+      if (storageKey != null) {
+        const storageValue: string | null = localStorage.getItem(storageKey);
+        if (storageValue != null) {
+          testToSave.answers[i] = {
+            questionNb: parseInt(storageKey),
+            answer: storageValue.replace(/"/g, ''),
+          };
+        }
+      }
+    }
+
+    // sort the test to save so the answers are sorted by question number
+    testToSave.answers.sort((a, b) => {
+      return a.questionNb - b.questionNb;
+    });
+    this.questionsService.saveTestInDatabase(testToSave);
+  }
 }
