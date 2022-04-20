@@ -20,7 +20,10 @@
 >
   <p>{{ currentQuestion.name }}</p>
   <form
-    (ngSubmit)="questionForm.valid && saveAnswerToStorage()"
+    (ngSubmit)="
+      questionForm.valid && saveAnswerToStorage();
+      questionForm.valid && calculateResults()
+    "
     #questionForm="ngForm"
   >
     <div class="field-radiobutton">
@@ -154,6 +157,12 @@
       iconPos="right"
       [disabled]="questionForm.valid === false"
       *ngIf="currentQuestion.nb === 24"
+    ></p-button>
+    <p-button
+      label="Accéder à mes résultats"
+      routerLink="/results"
+      icon="pi pi-angle-right"
+      iconPos="right"
     ></p-button>
   </form>
 </ng-container>

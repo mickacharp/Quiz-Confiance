@@ -10,7 +10,7 @@ import { filter } from 'rxjs';
 import { Question } from '../models/question.model';
 import { Answer } from '../models/answer.model';
 import { QuestionsService } from '../shared/questions.service';
-import { Test } from '../models/test.model';
+import { ResultsService } from '../shared/results.service';
 import { QuizComponent } from '../quiz/quiz.component';
 
 @Component({
@@ -49,6 +49,7 @@ export class QuestionComponent implements OnInit {
 
   constructor(
     private questionsService: QuestionsService,
+    private resultsService: ResultsService,
     private route: ActivatedRoute,
     private router: Router
   ) {}
@@ -83,6 +84,18 @@ export class QuestionComponent implements OnInit {
     }
   }
 
+  // save user's answer of the current question to localStorage
+  saveAnswerToStorage(): void {
+    const currentAnswer: Answer = {
+      questionNb: this.currentQuestion.nb,
+      answer: this.answers[this.currentQuestion.nb - 1].answer,
+    };
+    localStorage.setItem(
+      JSON.stringify(currentAnswer.questionNb),
+      JSON.stringify(currentAnswer.answer)
+    );
+  }
+
   saveAnswerToStorageWhenUrlChanges(): void {
     if (this.router.url.includes('questions')) {
       this.router.events
@@ -91,6 +104,23 @@ export class QuestionComponent implements OnInit {
           this.saveAnswerToStorage();
           this.enableNextQuestion();
         });
+    }
+  }
+
+  // will loop through localStorage keys and associated values and affecting them to the answers
+  // this will make the user to not lose any progression if he closes/refreshes the app
+  getStorageValues(): void {
+    for (let i = 0; i < localStorage.length; i++) {
+      const storageKey: string | null = localStorage.key(i);
+      if (storageKey != null) {
+        const storageValue: string | null = localStorage.getItem(storageKey);
+        if (storageValue != null) {
+          this.answers[parseInt(storageKey) - 1] = {
+            questionNb: JSON.parse(storageKey),
+            answer: JSON.parse(storageValue),
+          };
+        }
+      }
     }
   }
 
@@ -112,18 +142,7 @@ export class QuestionComponent implements OnInit {
     }
   }
 
-  // save user's answer of the current question to localStorage
-  saveAnswerToStorage(): void {
-    const currentAnswer: Answer = {
-      questionNb: this.currentQuestion.nb,
-      answer: this.answers[this.currentQuestion.nb - 1].answer,
-    };
-    localStorage.setItem(
-      JSON.stringify(currentAnswer.questionNb),
-      JSON.stringify(currentAnswer.answer)
-    );
-  }
-
+  // look in localStorage if some questions have been answered and if so, make them clickable in steps
   enableQuestionsAnswered(): void {
     for (let i = 0; i < localStorage.length; i++) {
       const storageKey: string | null = localStorage.key(i);
@@ -137,37 +156,61 @@ export class QuestionComponent implements OnInit {
     this.quiz.stepItems[this.currentQuestion.nb - 1].disabled = false;
   }
 
-  // will loop through localStorage keys and associated values and affecting them to the answers
-  // this will make the user to not lose any progression if he closes/refreshes the app
-  getStorageValues(): void {
-    for (let i = 0; i < localStorage.length; i++) {
-      const storageKey: string | null = localStorage.key(i);
-      if (storageKey != null) {
-        const storageValue: string | null = localStorage.getItem(storageKey);
-        if (storageValue != null) {
-          this.answers[parseInt(storageKey) - 1] = {
-            questionNb: JSON.parse(storageKey),
-            answer: JSON.parse(storageValue),
-          };
-        }
+  calculateResults(): void {
+    // we reset the counters before calculating final results
+    this.resultsService.resetResultsCounters();
+    // then, depending on the answer's value, we increment the associated result counter
+    for (let i = 0; i < this.answers.length; i++) {
+      switch (this.answers[i].answer) {
+        case '1a':
+          this.resultsService.oneA++;
+          break;
+        case '1C':
+          this.resultsService.oneC++;
+          break;
+        case '2a':
+          this.resultsService.twoA++;
+          break;
+        case '2C':
+          this.resultsService.twoC++;
+          break;
+        case '3a':
+          this.resultsService.threeA++;
+          break;
+        case '3C':
+          this.resultsService.threeC++;
+          break;
+        case '4a':
+          this.resultsService.fourA++;
+          break;
+        case '4C':
+          this.resultsService.fourC++;
+          break;
+        case 'Poa':
+          this.resultsService.poA++;
+          break;
+        case 'PoC':
+          this.resultsService.poC++;
+          break;
+        case 'Pda':
+          this.resultsService.pdA++;
+          break;
+        case 'PdC':
+          this.resultsService.pdC++;
+          break;
+        case 'Aoa':
+          this.resultsService.aoA++;
+          break;
+        case 'AoC':
+          this.resultsService.aoC++;
+          break;
+        case 'Ada':
+          this.resultsService.adA++;
+          break;
+        case 'AdC':
+          this.resultsService.adC++;
+          break;
       }
     }
-  }
-
-  // saveUserInDatabase(): void {
-  //   this.questionsService.saveUserInDatabase(NEW USER HERE);
-  // }
-
-  saveTestInDatabase(): void {
-    // initialize a Test object and loop through it: then affect it the value and the answer of each question
-    const testToSave: Test = new Test([]);
-    for (let i = 0; i < this.answers.length; i++) {
-      testToSave.answers[i] = {
-        questionNb: i + 1,
-        answer: this.answers[i].answer,
-      };
-    }
-
-    this.questionsService.saveTestInDatabase(testToSave);
   }
 }
