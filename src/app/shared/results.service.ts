@@ -24,6 +24,25 @@ export class ResultsService {
 
   constructor() {}
 
+  resetResultsCounters(): void {
+    this.oneA = 0;
+    this.oneC = 0;
+    this.twoA = 0;
+    this.twoC = 0;
+    this.threeA = 0;
+    this.threeC = 0;
+    this.fourA = 0;
+    this.fourC = 0;
+    this.poA = 0;
+    this.poC = 0;
+    this.pdA = 0;
+    this.pdC = 0;
+    this.aoA = 0;
+    this.aoC = 0;
+    this.adA = 0;
+    this.adC = 0;
+  }
+
   // Formulas given by the client
   calculateXPosition(): number {
     return (

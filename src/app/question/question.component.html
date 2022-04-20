@@ -22,7 +22,7 @@
   <form
     (ngSubmit)="
       questionForm.valid && saveAnswerToStorage();
-      questionForm.valid && gatherResults()
+      questionForm.valid && calculateResults()
     "
     #questionForm="ngForm"
   >
