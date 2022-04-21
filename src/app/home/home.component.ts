@@ -10,17 +10,24 @@ import { QuestionsService } from '../shared/questions.service';
 })
 export class HomeComponent implements OnInit {
   displayModal: boolean = false;
+
+  allUsersList: User[] = [];
   user: User = new User('', '', '', []);
   userTests: Test[] = [];
-  allUsersList: User[] = [];
+  userEmail: string = '';
+  filteredEmails: string[] = [];
+
+  constructor(private questionsService: QuestionsService) {}
+
+  ngOnInit(): void {
+    this.questionsService.getAllUsers().subscribe((users) => {
+      this.allUsersList = users;
+    });
+  }
 
   showModalDialog(): void {
     this.displayModal = true;
   }
-
-  userEmail: string = '';
-  emails: string[] = [];
-  filteredEmails: string[] = [];
 
   filterEmail(event: any) {
     //in a real application, make a request to a remote url with the query and return filtered results, for demo we filter at client side
@@ -37,12 +44,8 @@ export class HomeComponent implements OnInit {
     this.filteredEmails = filtered;
   }
 
-  constructor(private questionsService: QuestionsService) {}
-
-  ngOnInit(): void {
-    this.questionsService.getAllUsers().subscribe((users) => {
-      this.allUsersList = users;
-    });
+  clearLocalStorage(): void {
+    localStorage.clear();
   }
 
   getUserAndHisTests(): void {
