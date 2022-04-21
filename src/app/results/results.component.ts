@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Test } from '../models/test.model';
 import { User } from '../models/user.model';
 import { QuestionsService } from '../shared/questions.service';
@@ -14,16 +13,18 @@ export class ResultsComponent implements OnInit {
   xCoordinate: number = this.resultsService.calculateXPosition();
   yCoordinate: number = this.resultsService.calculateYPosition();
 
+  // Chart data
   data: any = {
     datasets: [
       {
         label: 'Votre résultat',
-        data: [{ x: this.xCoordinate, y: this.yCoordinate, r: 10 }],
+        data: [{ x: this.xCoordinate, y: this.yCoordinate, r: 8 }],
         backgroundColor: '#f2440f',
       },
     ],
   };
 
+  // Chart options
   options: any = {
     scales: {
       x: {
@@ -68,9 +69,6 @@ export class ResultsComponent implements OnInit {
   };
 
   displayModal: boolean = false;
-  showModalDialog(): void {
-    this.displayModal = true;
-  }
 
   userFirstname: string = '';
   userLastname: string = '';
@@ -78,12 +76,14 @@ export class ResultsComponent implements OnInit {
 
   constructor(
     private questionsService: QuestionsService,
-    private resultsService: ResultsService,
-
-    private afs: AngularFirestore
+    private resultsService: ResultsService
   ) {}
 
   ngOnInit(): void {}
+
+  showModalDialog(): void {
+    this.displayModal = true;
+  }
 
   saveTestInDatabase(): void {
     const userToSave: User = new User(
@@ -112,12 +112,5 @@ export class ResultsComponent implements OnInit {
     });
 
     this.questionsService.saveTestInDatabase(testToSave, userToSave);
-  }
-
-  userAlreadyExists(): void {
-    this.afs
-      .collection<User>('users')
-      .valueChanges({ idField: 'uid' })
-      .subscribe((users) => console.log(users[0].uid));
   }
 }
