@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Test } from '../models/test.model';
 import { User } from '../models/user.model';
 import { QuestionsService } from '../shared/questions.service';
@@ -77,7 +78,9 @@ export class ResultsComponent implements OnInit {
 
   constructor(
     private questionsService: QuestionsService,
-    private resultsService: ResultsService
+    private resultsService: ResultsService,
+
+    private afs: AngularFirestore
   ) {}
 
   ngOnInit(): void {}
@@ -109,5 +112,12 @@ export class ResultsComponent implements OnInit {
     });
 
     this.questionsService.saveTestInDatabase(testToSave, userToSave);
+  }
+
+  userAlreadyExists(): void {
+    this.afs
+      .collection<User>('users')
+      .valueChanges({ idField: 'uid' })
+      .subscribe((users) => console.log(users[0].uid));
   }
 }
