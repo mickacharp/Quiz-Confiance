@@ -50,4 +50,19 @@ export class QuestionsService {
     const myTest = this.afs.doc<Test>('tests/' + testKey);
     return myTest.valueChanges() as Observable<Test>;
   }
+
+  getAllUsers(): Observable<User[]> {
+    return this.afs
+      .collection<User>('users')
+      .snapshotChanges()
+      .pipe(
+        map((changes) =>
+          changes.map((c) => {
+            const data = c.payload.doc.data() as User;
+            const id = c.payload.doc.id;
+            return { id, ...data };
+          })
+        )
+      );
+  }
 }
