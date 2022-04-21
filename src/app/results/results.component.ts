@@ -35,9 +35,9 @@ export class ResultsComponent implements OnInit {
           display: false,
         },
         grid: {
-          borderWidth: 2,
+          borderWidth: 0,
           borderColor: 'black',
-          lineWidth: 1,
+          lineWidth: 0,
         },
       },
       y: {
@@ -48,15 +48,15 @@ export class ResultsComponent implements OnInit {
           display: false,
         },
         grid: {
-          borderWidth: 2,
+          borderWidth: 0,
           borderColor: 'black',
-          lineWidth: 1,
+          lineWidth: 0,
         },
       },
     },
     plugins: {
       title: {
-        display: true,
+        display: false,
         text: 'My Title',
         font: { size: 30, color: 'red' },
         color: '#15a608',
