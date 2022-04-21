@@ -13,16 +13,18 @@ export class ResultsComponent implements OnInit {
   xCoordinate: number = this.resultsService.calculateXPosition();
   yCoordinate: number = this.resultsService.calculateYPosition();
 
+  // Chart data
   data: any = {
     datasets: [
       {
         label: 'Votre résultat',
-        data: [{ x: this.xCoordinate, y: this.yCoordinate, r: 10 }],
+        data: [{ x: this.xCoordinate, y: this.yCoordinate, r: 8 }],
         backgroundColor: '#f2440f',
       },
     ],
   };
 
+  // Chart options
   options: any = {
     scales: {
       x: {
@@ -34,9 +36,9 @@ export class ResultsComponent implements OnInit {
           display: false,
         },
         grid: {
-          borderWidth: 2,
+          borderWidth: 0,
           borderColor: 'black',
-          lineWidth: 1,
+          lineWidth: 0,
         },
       },
       y: {
@@ -47,15 +49,15 @@ export class ResultsComponent implements OnInit {
           display: false,
         },
         grid: {
-          borderWidth: 2,
+          borderWidth: 0,
           borderColor: 'black',
-          lineWidth: 1,
+          lineWidth: 0,
         },
       },
     },
     plugins: {
       title: {
-        display: true,
+        display: false,
         text: 'My Title',
         font: { size: 30, color: 'red' },
         color: '#15a608',
@@ -67,9 +69,6 @@ export class ResultsComponent implements OnInit {
   };
 
   displayModal: boolean = false;
-  showModalDialog(): void {
-    this.displayModal = true;
-  }
 
   userFirstname: string = '';
   userLastname: string = '';
@@ -81,6 +80,10 @@ export class ResultsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {}
+
+  showModalDialog(): void {
+    this.displayModal = true;
+  }
 
   saveTestInDatabase(): void {
     const userToSave: User = new User(

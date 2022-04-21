@@ -1,7 +1,10 @@
-// :host {
-//     ::ng-deep p-chart {
-//         canvas {
-//             // property here
-//         }
-//     }
-// }
+:host {
+    ::ng-deep p-chart {
+        canvas {
+            background-image: url('../../assets/test-results.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+    }
+}
