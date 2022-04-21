@@ -1,3 +1,9 @@
+<h1>Questionnaire d'évaluation de la "confiance collective et réciproque"</h1>
+<h2>
+  "C'est la confiance que les autres mettent en nous qui nous montre le chemin"
+  <br />
+  François Mauriac (1885-1970)
+</h2>
 <p-button
   label="Démarrer un test"
   icon="pi pi-angle-right"
@@ -5,8 +11,13 @@
   routerLink="/questions/1"
   (onClick)="clearLocalStorage()"
 ></p-button>
-<p (click)="showModalDialog()">Vous avez déjà fait un test ? Cliquez ici</p>
-
+<p>Vous avez déjà fait un test ? Cliquez sur "Accéder à mes anciens tests"</p>
+<p-button
+  label="Accéder à mes anciens tests"
+  icon="pi pi-angle-right"
+  iconPos="right"
+  (onClick)="showModalDialog()"
+></p-button>
 <!-- <label for="user-firstname">Votre prénom : </label>
 <input type="text" name="user-firstname" id="user-firstname" />
 <label for="user-lastname">Votre nom : </label>
