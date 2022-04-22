@@ -1,8 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Test } from '../models/test.model';
 import { User } from '../models/user.model';
+import { Question } from '../models/question.model';
 import { QuestionsService } from '../shared/questions.service';
 import { ResultsService } from '../shared/results.service';
+import { jsPDF } from 'jspdf';
+import html2canvas from 'html2canvas';
+import { questionsList } from 'src/assets/questions-list';
+import { Answer } from '../models/answer.model';
 
 @Component({
   selector: 'app-results',
@@ -10,6 +15,16 @@ import { ResultsService } from '../shared/results.service';
   styleUrls: ['./results.component.scss'],
 })
 export class ResultsComponent implements OnInit {
+  questions: Question[] = questionsList;
+  answers: Answer[] = [];
+  finalAnswers: any[] = [];
+
+  displayModal: boolean = false;
+
+  userFirstname: string = '';
+  userLastname: string = '';
+  userEmail: string = '';
+
   xCoordinate: number = this.resultsService.calculateXPosition();
   yCoordinate: number = this.resultsService.calculateYPosition();
 
@@ -68,18 +83,30 @@ export class ResultsComponent implements OnInit {
     },
   };
 
-  displayModal: boolean = false;
-
-  userFirstname: string = '';
-  userLastname: string = '';
-  userEmail: string = '';
-
   constructor(
     private questionsService: QuestionsService,
     private resultsService: ResultsService
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.getStorageValues();
+    this.getFinalAnswers();
+  }
+
+  generatePDF(): void {
+    const data: HTMLElement | null = document.getElementById('data-to-pdf');
+    if (data) {
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      // scale: the higher the value, the higher the pdf resolution
+      html2canvas(data, { scale: 2 }).then((canvas) => {
+        const fileWidth = 290;
+        const fileHeight = (canvas.height * fileWidth) / canvas.width;
+        const docDataURL = canvas.toDataURL('image/png');
+        pdf.addImage(docDataURL, 'PNG', 0, 10, fileWidth, fileHeight);
+        pdf.save('Résultats_Test_Confiance.pdf');
+      });
+    }
+  }
 
   showModalDialog(): void {
     this.displayModal = true;
@@ -112,5 +139,41 @@ export class ResultsComponent implements OnInit {
     });
 
     this.questionsService.saveTestInDatabase(testToSave, userToSave);
+  }
+
+  getStorageValues(): void {
+    for (let i = 0; i < localStorage.length; i++) {
+      const storageKey: string | null = localStorage.key(i);
+      if (storageKey != null) {
+        const storageValue: string | null = localStorage.getItem(storageKey);
+        if (storageValue != null) {
+          this.answers[parseInt(storageKey) - 1] = {
+            questionNb: JSON.parse(storageKey),
+            answer: JSON.parse(storageValue),
+          };
+        }
+      }
+    }
+  }
+
+  getFinalAnswers(): void {
+    this.answers.sort((a, b) => {
+      return a.questionNb - b.questionNb;
+    });
+
+    for (let i = 0; i < this.questions.length; i++) {
+      this.finalAnswers.push({
+        questionNb: this.questions[i].nb,
+        question: this.questions[i].name,
+        answer:
+          this.answers[i].answer === this.questions[i].valueA
+            ? 'oui, tout à fait'
+            : this.answers[i].answer === this.questions[i].valueB
+            ? 'oui'
+            : this.answers[i].answer === this.questions[i].valueC
+            ? 'non'
+            : 'non, absolument pas',
+      });
+    }
   }
 }
