@@ -87,3 +87,20 @@
   d'identifiant pour que nous puissions retrouver votre test dans notre base de
   données.
 </p-dialog>
+
+<div class="col-md-8" id="data-to-pdf">
+  <table class="table table-bordered">
+    <tr class="table-primary">
+      <th>N°</th>
+      <th>Question</th>
+      <th>Réponse</th>
+    </tr>
+    <tr *ngFor="let finalAnswer of finalAnswers">
+      <th>{{ finalAnswer.questionNb }}</th>
+      <td>{{ finalAnswer.question }}</td>
+      <td>{{ finalAnswer.answer }}</td>
+    </tr>
+  </table>
+</div>
+
+<p-button (click)="generatePDF()">Download PDF</p-button>
