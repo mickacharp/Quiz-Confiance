@@ -162,36 +162,18 @@ export class ResultsComponent implements OnInit {
     });
 
     for (let i = 0; i < this.questions.length; i++) {
-      switch (this.answers[i].answer) {
-        case this.questions[i].valueA:
-          this.finalAnswers.push({
-            questionNb: this.questions[i].nb,
-            question: this.questions[i].name,
-            answer: 'oui, tout à fait',
-          });
-          break;
-        case this.questions[i].valueB:
-          this.finalAnswers.push({
-            questionNb: this.questions[i].nb,
-            question: this.questions[i].name,
-            answer: 'oui',
-          });
-          break;
-        case this.questions[i].valueC:
-          this.finalAnswers.push({
-            questionNb: this.questions[i].nb,
-            question: this.questions[i].name,
-            answer: 'non',
-          });
-          break;
-        case this.questions[i].valueD:
-          this.finalAnswers.push({
-            questionNb: this.questions[i].nb,
-            question: this.questions[i].name,
-            answer: 'non, absolument pas',
-          });
-          break;
-      }
+      this.finalAnswers.push({
+        questionNb: this.questions[i].nb,
+        question: this.questions[i].name,
+        answer:
+          this.answers[i].answer === this.questions[i].valueA
+            ? 'oui, tout à fait'
+            : this.answers[i].answer === this.questions[i].valueB
+            ? 'oui'
+            : this.answers[i].answer === this.questions[i].valueC
+            ? 'non'
+            : 'non, absolument pas',
+      });
     }
   }
 }
