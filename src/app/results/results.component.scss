@@ -5,13 +5,115 @@
             background-size: contain;
             background-repeat: no-repeat;
             background-position: center;
+            margin-left: 80px;
         }
+    }
+    
+    
+}
+
+////////// TABLE //////////
+::ng-deep .p-datatable {
+    margin: 0 50px;
+    border: solid #4CAF50 2px;
+    
+    .p-datatable-thead > tr > th{
+        text-align: center;
+        color: white;
+        background-color: #4CAF50;
+    }
+
+    .p-datatable-tbody > tr > td {
+        padding: 6px 5px;
+    }
+    .p-datatable-tbody > tr > td:first-child {
+        font-weight: bold;
+        text-align: center;
+        color: white;
+        background-color: rgb(76, 175, 80);
+    }
+
+    .p-datatable-tbody > tr > td:last-child {
+        font-weight: bold;
     }
 }
 
-#data-to-pdf {
-    border: solid 1px black;
-    th {
-        font-size: 2em;
+.pdf {
+    &__subtitles {
+        width: 300px;
+        margin: 0 0 20px 20px;
+        border-bottom: #4CAF50 solid 2px;
     }
+    ////////// HEADER //////////
+    &__header {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 150px;
+        position: relative;
+        margin-bottom: 10px;
+    }
+
+    &__logo {
+        position: absolute;
+        top: 0;
+        left: 20px;
+        height: 100%;
+    }
+
+    &__title {
+        text-align: center;
+        
+        &__citation {
+            font-style: italic;
+        }
+        
+        h3 {
+            color: rgb(50, 50, 50);
+        }
+    }
+    ////////// CHART //////////
+    &__chart {
+        width: 90%;
+        margin: auto;
+        margin-top: 10px;
+        &__interpretation {
+            font-size: 1.2em;
+            text-align: center;
+            margin-top: 10px;
+            span {
+                font-weight: bold;
+            }
+        }
+    }
+
+    ////////// FOOTER //////////
+
+    &__footer {
+        display: flex;
+        width: 100%;
+        justify-content: space-evenly;
+        align-items: center;
+        height: 150px;
+        position: relative;
+        &__name {
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+        }
+        &__logo {
+            height: 100%;
+            position:absolute;
+            bottom: 0;
+            left: 20px;
+        }
+
+        &__contact {
+            list-style-type: none;
+        }
+    }
+
+    
+
+    
 }

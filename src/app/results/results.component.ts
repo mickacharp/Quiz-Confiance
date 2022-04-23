@@ -18,6 +18,7 @@ export class ResultsComponent implements OnInit {
   questions: Question[] = questionsList;
   answers: Answer[] = [];
   finalAnswers: any[] = [];
+  selectedAnswer: any;
 
   displayModal: boolean = false;
 
@@ -94,15 +95,15 @@ export class ResultsComponent implements OnInit {
   }
 
   generatePDF(): void {
-    const data: HTMLElement | null = document.getElementById('data-to-pdf');
+    const data: HTMLElement | null = document.getElementById('pdf');
     if (data) {
       const pdf = new jsPDF('p', 'mm', 'a4');
       // scale: the higher the value, the higher the pdf resolution
       html2canvas(data, { scale: 2 }).then((canvas) => {
-        const fileWidth = 290;
+        const fileWidth = 210;
         const fileHeight = (canvas.height * fileWidth) / canvas.width;
         const docDataURL = canvas.toDataURL('image/png');
-        pdf.addImage(docDataURL, 'PNG', 0, 10, fileWidth, fileHeight);
+        pdf.addImage(docDataURL, 'PNG', 0, 0, fileWidth, fileHeight);
         pdf.save('Résultats_Test_Confiance.pdf');
       });
     }

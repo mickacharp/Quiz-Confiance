@@ -32,6 +32,7 @@ import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { ChartModule } from 'primeng/chart';
 import { AutoCompleteModule } from 'primeng/autocomplete';
+import { TableModule } from 'primeng/table';
 
 // Components
 import { AppComponent } from './app.component';
@@ -62,6 +63,7 @@ import { HomeComponent } from './home/home.component';
     InputTextModule,
     ChartModule,
     AutoCompleteModule,
+    TableModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
     // provideDatabase(() => getDatabase()),
