@@ -112,7 +112,11 @@ export class QuestionComponent implements OnInit {
   getStorageValues(): void {
     for (let i = 0; i < localStorage.length; i++) {
       const storageKey: string | null = localStorage.key(i);
-      if (storageKey != null) {
+      if (
+        storageKey != null &&
+        storageKey != 'xCoordinate' &&
+        storageKey != 'yCoordinate'
+      ) {
         const storageValue: string | null = localStorage.getItem(storageKey);
         if (storageValue != null) {
           this.answers[parseInt(storageKey) - 1] = {
@@ -146,7 +150,11 @@ export class QuestionComponent implements OnInit {
   enableQuestionsAnswered(): void {
     for (let i = 0; i < localStorage.length; i++) {
       const storageKey: string | null = localStorage.key(i);
-      if (storageKey != null) {
+      if (
+        storageKey != null &&
+        storageKey != 'xCoordinate' &&
+        storageKey != 'yCoordinate'
+      ) {
         this.quiz.stepItems[parseInt(storageKey) - 1].disabled = false;
       }
     }
@@ -212,5 +220,8 @@ export class QuestionComponent implements OnInit {
           break;
       }
     }
+  }
+  calculateCoordinates(): void {
+    this.resultsService.calculateCoordinates();
   }
 }
