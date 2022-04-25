@@ -67,4 +67,18 @@ export class HomeComponent implements OnInit {
       });
     }
   }
+
+  goToSelectedTest(index: number): void {
+    this.clearLocalStorage();
+    const answersOfSelectedTest = this.userTests[index].answers;
+    for (let i = 0; i < answersOfSelectedTest.length; i++) {
+      // values can be null in answers array because of the results Coordinates when saving a test so we specify "!= null"
+      if (answersOfSelectedTest[i] != null) {
+        localStorage.setItem(
+          JSON.stringify(answersOfSelectedTest[i].questionNb),
+          JSON.stringify(answersOfSelectedTest[i].answer)
+        );
+      }
+    }
+  }
 }
