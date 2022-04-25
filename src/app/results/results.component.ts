@@ -3,7 +3,6 @@ import { Test } from '../models/test.model';
 import { User } from '../models/user.model';
 import { Question } from '../models/question.model';
 import { QuestionsService } from '../shared/questions.service';
-import { ResultsService } from '../shared/results.service';
 import { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
 import { questionsList } from 'src/assets/questions-list';
@@ -26,8 +25,9 @@ export class ResultsComponent implements OnInit {
   userLastname: string = '';
   userEmail: string = '';
 
-  xCoordinate: number = this.resultsService.calculateXPosition();
-  yCoordinate: number = this.resultsService.calculateYPosition();
+  // convert Coords to number putting '+' before, knowing that parseInt doesn't work and return 0
+  xCoordinate: number = +localStorage.getItem('xCoordinate')!;
+  yCoordinate: number = +localStorage.getItem('yCoordinate')!;
 
   // Chart data
   data: any = {
@@ -84,10 +84,7 @@ export class ResultsComponent implements OnInit {
     },
   };
 
-  constructor(
-    private questionsService: QuestionsService,
-    private resultsService: ResultsService
-  ) {}
+  constructor(private questionsService: QuestionsService) {}
 
   ngOnInit(): void {
     this.getStorageValues();
@@ -124,7 +121,11 @@ export class ResultsComponent implements OnInit {
 
     for (let i = 0; i < localStorage.length; i++) {
       const storageKey: string | null = localStorage.key(i);
-      if (storageKey != null) {
+      if (
+        storageKey != null &&
+        storageKey != 'xCoordinate' &&
+        storageKey != 'yCoordinate'
+      ) {
         const storageValue: string | null = localStorage.getItem(storageKey);
         if (storageValue != null) {
           testToSave.answers[i] = {
@@ -145,7 +146,11 @@ export class ResultsComponent implements OnInit {
   getStorageValues(): void {
     for (let i = 0; i < localStorage.length; i++) {
       const storageKey: string | null = localStorage.key(i);
-      if (storageKey != null) {
+      if (
+        storageKey != null &&
+        storageKey != 'xCoordinate' &&
+        storageKey != 'yCoordinate'
+      ) {
         const storageValue: string | null = localStorage.getItem(storageKey);
         if (storageValue != null) {
           this.answers[parseInt(storageKey) - 1] = {

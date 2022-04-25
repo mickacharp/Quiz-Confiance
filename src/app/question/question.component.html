@@ -22,7 +22,8 @@
   <form
     (ngSubmit)="
       questionForm.valid && saveAnswerToStorage();
-      questionForm.valid && calculateResults()
+      questionForm.valid && calculateResults();
+      questionForm.valid && calculateCoordinates()
     "
     #questionForm="ngForm"
   >
