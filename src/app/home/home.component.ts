@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { take } from 'rxjs';
 import { Test } from '../models/test.model';
 import { User } from '../models/user.model';
 import { QuestionsService } from '../shared/questions.service';
@@ -30,7 +31,6 @@ export class HomeComponent implements OnInit {
   }
 
   filterEmail(event: any) {
-    //in a real application, make a request to a remote url with the query and return filtered results, for demo we filter at client side
     let filtered: string[] = [];
     let query = event.query;
 
@@ -51,10 +51,10 @@ export class HomeComponent implements OnInit {
   getUserAndHisTests(): void {
     this.questionsService
       .getUserByEmail(this.userEmail)
+      .pipe(take(1))
       .subscribe((userFound) => {
         this.user = userFound[0];
         this.getUserTests();
-        console.log(this.userTests);
       });
   }
 
