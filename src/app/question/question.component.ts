@@ -12,6 +12,7 @@ import { Answer } from '../models/answer.model';
 import { QuestionsService } from '../shared/questions.service';
 import { ResultsService } from '../shared/results.service';
 import { QuizComponent } from '../quiz/quiz.component';
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-question',
@@ -51,7 +52,9 @@ export class QuestionComponent implements OnInit {
     private questionsService: QuestionsService,
     private resultsService: ResultsService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private confirmationService: ConfirmationService,
+    private messageService: MessageService
   ) {}
 
   ngOnInit(): void {
@@ -221,7 +224,24 @@ export class QuestionComponent implements OnInit {
       }
     }
   }
+
   calculateCoordinates(): void {
     this.resultsService.calculateCoordinates();
+  }
+
+  openConfirmationModal() {
+    this.confirmationService.confirm({
+      message:
+        'Vous avez terminé votre questionnaire ? Alors cliquez sur "Valider" pour accéder à votre résultat !',
+      header: 'Questionnaire terminé ?',
+      icon: 'pi pi-exclamation-triangle',
+      acceptLabel: 'Valider',
+      rejectLabel: 'Revenir au questionnaire',
+      dismissableMask: true,
+      rejectButtonStyleClass: 'testos',
+      accept: () => {
+        this.router.navigate(['/results']);
+      },
+    });
   }
 }
