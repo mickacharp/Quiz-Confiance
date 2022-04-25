@@ -1,0 +1,12 @@
+::ng-deep .p-dialog .p-dialog-footer .cancel {
+    background-color:rgb(140, 47, 47);
+    border:1px solid rgb(140, 47, 47);
+
+    &:focus {
+        box-shadow: 0 0 0 0.2rem rgb(190,97,97);
+    }
+
+    &:hover {
+        background-color:rgb(130, 37, 37);
+    }
+}
