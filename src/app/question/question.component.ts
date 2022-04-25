@@ -238,7 +238,7 @@ export class QuestionComponent implements OnInit {
       acceptLabel: 'Valider',
       rejectLabel: 'Revenir au questionnaire',
       dismissableMask: true,
-      rejectButtonStyleClass: 'testos',
+      rejectButtonStyleClass: 'cancel',
       accept: () => {
         this.router.navigate(['/results']);
       },
