@@ -114,7 +114,7 @@ export class ResultsComponent implements OnInit {
     const testToSave: Test = new Test(
       [],
       this.userTestName,
-      'DATE A METTRE',
+      this.formatDate(new Date()),
       this.xCoordinate,
       this.yCoordinate
     );
@@ -181,5 +181,26 @@ export class ResultsComponent implements OnInit {
             : 'non, absolument pas',
       });
     }
+  }
+
+  // convert Date into string of 'dd/mm/yyy hh:min' format
+  formatDate(date: Date): string {
+    return (
+      [
+        date.getFullYear(),
+        this.padTo2Digits(date.getMonth() + 1),
+        this.padTo2Digits(date.getDate()),
+      ].join('/') +
+      ' ' +
+      [
+        this.padTo2Digits(date.getHours()),
+        this.padTo2Digits(date.getMinutes()),
+        this.padTo2Digits(date.getSeconds()),
+      ].join(':')
+    );
+  }
+  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/padStart
+  padTo2Digits(num: number): string {
+    return num.toString().padStart(2, '0');
   }
 }
