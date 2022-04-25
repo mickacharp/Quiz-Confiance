@@ -57,5 +57,14 @@
     ></p-button>
   </form>
 
-  <div *ngIf="userTests.length > 0"></div>
+  <div *ngIf="userTests.length > 0">
+    <ul>
+      <li
+        *ngFor="let test of userTests; let indexOfElement = index"
+        (click)="goToSelectedTest(indexOfElement)"
+      >
+        {{ test }} {{ indexOfElement }}
+      </li>
+    </ul>
+  </div>
 </p-dialog>

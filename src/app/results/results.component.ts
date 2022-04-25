@@ -21,9 +21,8 @@ export class ResultsComponent implements OnInit {
 
   displayModal: boolean = false;
 
-  userFirstname: string = '';
-  userLastname: string = '';
   userEmail: string = '';
+  userTestName: string = '';
 
   // convert Coords to number putting '+' before, knowing that parseInt doesn't work and return 0
   xCoordinate: number = +localStorage.getItem('xCoordinate')!;
@@ -111,13 +110,14 @@ export class ResultsComponent implements OnInit {
   }
 
   saveTestInDatabase(): void {
-    const userToSave: User = new User(
-      this.userEmail,
-      this.userFirstname,
-      this.userLastname,
-      []
+    const userToSave: User = new User(this.userEmail, []);
+    const testToSave: Test = new Test(
+      [],
+      this.userTestName,
+      this.formatDate(new Date()),
+      this.xCoordinate,
+      this.yCoordinate
     );
-    const testToSave: Test = new Test([]);
 
     for (let i = 0; i < localStorage.length; i++) {
       const storageKey: string | null = localStorage.key(i);
@@ -181,5 +181,26 @@ export class ResultsComponent implements OnInit {
             : 'non, absolument pas',
       });
     }
+  }
+
+  // convert Date into string of 'dd/mm/yyy hh:min' format
+  formatDate(date: Date): string {
+    return (
+      [
+        date.getFullYear(),
+        this.padTo2Digits(date.getMonth() + 1),
+        this.padTo2Digits(date.getDate()),
+      ].join('/') +
+      ' ' +
+      [
+        this.padTo2Digits(date.getHours()),
+        this.padTo2Digits(date.getMinutes()),
+        this.padTo2Digits(date.getSeconds()),
+      ].join(':')
+    );
+  }
+  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/padStart
+  padTo2Digits(num: number): string {
+    return num.toString().padStart(2, '0');
   }
 }
