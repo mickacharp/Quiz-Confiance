@@ -15,26 +15,6 @@
   Si vous souhaitez sauvegarder vos résultats pour y accéder plus tard,
   renseignez les champs ci-dessous.*
   <form #saveTestForm="ngForm" (ngSubmit)="saveTestInDatabase()">
-    <label for="user-firstname">Votre prénom : </label>
-    <input
-      pInputText
-      type="text"
-      name="user-firstname"
-      id="user-firstname"
-      required
-      #firstname="ngModel"
-      [(ngModel)]="userFirstname"
-    />
-    <label for="user-lastname">Votre nom : </label>
-    <input
-      pInputText
-      type="text"
-      name="user-lastname"
-      id="user-lastname"
-      required
-      #lastname="ngModel"
-      [(ngModel)]="userLastname"
-    />
     <label for="user-email">Votre email : </label>
     <input
       pInputText
@@ -44,6 +24,16 @@
       required
       #email="ngModel"
       [(ngModel)]="userEmail"
+    />
+    <label for="user-test">Donnez un nom à votre test : </label>
+    <input
+      pInputText
+      type="text"
+      name="user-test"
+      id="user-test"
+      required
+      #test="ngModel"
+      [(ngModel)]="userTestName"
     />
     <p-button
       type="submit"
