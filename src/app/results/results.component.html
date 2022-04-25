@@ -1,41 +1,11 @@
-<p-chart type="bubble" [data]="data" [options]="options"></p-chart>
-<p>
-  Selon les réponses que vous avez fournies, vous êtes dans la catégorie de
-  personnes amenées à
-
-  <span *ngIf="xCoordinate > 0 && yCoordinate > 0">
-    penser le désordre et agir dans le désordre.
-  </span>
-  <span *ngIf="xCoordinate > 0 && yCoordinate < 0">
-    penser l'ordre et agir dans le désordre.
-  </span>
-  <span *ngIf="xCoordinate < 0 && yCoordinate > 0">
-    penser le désordre et agir dans l'ordre.
-  </span>
-  <span *ngIf="xCoordinate < 0 && yCoordinate < 0">
-    penser l'ordre et agir dans l'ordre.
-  </span>
-  <span *ngIf="xCoordinate === 0 && yCoordinate > 0">
-    penser dans le désordre mais agir de manière équilibrée malgré tout.
-  </span>
-  <span *ngIf="xCoordinate === 0 && yCoordinate < 0">
-    penser dans l'ordre mais agir de manière équilibrée malgré tout.
-  </span>
-  <span *ngIf="xCoordinate > 0 && yCoordinate === 0">
-    penser de manière équilibrée mais agir dans le désordre malgré tout.
-  </span>
-  <span *ngIf="xCoordinate < 0 && yCoordinate === 0">
-    penser de manière équilibrée mais agir dans l'ordre malgré tout.
-  </span>
-</p>
 <p-button
-  label="Sauvegarder mon test"
+  label="Sauvegarder mon questionnaire"
   (onClick)="showModalDialog()"
-  icon="pi pi-angle-right"
-  iconPos="right"
+  icon="pi pi-save"
+  iconPos="left"
 ></p-button>
 <p-dialog
-  header="Sauvegarder mon test"
+  header="Sauvegarder mon questionnaire"
   [(visible)]="displayModal"
   [modal]="true"
   [style]="{ width: '50vw' }"
@@ -87,3 +57,106 @@
   d'identifiant pour que nous puissions retrouver votre test dans notre base de
   données.
 </p-dialog>
+
+<div id="pdf" class="pdf">
+  <div class="pdf__header">
+    <img
+      src="../../assets/logo.png"
+      alt="logo de Thierry Lallia"
+      class="pdf__logo"
+    />
+    <div class="pdf__title">
+      <h1>
+        Questionnaire d'évaluation de la "confiance collective et réciproque"
+      </h1>
+      <h3 class="pdf__title__citation">
+        "C'est la confiance que les autres mettent en nous qui nous montre le
+        chemin"
+      </h3>
+      <h3>François Mauriac (1885-1970)</h3>
+    </div>
+  </div>
+
+  <h2 class="pdf__subtitles">Votre résultat</h2>
+  <div class="pdf__chart">
+    <p class="pdf__chart__interpretation">
+      Selon les réponses que vous avez fournies, vous êtes dans la catégorie de
+      personnes amenées à
+
+      <span *ngIf="xCoordinate > 0 && yCoordinate > 0">
+        penser le désordre et agir dans le désordre.
+      </span>
+      <span *ngIf="xCoordinate > 0 && yCoordinate < 0">
+        penser l'ordre et agir dans le désordre.
+      </span>
+      <span *ngIf="xCoordinate < 0 && yCoordinate > 0">
+        penser le désordre et agir dans l'ordre.
+      </span>
+      <span *ngIf="xCoordinate < 0 && yCoordinate < 0">
+        penser l'ordre et agir dans l'ordre.
+      </span>
+      <span *ngIf="xCoordinate === 0 && yCoordinate > 0">
+        penser dans le désordre mais agir de manière équilibrée malgré tout.
+      </span>
+      <span *ngIf="xCoordinate === 0 && yCoordinate < 0">
+        penser dans l'ordre mais agir de manière équilibrée malgré tout.
+      </span>
+      <span *ngIf="xCoordinate > 0 && yCoordinate === 0">
+        penser de manière équilibrée mais agir dans le désordre malgré tout.
+      </span>
+      <span *ngIf="xCoordinate < 0 && yCoordinate === 0">
+        penser de manière équilibrée mais agir dans l'ordre malgré tout.
+      </span>
+    </p>
+    <br />
+    <p-chart type="bubble" [data]="data" [options]="options"></p-chart>
+  </div>
+
+  <h2 class="pdf__subtitles">Vos réponses</h2>
+  <p-table
+    [value]="finalAnswers"
+    selectionMode="single"
+    [(selection)]="selectedAnswer"
+    dataKey="questionNb"
+    responsiveLayout="scroll"
+  >
+    <ng-template pTemplate="header">
+      <tr>
+        <th>#</th>
+        <th>Question</th>
+        <th>Réponse</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-finalAnswer>
+      <tr [pSelectableRow]="finalAnswer" class="test">
+        <td>{{ finalAnswer.questionNb }}</td>
+        <td>{{ finalAnswer.question }}</td>
+        <td>{{ finalAnswer.answer }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+  <div class="pdf__footer">
+    <img
+      src="../../assets/logo.png"
+      alt="logo de Thierry Lallia"
+      class="pdf__footer__logo"
+    />
+    <div class="pdf__footer__name">
+      <h3>Thierry Lallia</h3>
+      <h4>Inventeur de confiance partagée</h4>
+    </div>
+    <ul class="pdf__footer__contact">
+      <li><i class="pi pi-envelope"></i> lesilencedelanuit@outlook.com</li>
+      <li><i class="pi pi-phone"></i> +33 (6) 86 58 26 69</li>
+      <li><i class="pi pi-sun"></i> Du lundi au samedi, de 9h00 à 12h00</li>
+    </ul>
+  </div>
+</div>
+
+<p-button
+  (click)="generatePDF()"
+  icon="pi pi-download"
+  iconPos="left"
+  label="Télécharger mes résultats (.pdf)"
+></p-button>

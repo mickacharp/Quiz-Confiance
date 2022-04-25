@@ -22,7 +22,9 @@
   <form
     (ngSubmit)="
       questionForm.valid && saveAnswerToStorage();
-      questionForm.valid && calculateResults()
+      questionForm.valid && calculateResults();
+      questionForm.valid && calculateCoordinates();
+      questionForm.valid && openConfirmationModal()
     "
     #questionForm="ngForm"
   >
@@ -153,16 +155,11 @@
     <p-button
       type="submit"
       label="Envoyer mes réponses"
-      icon="pi pi-angle-right"
-      iconPos="right"
+      icon="pi pi-check-square"
+      iconPos="left"
       [disabled]="questionForm.valid === false"
       *ngIf="currentQuestion.nb === 24"
     ></p-button>
-    <p-button
-      label="Accéder à mes résultats"
-      routerLink="/results"
-      icon="pi pi-angle-right"
-      iconPos="right"
-    ></p-button>
   </form>
 </ng-container>
+<p-confirmDialog></p-confirmDialog>

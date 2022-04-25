@@ -44,8 +44,8 @@ export class ResultsService {
   }
 
   // Formulas given by the client
-  calculateXPosition(): number {
-    return (
+  calculateCoordinates(): void {
+    const xCoordinate: number =
       (this.twoA +
         this.adA +
         this.fourA -
@@ -59,12 +59,8 @@ export class ResultsService {
           this.aoC -
           this.threeC) *
           3) /
-      24
-    );
-  }
-
-  calculateYPosition(): number {
-    return (
+      24;
+    const yCoordinate: number =
       (this.oneA +
         this.twoA +
         this.pdA -
@@ -78,7 +74,8 @@ export class ResultsService {
           this.threeC -
           this.fourC) *
           3) /
-      24
-    );
+      24;
+    localStorage.setItem('xCoordinate', JSON.stringify(xCoordinate));
+    localStorage.setItem('yCoordinate', JSON.stringify(yCoordinate));
   }
 }
