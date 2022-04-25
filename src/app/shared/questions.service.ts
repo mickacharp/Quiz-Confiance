@@ -41,11 +41,7 @@ export class QuestionsService {
               );
             // if no user is found, he is created
           } else {
-            this.saveUserInDatabase(
-              new User(newUser.email, newUser.firstname, newUser.lastname, [
-                docRef.id,
-              ])
-            );
+            this.saveUserInDatabase(new User(newUser.email, [docRef.id]));
           }
         });
       });

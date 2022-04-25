@@ -21,9 +21,8 @@ export class ResultsComponent implements OnInit {
 
   displayModal: boolean = false;
 
-  userFirstname: string = '';
-  userLastname: string = '';
   userEmail: string = '';
+  userTestName: string = '';
 
   // convert Coords to number putting '+' before, knowing that parseInt doesn't work and return 0
   xCoordinate: number = +localStorage.getItem('xCoordinate')!;
@@ -111,13 +110,14 @@ export class ResultsComponent implements OnInit {
   }
 
   saveTestInDatabase(): void {
-    const userToSave: User = new User(
-      this.userEmail,
-      this.userFirstname,
-      this.userLastname,
-      []
+    const userToSave: User = new User(this.userEmail, []);
+    const testToSave: Test = new Test(
+      [],
+      this.userTestName,
+      'DATE A METTRE',
+      this.xCoordinate,
+      this.yCoordinate
     );
-    const testToSave: Test = new Test([]);
 
     for (let i = 0; i < localStorage.length; i++) {
       const storageKey: string | null = localStorage.key(i);

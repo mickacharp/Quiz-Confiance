@@ -13,7 +13,7 @@ export class HomeComponent implements OnInit {
   displayModal: boolean = false;
 
   allUsersList: User[] = [];
-  user: User = new User('', '', '', []);
+  user: User = new User('', []);
   userTests: Test[] = [];
   userEmail: string = '';
   filteredEmails: string[] = [];
