@@ -8,7 +8,8 @@ import html2canvas from 'html2canvas';
 import { questionsList } from 'src/assets/questions-list';
 import { Answer } from '../models/answer.model';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-results',
@@ -88,7 +89,9 @@ export class ResultsComponent implements OnInit {
   constructor(
     private questionsService: QuestionsService,
     private afs: AngularFirestore,
-    private message: MessageService
+    private confirmationService: ConfirmationService,
+    private message: MessageService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -97,12 +100,18 @@ export class ResultsComponent implements OnInit {
     this.checkIfUserCanSaveTest();
   }
 
-  displayModal: boolean = false;
-  showModalDialog(): void {
-    this.displayModal = true;
+  clearStorage(): void {
+    localStorage.clear();
+    sessionStorage.clear();
   }
-  hideModalDialog(): void {
-    this.displayModal = false;
+
+  // p-dialog modal variables & methods (Save a test)
+  displayTestModal: boolean = false;
+  showTestModalDialog(): void {
+    this.displayTestModal = true;
+  }
+  hideTestModalDialog(): void {
+    this.displayTestModal = false;
     this.message.add({
       severity: 'success',
       summary: 'Questionnaire sauvegardé',
@@ -118,6 +127,26 @@ export class ResultsComponent implements OnInit {
     } else {
       this.canSaveTest = true;
     }
+  }
+
+  openConfirmationModal() {
+    this.confirmationService.confirm({
+      message: `Attention, si vous voulez recommencer le questionnaire, tous les résultats et vos réponses du
+        test que vous venez de faire seront perdus ! Vous pouvez le sauvegarder en
+        cliquant sur "Sauvegarder mon questionnaire". <br />
+        Si vous êtes sûr de votre choix, alors cliquez sur "Commencer" <br />
+        (Si vous êtiez en train de consulter un de vos précédents tests, alors pas d'inquiètude, il restera enregistré dans notre base de données 😉)`,
+      header: 'Refaire un test',
+      icon: 'pi pi-exclamation-triangle',
+      acceptLabel: 'Commencer',
+      rejectLabel: 'Revenir aux résultats',
+      dismissableMask: true,
+      rejectButtonStyleClass: 'cancel',
+      accept: () => {
+        this.clearStorage();
+        this.router.navigate(['/questions/1']);
+      },
+    });
   }
 
   generatePDF(): void {
