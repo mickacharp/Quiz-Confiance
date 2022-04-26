@@ -7,6 +7,9 @@ import { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
 import { questionsList } from 'src/assets/questions-list';
 import { Answer } from '../models/answer.model';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-results',
@@ -14,20 +17,9 @@ import { Answer } from '../models/answer.model';
   styleUrls: ['./results.component.scss'],
 })
 export class ResultsComponent implements OnInit {
-  questions: Question[] = questionsList;
-  answers: Answer[] = [];
-  finalAnswers: any[] = [];
-  selectedAnswer: any;
-
-  displayModal: boolean = false;
-
-  userEmail: string = '';
-  userTestName: string = '';
-
   // convert Coords to number putting '+' before, knowing that parseInt doesn't work and return 0
   xCoordinate: number = +localStorage.getItem('xCoordinate')!;
   yCoordinate: number = +localStorage.getItem('yCoordinate')!;
-
   // Chart data
   data: any = {
     datasets: [
@@ -83,11 +75,78 @@ export class ResultsComponent implements OnInit {
     },
   };
 
-  constructor(private questionsService: QuestionsService) {}
+  // Variables
+  questions: Question[] = questionsList;
+  answers: Answer[] = [];
+  finalAnswers: any[] = [];
+  selectedAnswer: any;
+
+  canSaveTest: boolean = true;
+
+  userEmail: string = '';
+  userTestName: string = '';
+
+  constructor(
+    private questionsService: QuestionsService,
+    private afs: AngularFirestore,
+    private confirmationService: ConfirmationService,
+    private message: MessageService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.getStorageValues();
     this.getFinalAnswers();
+    this.checkIfUserCanSaveTest();
+  }
+
+  clearStorage(): void {
+    localStorage.clear();
+    sessionStorage.clear();
+  }
+
+  // p-dialog modal variables & methods (Save a test)
+  displayTestModal: boolean = false;
+  showTestModalDialog(): void {
+    this.displayTestModal = true;
+  }
+  hideTestModalDialog(): void {
+    this.displayTestModal = false;
+    this.message.add({
+      severity: 'success',
+      summary: 'Questionnaire sauvegardé',
+      detail: `Votre questionnaire a bien été enregistré, vous pouvez y accéder à tout moment depuis la page d'accueil.`,
+    });
+  }
+
+  checkIfUserCanSaveTest(): void {
+    const canUserSaveTest: string | null =
+      sessionStorage.getItem('canSaveTest');
+    if (canUserSaveTest != null) {
+      this.canSaveTest = false;
+    } else {
+      this.canSaveTest = true;
+    }
+  }
+
+  openConfirmationModal() {
+    this.confirmationService.confirm({
+      message: `Attention, si vous voulez recommencer le questionnaire, tous les résultats et vos réponses du
+        test que vous venez de faire seront perdus ! Vous pouvez le sauvegarder en
+        cliquant sur "Sauvegarder mon questionnaire". <br />
+        Si vous êtes sûr de votre choix, alors cliquez sur "Commencer" <br />
+        (Si vous êtiez en train de consulter un de vos précédents tests, alors pas d'inquiètude, il restera enregistré dans notre base de données 😉)`,
+      header: 'Refaire un test',
+      icon: 'pi pi-exclamation-triangle',
+      acceptLabel: 'Commencer',
+      rejectLabel: 'Revenir aux résultats',
+      dismissableMask: true,
+      rejectButtonStyleClass: 'cancel',
+      accept: () => {
+        this.clearStorage();
+        this.router.navigate(['/questions/1']);
+      },
+    });
   }
 
   generatePDF(): void {
@@ -105,12 +164,8 @@ export class ResultsComponent implements OnInit {
     }
   }
 
-  showModalDialog(): void {
-    this.displayModal = true;
-  }
-
   saveTestInDatabase(): void {
-    const userToSave: User = new User(this.userEmail, []);
+    const userToSave: User = new User(this.afs.createId(), this.userEmail, []);
     const testToSave: Test = new Test(
       [],
       this.userTestName,
@@ -141,6 +196,8 @@ export class ResultsComponent implements OnInit {
     });
 
     this.questionsService.saveTestInDatabase(testToSave, userToSave);
+    // canSaveTest is set to false to avoid user to save multiple times his same test
+    this.canSaveTest = false;
   }
 
   getStorageValues(): void {
@@ -187,11 +244,11 @@ export class ResultsComponent implements OnInit {
   formatDate(date: Date): string {
     return (
       [
-        date.getFullYear(),
-        this.padTo2Digits(date.getMonth() + 1),
         this.padTo2Digits(date.getDate()),
+        this.padTo2Digits(date.getMonth() + 1),
+        date.getFullYear(),
       ].join('/') +
-      ' ' +
+      ' à ' +
       [
         this.padTo2Digits(date.getHours()),
         this.padTo2Digits(date.getMinutes()),

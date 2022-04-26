@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { take } from 'rxjs';
 import { Test } from '../models/test.model';
 import { User } from '../models/user.model';
@@ -11,19 +12,27 @@ import { QuestionsService } from '../shared/questions.service';
 })
 export class HomeComponent implements OnInit {
   displayModal: boolean = false;
+  homeModalVisible: boolean = true;
 
   allUsersList: User[] = [];
-  user: User = new User('', []);
+  user: User = new User('', '', []);
   userTests: Test[] = [];
   userEmail: string = '';
   filteredEmails: string[] = [];
 
-  constructor(private questionsService: QuestionsService) {}
+  constructor(
+    private questionsService: QuestionsService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.questionsService.getAllUsers().subscribe((users) => {
       this.allUsersList = users;
     });
+  }
+
+  hideHomeModal(): void {
+    this.homeModalVisible = false;
   }
 
   showModalDialog(): void {
@@ -44,8 +53,9 @@ export class HomeComponent implements OnInit {
     this.filteredEmails = filtered;
   }
 
-  clearLocalStorage(): void {
+  clearStorage(): void {
     localStorage.clear();
+    sessionStorage.clear();
   }
 
   getUserAndHisTests(): void {
@@ -69,7 +79,8 @@ export class HomeComponent implements OnInit {
   }
 
   goToSelectedTest(index: number): void {
-    this.clearLocalStorage();
+    this.clearStorage();
+    // setting answers in localStorage
     const answersOfSelectedTest = this.userTests[index].answers;
     for (let i = 0; i < answersOfSelectedTest.length; i++) {
       // values can be null in answers array because of the results Coordinates when saving a test so we specify "!= null"
@@ -80,5 +91,22 @@ export class HomeComponent implements OnInit {
         );
       }
     }
+    // setting xCoordinate in localStorage
+    const xCoordinateOfSelectedTest = this.userTests[index].xCoordinate;
+    localStorage.setItem(
+      'xCoordinate',
+      JSON.stringify(xCoordinateOfSelectedTest)
+    );
+    // setting yCoordinate in localStorage
+    const yCoordinateOfSelectedTest = this.userTests[index].yCoordinate;
+    localStorage.setItem(
+      'yCoordinate',
+      JSON.stringify(yCoordinateOfSelectedTest)
+    );
+    // setting a property which will be verified at the results page:
+    // if user consults a previous test, button to save it in db will not show
+    // if it's a brand new test, button will show (cf ResultsComponent)
+    sessionStorage.setItem('canSaveTest', 'false');
+    this.router.navigate(['/results']);
   }
 }

@@ -1,3 +1,5 @@
+$fontSizeQuestion: 1.2em;
+
 ::ng-deep .p-dialog .p-dialog-footer .cancel {
     background-color:rgb(140, 47, 47);
     border:1px solid rgb(140, 47, 47);
@@ -9,4 +11,87 @@
     &:hover {
         background-color:rgb(130, 37, 37);
     }
+}
+
+// Submit answers button
+::ng-deep .submit .p-button {
+    border-color: rgb(1, 115, 246);
+    background-color: rgb(1, 115, 246);
+
+    &:active {
+        background-color: rgb(1, 105, 236);
+    }
+
+    &:focus {
+        box-shadow: 0 0 0 0.2rem rgb(51,165,255);
+    }
+
+    &:focus:active {
+        box-shadow: 0 0 0 0.2rem rgb(51,165,255);
+    }
+
+    &:hover {
+        border-color: rgb(1, 105, 236);
+        background-color: rgb(1, 105, 236);
+    }
+}
+
+.question {
+    height: 60vh;
+    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    box-shadow: rgba(0, 0, 0, 0.353) 0px 3px 8px;
+    border-radius: 6px;
+
+
+    &__info {
+        width: 10em;
+        font-size: $fontSizeQuestion;
+        font-weight: bold;
+        text-align: center;
+        border-bottom: solid rgb(76, 175, 79) 2px;
+    }
+
+    &__name {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        min-height: 5em;
+        margin: 20px 0;
+        padding: 10px;
+        border: solid 1px rgba(0, 0, 0, 0.144);
+        background-color: rgba(76, 175, 79, 0.16);
+        p {
+            font-size: $fontSizeQuestion;
+            text-align: center;
+        }
+    }
+
+    &__form {
+        width: 70%;
+        height: 30%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        align-items: center;
+
+        &__radiobuttons {
+            width: 100%;
+            display: flex;
+            justify-content: space-evenly;
+            font-size: $fontSizeQuestion;
+        }
+
+        &__buttons {
+            width: 100%;
+            display: flex;
+            justify-content: space-evenly;
+        }
+    }
+
+    
 }
