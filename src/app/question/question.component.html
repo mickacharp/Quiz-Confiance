@@ -11,14 +11,19 @@
 </ng-container>
 
 <!-- If current question N is the question n°1 OR previous question N-1 got an answer, then display the form -->
-<ng-container
+<div
   *ngIf="
     currentQuestion.nb === 1 || answers[currentQuestion.nb - 2].answer != ''
       ? true
       : false
   "
+  class="question"
 >
-  <p>{{ currentQuestion.name }}</p>
+  <p class="question__info">Question {{ currentQuestion.nb }}/24</p>
+  <div class="question__name">
+    <p>{{ currentQuestion.name }}</p>
+  </div>
+  <p class="question__info">Votre réponse</p>
   <form
     (ngSubmit)="
       questionForm.valid && saveAnswerToStorage();
@@ -27,139 +32,145 @@
       questionForm.valid && openConfirmationModal()
     "
     #questionForm="ngForm"
+    class="question__form"
   >
-    <div class="field-radiobutton">
-      <p-radioButton
-        #answerA="ngModel"
-        name="answerA"
-        inputId="answerA"
-        value="{{ currentQuestion.valueA }}"
-        [(ngModel)]="answers[currentQuestion.nb - 1].answer"
-        [ngClass]="{
-          'ng-dirty': answerA.invalid || (answerA.dirty && answerA.invalid)
-        }"
-        required="answers[currentQuestion.nb - 1].answer != '' ? true : false"
-        [disabled]="
-          currentQuestion.nb == 1
-            ? false
-            : answers[currentQuestion.nb - 2].answer != ''
-            ? false
-            : true
+    <div class="question__form__radiobuttons">
+      <div class="radiobutton">
+        <p-radioButton
+          #answerA="ngModel"
+          name="answerA"
+          inputId="answerA"
+          value="{{ currentQuestion.valueA }}"
+          [(ngModel)]="answers[currentQuestion.nb - 1].answer"
+          [ngClass]="{
+            'ng-dirty': answerA.invalid || (answerA.dirty && answerA.invalid)
+          }"
+          required="answers[currentQuestion.nb - 1].answer != '' ? true : false"
+          [disabled]="
+            currentQuestion.nb == 1
+              ? false
+              : answers[currentQuestion.nb - 2].answer != ''
+              ? false
+              : true
+          "
+        ></p-radioButton>
+        <label for="answerA"> oui, tout à fait</label>
+      </div>
+      <div class="radiobutton">
+        <p-radioButton
+          #answerB="ngModel"
+          name="answerB"
+          inputId="answerB"
+          value="{{ currentQuestion.valueB }}"
+          [(ngModel)]="answers[currentQuestion.nb - 1].answer"
+          [ngClass]="{
+            'ng-dirty': answerB.invalid || (answerB.dirty && answerB.invalid)
+          }"
+          required="answers[currentQuestion.nb - 1].answer != '' ? true : false"
+          [disabled]="
+            currentQuestion.nb == 1
+              ? false
+              : answers[currentQuestion.nb - 2].answer != ''
+              ? false
+              : true
+          "
+        ></p-radioButton>
+        <label for="answerB"> oui</label>
+      </div>
+      <div class="radiobutton">
+        <p-radioButton
+          #answerC="ngModel"
+          name="answerC"
+          inputId="answerC"
+          value="{{ currentQuestion.valueC }}"
+          [(ngModel)]="answers[currentQuestion.nb - 1].answer"
+          [ngClass]="{
+            'ng-dirty': answerC.invalid || (answerC.dirty && answerC.invalid)
+          }"
+          required="answers[currentQuestion.nb - 1].answer != '' ? true : false"
+          [disabled]="
+            currentQuestion.nb == 1
+              ? false
+              : answers[currentQuestion.nb - 2].answer != ''
+              ? false
+              : true
+          "
+        ></p-radioButton>
+        <label for="answerC"> non</label>
+      </div>
+      <div class="radiobutton">
+        <p-radioButton
+          #answerD="ngModel"
+          name="answerD"
+          inputId="answerD"
+          value="{{ currentQuestion.valueD }}"
+          [(ngModel)]="answers[currentQuestion.nb - 1].answer"
+          [ngClass]="{
+            'ng-dirty': answerD.invalid || (answerD.dirty && answerD.invalid)
+          }"
+          required="answers[currentQuestion.nb - 1].answer != '' ? true : false"
+          [disabled]="
+            currentQuestion.nb == 1
+              ? false
+              : answers[currentQuestion.nb - 2].answer != ''
+              ? false
+              : true
+          "
+        ></p-radioButton>
+        <label for="answerD"> non, absolument pas</label>
+      </div>
+      <small
+        *ngIf="
+          answerA.invalid ||
+          (answerA.dirty && answerA.invalid) ||
+          answerB.invalid ||
+          (answerB.dirty && answerB.invalid) ||
+          answerC.invalid ||
+          (answerC.dirty && answerC.invalid) ||
+          answerD.invalid ||
+          (answerD.dirty && answerD.invalid)
         "
-      ></p-radioButton>
-      <label for="answerA">oui, tout à fait</label>
-    </div>
-    <div class="field-radiobutton">
-      <p-radioButton
-        #answerB="ngModel"
-        name="answerB"
-        inputId="answerB"
-        value="{{ currentQuestion.valueB }}"
-        [(ngModel)]="answers[currentQuestion.nb - 1].answer"
-        [ngClass]="{
-          'ng-dirty': answerB.invalid || (answerB.dirty && answerB.invalid)
-        }"
-        required="answers[currentQuestion.nb - 1].answer != '' ? true : false"
-        [disabled]="
-          currentQuestion.nb == 1
-            ? false
-            : answers[currentQuestion.nb - 2].answer != ''
-            ? false
-            : true
+        class="p-error"
+        >Cochez une des propositions pour passer à la suite du test</small
+      >
+      <small
+        *ngIf="
+          answerA.disabled &&
+          answerB.disabled &&
+          answerC.disabled &&
+          answerD.disabled
         "
-      ></p-radioButton>
-      <label for="answerB">oui</label>
+        class="p-error"
+        >Répondez aux questions précédentes pour poursuivre</small
+      >
     </div>
-    <div class="field-radiobutton">
-      <p-radioButton
-        #answerC="ngModel"
-        name="answerC"
-        inputId="answerC"
-        value="{{ currentQuestion.valueC }}"
-        [(ngModel)]="answers[currentQuestion.nb - 1].answer"
-        [ngClass]="{
-          'ng-dirty': answerC.invalid || (answerC.dirty && answerC.invalid)
-        }"
-        required="answers[currentQuestion.nb - 1].answer != '' ? true : false"
-        [disabled]="
-          currentQuestion.nb == 1
-            ? false
-            : answers[currentQuestion.nb - 2].answer != ''
-            ? false
-            : true
+    <div class="question__form__buttons">
+      <p-button
+        label="Précédent"
+        (onClick)="
+          previousQuestion(); questionForm.valid && saveAnswerToStorage()
         "
-      ></p-radioButton>
-      <label for="answerC">non</label>
+        icon="pi pi-angle-left"
+        iconPos="left"
+      ></p-button>
+      <p-button
+        label="Suivant"
+        (onClick)="nextQuestion(); questionForm.valid && saveAnswerToStorage()"
+        icon="pi pi-angle-right"
+        iconPos="right"
+        [disabled]="questionForm.valid === false"
+        *ngIf="currentQuestion.nb != 24"
+      ></p-button>
+      <p-button
+        type="submit"
+        label="Envoyer mes réponses"
+        icon="pi pi-check-square"
+        iconPos="left"
+        [disabled]="questionForm.valid === false"
+        *ngIf="currentQuestion.nb === 24"
+        class="submit"
+      ></p-button>
     </div>
-    <div class="field-radiobutton">
-      <p-radioButton
-        #answerD="ngModel"
-        name="answerD"
-        inputId="answerD"
-        value="{{ currentQuestion.valueD }}"
-        [(ngModel)]="answers[currentQuestion.nb - 1].answer"
-        [ngClass]="{
-          'ng-dirty': answerD.invalid || (answerD.dirty && answerD.invalid)
-        }"
-        required="answers[currentQuestion.nb - 1].answer != '' ? true : false"
-        [disabled]="
-          currentQuestion.nb == 1
-            ? false
-            : answers[currentQuestion.nb - 2].answer != ''
-            ? false
-            : true
-        "
-      ></p-radioButton>
-      <label for="answerD">non, absolument pas</label>
-    </div>
-    <small
-      *ngIf="
-        answerA.invalid ||
-        (answerA.dirty && answerA.invalid) ||
-        answerB.invalid ||
-        (answerB.dirty && answerB.invalid) ||
-        answerC.invalid ||
-        (answerC.dirty && answerC.invalid) ||
-        answerD.invalid ||
-        (answerD.dirty && answerD.invalid)
-      "
-      class="p-error"
-      >Cochez une des propositions pour passer à la suite du test</small
-    >
-    <small
-      *ngIf="
-        answerA.disabled &&
-        answerB.disabled &&
-        answerC.disabled &&
-        answerD.disabled
-      "
-      class="p-error"
-      >Répondez aux questions précédentes pour poursuivre</small
-    >
-    <p-button
-      label="Précédent"
-      (onClick)="
-        previousQuestion(); questionForm.valid && saveAnswerToStorage()
-      "
-      icon="pi pi-angle-left"
-      iconPos="left"
-    ></p-button>
-    <p-button
-      label="Suivant"
-      (onClick)="nextQuestion(); questionForm.valid && saveAnswerToStorage()"
-      icon="pi pi-angle-right"
-      iconPos="right"
-      [disabled]="questionForm.valid === false"
-      *ngIf="currentQuestion.nb != 24"
-    ></p-button>
-    <p-button
-      type="submit"
-      label="Envoyer mes réponses"
-      icon="pi pi-check-square"
-      iconPos="left"
-      [disabled]="questionForm.valid === false"
-      *ngIf="currentQuestion.nb === 24"
-    ></p-button>
   </form>
-</ng-container>
+</div>
 <p-confirmDialog></p-confirmDialog>
