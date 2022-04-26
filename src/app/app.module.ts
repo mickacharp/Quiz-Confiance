@@ -34,6 +34,7 @@ import { ChartModule } from 'primeng/chart';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { TableModule } from 'primeng/table';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ToastModule } from 'primeng/toast';
 import { ConfirmationService, MessageService } from 'primeng/api';
 
 // Components
@@ -67,6 +68,7 @@ import { HomeComponent } from './home/home.component';
     AutoCompleteModule,
     TableModule,
     ConfirmDialogModule,
+    ToastModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
     // provideDatabase(() => getDatabase()),

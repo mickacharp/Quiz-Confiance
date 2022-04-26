@@ -8,6 +8,7 @@ import html2canvas from 'html2canvas';
 import { questionsList } from 'src/assets/questions-list';
 import { Answer } from '../models/answer.model';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-results',
@@ -15,22 +16,9 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
   styleUrls: ['./results.component.scss'],
 })
 export class ResultsComponent implements OnInit {
-  questions: Question[] = questionsList;
-  answers: Answer[] = [];
-  finalAnswers: any[] = [];
-  selectedAnswer: any;
-
-  canSaveTest: boolean = true;
-
-  displayModal: boolean = false;
-
-  userEmail: string = '';
-  userTestName: string = '';
-
   // convert Coords to number putting '+' before, knowing that parseInt doesn't work and return 0
   xCoordinate: number = +localStorage.getItem('xCoordinate')!;
   yCoordinate: number = +localStorage.getItem('yCoordinate')!;
-
   // Chart data
   data: any = {
     datasets: [
@@ -86,9 +74,21 @@ export class ResultsComponent implements OnInit {
     },
   };
 
+  // Variables
+  questions: Question[] = questionsList;
+  answers: Answer[] = [];
+  finalAnswers: any[] = [];
+  selectedAnswer: any;
+
+  canSaveTest: boolean = true;
+
+  userEmail: string = '';
+  userTestName: string = '';
+
   constructor(
     private questionsService: QuestionsService,
-    private afs: AngularFirestore
+    private afs: AngularFirestore,
+    private message: MessageService
   ) {}
 
   ngOnInit(): void {
@@ -97,11 +97,26 @@ export class ResultsComponent implements OnInit {
     this.checkIfUserCanSaveTest();
   }
 
+  displayModal: boolean = false;
+  showModalDialog(): void {
+    this.displayModal = true;
+  }
+  hideModalDialog(): void {
+    this.displayModal = false;
+    this.message.add({
+      severity: 'success',
+      summary: 'Questionnaire sauvegardé',
+      detail: `Votre questionnaire a bien été enregistré, vous pouvez y accéder à tout moment depuis la page d'accueil.`,
+    });
+  }
+
   checkIfUserCanSaveTest(): void {
     const canUserSaveTest: string | null =
       sessionStorage.getItem('canSaveTest');
     if (canUserSaveTest != null) {
       this.canSaveTest = false;
+    } else {
+      this.canSaveTest = true;
     }
   }
 
@@ -118,10 +133,6 @@ export class ResultsComponent implements OnInit {
         pdf.save('Résultats_Test_Confiance.pdf');
       });
     }
-  }
-
-  showModalDialog(): void {
-    this.displayModal = true;
   }
 
   saveTestInDatabase(): void {
@@ -156,6 +167,8 @@ export class ResultsComponent implements OnInit {
     });
 
     this.questionsService.saveTestInDatabase(testToSave, userToSave);
+    // canSaveTest is set to false to avoid user to save multiple times his same test
+    this.canSaveTest = false;
   }
 
   getStorageValues(): void {

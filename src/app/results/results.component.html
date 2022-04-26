@@ -15,11 +15,14 @@
 >
   Si vous souhaitez sauvegarder vos résultats pour y accéder plus tard,
   renseignez les champs ci-dessous.*
-  <form #saveTestForm="ngForm" (ngSubmit)="saveTestInDatabase()">
+  <form
+    #saveTestForm="ngForm"
+    (ngSubmit)="saveTestInDatabase(); hideModalDialog()"
+  >
     <label for="user-email">Votre email : </label>
     <input
       pInputText
-      type="text"
+      type="email"
       name="user-email"
       id="user-email"
       required
@@ -151,3 +154,4 @@
   iconPos="left"
   label="Télécharger mes résultats (.pdf)"
 ></p-button>
+<p-toast></p-toast>
