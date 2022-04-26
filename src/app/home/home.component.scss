@@ -1,0 +1,42 @@
+.landing {
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.801);
+    z-index: 2;
+    top: 0;
+    left: 0;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+
+    .citation {
+        text-align: center;
+        color: white;
+        opacity: 1;
+        font-size: 2em;
+        font-weight: 600;
+    }
+
+    .italic {
+        font-style: italic;
+    }
+
+    .click-continue {
+        font-size: 1.5em;
+        color: white;
+        animation: show ease-in 5s;
+        font-weight: 100;
+    }
+}
+
+@keyframes show {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}

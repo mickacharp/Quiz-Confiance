@@ -7,6 +7,7 @@ import { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
 import { questionsList } from 'src/assets/questions-list';
 import { Answer } from '../models/answer.model';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 
 @Component({
   selector: 'app-results',
@@ -83,7 +84,10 @@ export class ResultsComponent implements OnInit {
     },
   };
 
-  constructor(private questionsService: QuestionsService) {}
+  constructor(
+    private questionsService: QuestionsService,
+    private afs: AngularFirestore
+  ) {}
 
   ngOnInit(): void {
     this.getStorageValues();
@@ -110,7 +114,7 @@ export class ResultsComponent implements OnInit {
   }
 
   saveTestInDatabase(): void {
-    const userToSave: User = new User(this.userEmail, []);
+    const userToSave: User = new User(this.afs.createId(), this.userEmail, []);
     const testToSave: Test = new Test(
       [],
       this.userTestName,
@@ -187,11 +191,11 @@ export class ResultsComponent implements OnInit {
   formatDate(date: Date): string {
     return (
       [
-        date.getFullYear(),
-        this.padTo2Digits(date.getMonth() + 1),
         this.padTo2Digits(date.getDate()),
+        this.padTo2Digits(date.getMonth() + 1),
+        date.getFullYear(),
       ].join('/') +
-      ' ' +
+      ' à ' +
       [
         this.padTo2Digits(date.getHours()),
         this.padTo2Digits(date.getMinutes()),
