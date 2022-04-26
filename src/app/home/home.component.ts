@@ -70,6 +70,7 @@ export class HomeComponent implements OnInit {
 
   goToSelectedTest(index: number): void {
     this.clearLocalStorage();
+    // setting answers in localStorage
     const answersOfSelectedTest = this.userTests[index].answers;
     for (let i = 0; i < answersOfSelectedTest.length; i++) {
       // values can be null in answers array because of the results Coordinates when saving a test so we specify "!= null"
@@ -80,5 +81,17 @@ export class HomeComponent implements OnInit {
         );
       }
     }
+    // setting xCoordinate in localStorage
+    const xCoordinateOfSelectedTest = this.userTests[index].xCoordinate;
+    localStorage.setItem(
+      'xCoordinate',
+      JSON.stringify(xCoordinateOfSelectedTest)
+    );
+    // setting yCoordinate in localStorage
+    const yCoordinateOfSelectedTest = this.userTests[index].yCoordinate;
+    localStorage.setItem(
+      'yCoordinate',
+      JSON.stringify(yCoordinateOfSelectedTest)
+    );
   }
 }
