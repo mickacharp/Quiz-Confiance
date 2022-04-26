@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { take } from 'rxjs';
 import { Test } from '../models/test.model';
 import { User } from '../models/user.model';
@@ -19,7 +20,10 @@ export class HomeComponent implements OnInit {
   userEmail: string = '';
   filteredEmails: string[] = [];
 
-  constructor(private questionsService: QuestionsService) {}
+  constructor(
+    private questionsService: QuestionsService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.questionsService.getAllUsers().subscribe((users) => {
@@ -49,8 +53,9 @@ export class HomeComponent implements OnInit {
     this.filteredEmails = filtered;
   }
 
-  clearLocalStorage(): void {
+  clearStorage(): void {
     localStorage.clear();
+    sessionStorage.clear();
   }
 
   getUserAndHisTests(): void {
@@ -74,7 +79,7 @@ export class HomeComponent implements OnInit {
   }
 
   goToSelectedTest(index: number): void {
-    this.clearLocalStorage();
+    this.clearStorage();
     // setting answers in localStorage
     const answersOfSelectedTest = this.userTests[index].answers;
     for (let i = 0; i < answersOfSelectedTest.length; i++) {
@@ -98,5 +103,10 @@ export class HomeComponent implements OnInit {
       'yCoordinate',
       JSON.stringify(yCoordinateOfSelectedTest)
     );
+    // setting a property which will be verified at the results page:
+    // if user consults a previous test, button to save it in db will not show
+    // if it's a brand new test, button will show (cf ResultsComponent)
+    sessionStorage.setItem('canSaveTest', 'false');
+    this.router.navigate(['/results']);
   }
 }

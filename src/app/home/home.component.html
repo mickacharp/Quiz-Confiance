@@ -12,22 +12,20 @@
 <h1>Questionnaire d'évaluation de la "confiance collective et réciproque"</h1>
 <p-button
   label="Démarrer un test"
-  icon="pi pi-angle-right"
-  iconPos="right"
+  icon="pi pi-play"
+  iconPos="left"
   routerLink="/questions/1"
-  (onClick)="clearLocalStorage()"
+  (onClick)="clearStorage()"
 ></p-button>
 <p>Vous avez déjà fait un test ? Cliquez sur "Accéder à mes anciens tests"</p>
 <p-button
   label="Accéder à mes anciens tests"
-  icon="pi pi-angle-right"
-  iconPos="right"
+  icon="pi pi-history"
+  iconPos="left"
   (onClick)="showModalDialog()"
 ></p-button>
-<!-- <label for="user-firstname">Votre prénom : </label>
-<input type="text" name="user-firstname" id="user-firstname" />
-<label for="user-lastname">Votre nom : </label>
-<input type="text" name="user-lastname" id="user-lastname" /> -->
+
+<!-- ModalDialog opening when user clicks on "Accéder à mes anciens tests" -->
 <p-dialog
   header="Accéder à mes tests"
   [(visible)]="displayModal"
@@ -56,20 +54,23 @@
 
     <p-button
       type="submit"
-      label="Accéder à mes tests"
-      icon="pi pi-angle-right"
-      iconPos="right"
+      label="Afficher mes tests"
+      icon="pi pi-list"
+      iconPos="left"
       [disabled]="emailForm.valid === false"
     ></p-button>
   </form>
 
   <div *ngIf="userTests.length > 0">
     <ul>
-      <li
-        *ngFor="let test of userTests; let indexOfElement = index"
-        (click)="goToSelectedTest(indexOfElement)"
-      >
-        {{ test }} {{ indexOfElement }}
+      <li *ngFor="let test of userTests; let indexOfElement = index">
+        {{ test.name }}, fait le {{ test.date }}
+        <p-button
+          label="Accéder au test"
+          icon="pi pi-send"
+          iconPos="left"
+          (click)="goToSelectedTest(indexOfElement)"
+        ></p-button>
       </li>
     </ul>
   </div>
