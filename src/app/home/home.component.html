@@ -15,7 +15,7 @@
   icon="pi pi-angle-right"
   iconPos="right"
   routerLink="/questions/1"
-  (onClick)="clearLocalStorage()"
+  (onClick)="clearStorage()"
 ></p-button>
 <p>Vous avez déjà fait un test ? Cliquez sur "Accéder à mes anciens tests"</p>
 <p-button
@@ -24,10 +24,8 @@
   iconPos="right"
   (onClick)="showModalDialog()"
 ></p-button>
-<!-- <label for="user-firstname">Votre prénom : </label>
-<input type="text" name="user-firstname" id="user-firstname" />
-<label for="user-lastname">Votre nom : </label>
-<input type="text" name="user-lastname" id="user-lastname" /> -->
+
+<!-- ModalDialog opening when user clicks on "Accéder à mes anciens tests" -->
 <p-dialog
   header="Accéder à mes tests"
   [(visible)]="displayModal"
@@ -69,7 +67,7 @@
         *ngFor="let test of userTests; let indexOfElement = index"
         (click)="goToSelectedTest(indexOfElement)"
       >
-        {{ test }} {{ indexOfElement }}
+        {{ test.name }}, fait le {{ test.date }}
       </li>
     </ul>
   </div>

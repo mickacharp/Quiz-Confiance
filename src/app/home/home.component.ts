@@ -49,8 +49,9 @@ export class HomeComponent implements OnInit {
     this.filteredEmails = filtered;
   }
 
-  clearLocalStorage(): void {
+  clearStorage(): void {
     localStorage.clear();
+    sessionStorage.clear();
   }
 
   getUserAndHisTests(): void {
@@ -74,7 +75,7 @@ export class HomeComponent implements OnInit {
   }
 
   goToSelectedTest(index: number): void {
-    this.clearLocalStorage();
+    this.clearStorage();
     // setting answers in localStorage
     const answersOfSelectedTest = this.userTests[index].answers;
     for (let i = 0; i < answersOfSelectedTest.length; i++) {
@@ -98,5 +99,9 @@ export class HomeComponent implements OnInit {
       'yCoordinate',
       JSON.stringify(yCoordinateOfSelectedTest)
     );
+    // setting a property which will be verified at the results page:
+    // if user consults a previous test, button to save it in db will not show
+    // if it's a brand new test, button will show (cf ResultsComponent)
+    sessionStorage.setItem('canSaveTest', 'false');
   }
 }

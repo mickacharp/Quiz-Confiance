@@ -20,6 +20,8 @@ export class ResultsComponent implements OnInit {
   finalAnswers: any[] = [];
   selectedAnswer: any;
 
+  canSaveTest: boolean = true;
+
   displayModal: boolean = false;
 
   userEmail: string = '';
@@ -92,6 +94,15 @@ export class ResultsComponent implements OnInit {
   ngOnInit(): void {
     this.getStorageValues();
     this.getFinalAnswers();
+    this.checkIfUserCanSaveTest();
+  }
+
+  checkIfUserCanSaveTest(): void {
+    const canUserSaveTest: string | null =
+      sessionStorage.getItem('canSaveTest');
+    if (canUserSaveTest != null) {
+      this.canSaveTest = false;
+    }
   }
 
   generatePDF(): void {
