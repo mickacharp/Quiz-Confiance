@@ -1,13 +1,20 @@
 <p-button
+  label="Refaire un test"
+  (onClick)="openConfirmationModal()"
+  icon="pi pi-replay"
+  iconPos="left"
+></p-button>
+
+<p-button
   label="Sauvegarder mon questionnaire"
-  (onClick)="showModalDialog()"
+  (onClick)="showTestModalDialog()"
   icon="pi pi-save"
   iconPos="left"
   *ngIf="canSaveTest"
 ></p-button>
 <p-dialog
   header="Sauvegarder mon questionnaire"
-  [(visible)]="displayModal"
+  [(visible)]="displayTestModal"
   [modal]="true"
   [style]="{ width: '50vw' }"
   [draggable]="false"
@@ -15,11 +22,14 @@
 >
   Si vous souhaitez sauvegarder vos résultats pour y accéder plus tard,
   renseignez les champs ci-dessous.*
-  <form #saveTestForm="ngForm" (ngSubmit)="saveTestInDatabase()">
+  <form
+    #saveTestForm="ngForm"
+    (ngSubmit)="saveTestInDatabase(); hideTestModalDialog()"
+  >
     <label for="user-email">Votre email : </label>
     <input
       pInputText
-      type="text"
+      type="email"
       name="user-email"
       id="user-email"
       required
@@ -151,3 +161,6 @@
   iconPos="left"
   label="Télécharger mes résultats (.pdf)"
 ></p-button>
+
+<p-confirmDialog></p-confirmDialog>
+<p-toast></p-toast>
