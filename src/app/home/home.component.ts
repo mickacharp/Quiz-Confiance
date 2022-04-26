@@ -11,9 +11,10 @@ import { QuestionsService } from '../shared/questions.service';
 })
 export class HomeComponent implements OnInit {
   displayModal: boolean = false;
+  homeModalVisible: boolean = true;
 
   allUsersList: User[] = [];
-  user: User = new User('', []);
+  user: User = new User('', '', []);
   userTests: Test[] = [];
   userEmail: string = '';
   filteredEmails: string[] = [];
@@ -24,6 +25,10 @@ export class HomeComponent implements OnInit {
     this.questionsService.getAllUsers().subscribe((users) => {
       this.allUsersList = users;
     });
+  }
+
+  hideHomeModal(): void {
+    this.homeModalVisible = false;
   }
 
   showModalDialog(): void {
