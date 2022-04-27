@@ -5,7 +5,7 @@
 .landing {
     width: 100vw;
     height: 100vh;
-    background-color: rgba(0, 0, 0, 0.801);
+    background-color: rgba(0, 5, 0, 0.99);
     z-index: 2;
     top: 0;
     left: 0;
@@ -30,7 +30,7 @@
     .click-continue {
         font-size: 1.5em;
         color: white;
-        animation: show ease-in 5s;
+        animation: show ease-in-out 3s infinite alternate;
         font-weight: 100;
     }
 }
@@ -74,6 +74,7 @@
     &__content {
         margin-top: 10px;
         padding: 0 20px 20px 20px;
+        border-radius: 6px;
         box-shadow: rgba(0, 0, 0, 0.353) 0px 3px 4px;
 
         &__subtitles {
@@ -98,3 +99,30 @@
 }
 
 /////////////////////// PrimeNg p-dialog ModalDialog ///////////////////////
+.dialog {
+    p {
+        margin-bottom: 10px;
+    }
+
+    .tests-list-container {
+        margin-top: 10px;
+        ul {
+            list-style-type: none;
+            li {
+                display: flex;
+                align-items: center;
+            }
+        }
+    }
+    
+    // PrimeNg all buttons
+    ::ng-deep .p-button {
+        margin-left: 10px;
+        margin-bottom: 10px;
+    }
+    
+    // 'Afficher mes tests' button
+    ::ng-deep .display-tests-button .p-button {
+        margin-bottom: 0;
+    }
+}

@@ -1,4 +1,4 @@
-<!-- Landing page
+<!-- Landing page -->
 <div class="landing" (click)="hideHomeModal()" *ngIf="homeModalVisible">
   <p class="citation">
     <span class="italic">
@@ -9,7 +9,7 @@
     François Mauriac (1885-1970)
   </p>
   <p class="click-continue italic">Cliquez pour poursuivre</p>
-</div> -->
+</div>
 
 <!-- Home page -->
 <div class="home">
@@ -78,48 +78,53 @@
   header="Accéder à mes tests"
   [(visible)]="displayModal"
   [modal]="true"
-  [style]="{ width: '50vw', height: '50vh' }"
+  [style]="{ width: '50vw', height: '40vh' }"
   [draggable]="false"
   [resizable]="false"
 >
-  Entrez votre adresse mail et cliquez sur "Afficher mes tests", puis
-  sélectionnez le test que vous voulez consulter.
-  <form
-    #emailForm="ngForm"
-    (ngSubmit)="emailForm.valid && getUserAndHisTests()"
-  >
-    <label for="filter-email">Votre email : </label>
-    <p-autoComplete
-      [(ngModel)]="userEmail"
-      [showEmptyMessage]="true"
-      emptyMessage="Aucune correspondance"
-      [suggestions]="filteredEmails"
-      (completeMethod)="filterEmail($event)"
-      [minLength]="1"
-      name="filter-email"
-      ariaLabel="Champ de votre email"
-    ></p-autoComplete>
+  <div class="dialog">
+    <p>
+      Entrez votre adresse mail et cliquez sur "Afficher mes tests", puis
+      sélectionnez le test que vous voulez consulter.
+    </p>
+    <form
+      #emailForm="ngForm"
+      (ngSubmit)="emailForm.valid && getUserAndHisTests()"
+    >
+      <label for="filter-email">Votre email : </label>
+      <p-autoComplete
+        [(ngModel)]="userEmail"
+        [showEmptyMessage]="true"
+        emptyMessage="Aucune correspondance"
+        [suggestions]="filteredEmails"
+        (completeMethod)="filterEmail($event)"
+        [minLength]="1"
+        name="filter-email"
+        ariaLabel="Champ de votre email"
+      ></p-autoComplete>
 
-    <p-button
-      type="submit"
-      label="Afficher mes tests"
-      icon="pi pi-list"
-      iconPos="left"
-      [disabled]="emailForm.valid === false"
-    ></p-button>
-  </form>
+      <p-button
+        type="submit"
+        label="Afficher mes tests"
+        icon="pi pi-list"
+        iconPos="left"
+        [disabled]="emailForm.valid === false"
+        class="display-tests-button"
+      ></p-button>
+    </form>
 
-  <div *ngIf="userTests.length > 0">
-    <ul>
-      <li *ngFor="let test of userTests; let indexOfElement = index">
-        {{ test.name }}, fait le {{ test.date }}
-        <p-button
-          label="Accéder au test"
-          icon="pi pi-send"
-          iconPos="left"
-          (click)="goToSelectedTest(indexOfElement)"
-        ></p-button>
-      </li>
-    </ul>
+    <div *ngIf="userTests.length > 0" class="tests-list-container">
+      <ul>
+        <li *ngFor="let test of userTests; let indexOfElement = index">
+          - {{ test.name }}, fait le {{ test.date }}
+          <p-button
+            label="Accéder à ce test"
+            icon="pi pi-send"
+            iconPos="left"
+            (click)="goToSelectedTest(indexOfElement)"
+          ></p-button>
+        </li>
+      </ul>
+    </div>
   </div>
 </p-dialog>
