@@ -154,7 +154,7 @@ export class ResultsComponent implements OnInit {
     if (data) {
       const pdf = new jsPDF('p', 'mm', 'a4');
       // scale: the higher the value, the higher the pdf resolution
-      html2canvas(data, { scale: 2 }).then((canvas) => {
+      html2canvas(data, { scale: 1 }).then((canvas) => {
         const fileWidth = 210;
         const fileHeight = (canvas.height * fileWidth) / canvas.width;
         const docDataURL = canvas.toDataURL('image/png');
