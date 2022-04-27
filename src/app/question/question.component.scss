@@ -1,20 +1,6 @@
 @import '../../styles/mixins';
 @import '../../styles/variables';
 
-// Cancel button (in dialog when user wants to submit his answers)
-::ng-deep .p-dialog .p-dialog-footer .cancel {
-    background-color:rgb(140, 47, 47);
-    border:1px solid rgb(140, 47, 47);
-
-    &:focus {
-        box-shadow: 0 0 0 0.2rem rgb(190,97,97);
-    }
-
-    &:hover {
-        background-color:rgb(130, 37, 37);
-    }
-}
-
 .question {
     height: 60vh;
     margin-top: 50px;
@@ -104,6 +90,7 @@
                 align-items: center;
             }
 
+            // PrimeNg radiobuttons
             ::ng-deep .p-radiobutton {
                 display: flex;
                 justify-content: center;
@@ -162,10 +149,13 @@
             display: flex;
             justify-content: space-evenly;
 
+            // All three PrimeNg buttons
+            ::ng-deep .p-button {
+                margin-bottom: 10px;
+            }
 
             // "Précédent" & "Suivant" buttons
             ::ng-deep .prev-next .p-button {
-                margin-bottom: 10px;
                 @media screen and (max-width: $bp600) {
                 font-size: $fontSizeQuestionBP380;
                 height: $fontSizeQuestionBP380;
@@ -179,20 +169,23 @@
 
             // Submit answers button (only appears at Q24)
             ::ng-deep .submit .p-button {
-                margin-bottom: 10px;
                 border-color: rgb(1, 115, 246);
                 background-color: rgb(1, 115, 246);
 
+                @media screen and (max-width: 615px) {
+                    width: 220px;
+                }
                 @media screen and (max-width: $bp600) {
                     font-size: $fontSizeQuestionBP380;
                     height: $fontSizeQuestionBP380;
                     width: 145px;
+                }
+
+                .pi {
+                    @media screen and (max-width: $bp600) {
+                        font-size: .5em;
                     }
-                    .pi {
-                        @media screen and (max-width: $bp600) {
-                            font-size: .5em;
-                        }
-                    }
+                }
 
                 &:active {
                     background-color: rgb(1, 105, 236);
@@ -213,5 +206,28 @@
             }
             
         }
+    }
+}
+
+// Submit dialog modal (after click on 'Envoyer mes réponses' button at Q24) ///////////
+
+// Cancel button 'Revenir au questionnaire')
+::ng-deep .p-dialog .p-dialog-footer .cancel {
+    background-color:rgb(140, 47, 47);
+    border:1px solid rgb(140, 47, 47);
+
+    &:focus {
+        box-shadow: 0 0 0 0.2rem rgb(190,97,97);
+    }
+
+    &:hover {
+        background-color:rgb(130, 37, 37);
+    }
+}
+// Dialog modal footer (the 2 buttons 'Revenir au questionnaire' and 'Valider')
+::ng-deep .p-dialog .p-dialog-footer {
+    @media screen and (max-width: $bp600) {
+        display: flex;
+        flex-direction: column-reverse;
     }
 }
