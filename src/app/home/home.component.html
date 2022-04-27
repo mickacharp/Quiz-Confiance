@@ -78,11 +78,12 @@
   header="Accéder à mes tests"
   [(visible)]="displayModal"
   [modal]="true"
-  [style]="{ width: '50vw', height: '40vh' }"
+  [style]="{ width: '50vw' }"
   [draggable]="false"
   [resizable]="false"
+  [breakpoints]="{ '1080px': '60vw', '890px': '70vw', '768px': '80vw' }"
 >
-  <div class="dialog">
+  <div class="dialog-content">
     <p>
       Entrez votre adresse mail et cliquez sur "Afficher mes tests", puis
       sélectionnez le test que vous voulez consulter.
