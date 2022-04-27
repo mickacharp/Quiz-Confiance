@@ -1,5 +1,6 @@
 $fontSizeQuestion: 1.2em;
 
+// Cancel button (in dialog when user wants to submit his answers)
 ::ng-deep .p-dialog .p-dialog-footer .cancel {
     background-color:rgb(140, 47, 47);
     border:1px solid rgb(140, 47, 47);
@@ -13,7 +14,7 @@ $fontSizeQuestion: 1.2em;
     }
 }
 
-// Submit answers button
+// Submit answers button (only appears at Q24)
 ::ng-deep .submit .p-button {
     border-color: rgb(1, 115, 246);
     background-color: rgb(1, 115, 246);
@@ -43,7 +44,7 @@ $fontSizeQuestion: 1.2em;
     flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
-    box-shadow: rgba(0, 0, 0, 0.353) 0px 3px 8px;
+    box-shadow: rgba(0, 0, 0, 0.353) 0px 3px 4px;
     border-radius: 6px;
 
 

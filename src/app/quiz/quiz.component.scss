@@ -1,0 +1,35 @@
+::ng-deep .p-steps {
+    margin-top: 50px;
+    font-size: 1em;
+    width: 100%;
+    border-radius: 6px;
+    // border: 1px solid rgb(76, 175, 79);
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;    
+    
+    ul {
+        display: flex;
+        flex-wrap: wrap;
+        
+        li {
+            margin: 10px;
+            flex: 1 0 10%; 
+            // each element can take maximum 10% of the width, hence making max alignment of 8 steps (taking into account margins to make it to 100%)
+        }
+    }
+    
+    // put off 2 lines right and left of each step
+    .p-steps-item:before {
+        width: 0;
+    }
+
+    // put off PrimeNG steps number
+    .p-steps-item .p-menuitem-link {
+        .p-steps-number {
+            display: none;
+        }
+        .p-steps-title {
+            margin-right:0px;
+            margin: 0;
+        }
+    }
+}

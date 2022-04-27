@@ -20,17 +20,27 @@ export class QuizComponent implements OnInit {
   }
 
   generateStepItems(): void {
-    this.stepItems.push({
-      label: `Q1`,
-      routerLink: `/questions/1`,
-      disabled: false,
-    });
-    for (let i: number = 1; i < this.questions.length; i++) {
+    for (let i: number = 0; i < this.questions.length; i++) {
       this.stepItems.push({
         label: `Q${this.questions[i].nb}`,
         routerLink: `/questions/${this.questions[i].nb}`,
-        disabled: true,
+        disabled: i === 0 ? false : true,
       });
+    }
+    this.enableQuestionsAnswered();
+  }
+
+  // look in localStorage if some questions have been answered and if so, make them clickable in steps
+  enableQuestionsAnswered(): void {
+    for (let i = 0; i < localStorage.length; i++) {
+      const storageKey: string | null = localStorage.key(i);
+      if (
+        storageKey != null &&
+        storageKey != 'xCoordinate' &&
+        storageKey != 'yCoordinate'
+      ) {
+        this.stepItems[parseInt(storageKey) - 1].disabled = false;
+      }
     }
   }
 }

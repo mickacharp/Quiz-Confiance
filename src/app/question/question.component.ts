@@ -61,7 +61,6 @@ export class QuestionComponent implements OnInit {
     this.getStorageValues();
     this.getQuestionWhenUrlChanges();
     this.saveAnswerToStorageWhenUrlChanges();
-    setTimeout(() => this.enableQuestionsAnswered(), 1);
   }
 
   @ViewChild(QuizComponent) quiz: QuizComponent = new QuizComponent(
@@ -109,6 +108,10 @@ export class QuestionComponent implements OnInit {
     }
   }
 
+  enableNextQuestion(): void {
+    this.quiz.stepItems[this.currentQuestion.nb - 1].disabled = false;
+  }
+
   // will loop through localStorage keys and associated values and affecting them to the answers
   // this will make the user to not lose any progression if he closes/refreshes the app
   getStorageValues(): void {
@@ -146,24 +149,6 @@ export class QuestionComponent implements OnInit {
     if (id < 24) {
       this.router.navigate([`questions/${id + 1}`]);
     }
-  }
-
-  // look in localStorage if some questions have been answered and if so, make them clickable in steps
-  enableQuestionsAnswered(): void {
-    for (let i = 0; i < localStorage.length; i++) {
-      const storageKey: string | null = localStorage.key(i);
-      if (
-        storageKey != null &&
-        storageKey != 'xCoordinate' &&
-        storageKey != 'yCoordinate'
-      ) {
-        this.quiz.stepItems[parseInt(storageKey) - 1].disabled = false;
-      }
-    }
-  }
-
-  enableNextQuestion(): void {
-    this.quiz.stepItems[this.currentQuestion.nb - 1].disabled = false;
   }
 
   calculateResults(): void {
