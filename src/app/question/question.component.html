@@ -156,12 +156,14 @@
         "
         icon="pi pi-angle-left"
         iconPos="left"
+        class="prev-next"
       ></p-button>
       <p-button
         label="Suivant"
         (onClick)="nextQuestion(); questionForm.valid && saveAnswerToStorage()"
         icon="pi pi-angle-right"
         iconPos="right"
+        class="prev-next"
         [disabled]="questionForm.valid === false"
         *ngIf="currentQuestion.nb != 24"
       ></p-button>

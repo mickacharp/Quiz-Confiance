@@ -1,10 +1,21 @@
+@import '../../styles/mixins';
+@import '../../styles/variables';
+
 ::ng-deep .p-steps {
     margin-top: 50px;
-    font-size: 1em;
     width: 100%;
     border-radius: 6px;
-    // border: 1px solid rgb(76, 175, 79);
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;    
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
+    @media screen and (max-width: $bp1000) {
+        margin-top: 20px;
+    }
+    @media screen and (max-width: $bp740) {
+        font-size: $fontSizeQuestionBP740;
+    }
+    @media screen and (max-width: $bp380) {
+        font-size: $fontSizeQuestionBP380;
+        letter-spacing: 1px;
+    }      
     
     ul {
         display: flex;
