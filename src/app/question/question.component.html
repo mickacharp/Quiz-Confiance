@@ -121,20 +121,6 @@
       </div>
       <small
         *ngIf="
-          answerA.invalid ||
-          (answerA.dirty && answerA.invalid) ||
-          answerB.invalid ||
-          (answerB.dirty && answerB.invalid) ||
-          answerC.invalid ||
-          (answerC.dirty && answerC.invalid) ||
-          answerD.invalid ||
-          (answerD.dirty && answerD.invalid)
-        "
-        class="p-error"
-        >Cochez une des propositions pour passer à la suite du test</small
-      >
-      <small
-        *ngIf="
           answerA.disabled &&
           answerB.disabled &&
           answerC.disabled &&
@@ -144,6 +130,24 @@
         >Répondez aux questions précédentes pour poursuivre</small
       >
     </div>
+    <small
+      *ngIf="
+        answerA.invalid ||
+        (answerA.dirty && answerA.invalid) ||
+        answerB.invalid ||
+        (answerB.dirty && answerB.invalid) ||
+        answerC.invalid ||
+        (answerC.dirty && answerC.invalid) ||
+        answerD.invalid ||
+        (answerD.dirty && answerD.invalid)
+      "
+      class="p-error"
+      >{{
+        currentQuestion.nb === 24
+          ? "Cochez une des propositions pour pouvoir soumettre vos réponses"
+          : "Cochez une des propositions pour passer à la suite du test"
+      }}</small
+    >
     <div class="question__form__buttons">
       <p-button
         label="Précédent"
@@ -152,12 +156,14 @@
         "
         icon="pi pi-angle-left"
         iconPos="left"
+        class="prev-next"
       ></p-button>
       <p-button
         label="Suivant"
         (onClick)="nextQuestion(); questionForm.valid && saveAnswerToStorage()"
         icon="pi pi-angle-right"
         iconPos="right"
+        class="prev-next"
         [disabled]="questionForm.valid === false"
         *ngIf="currentQuestion.nb != 24"
       ></p-button>
@@ -173,4 +179,4 @@
     </div>
   </form>
 </div>
-<p-confirmDialog></p-confirmDialog>
+<p-confirmDialog [breakpoints]="{ '900px': '80vw' }"></p-confirmDialog>
