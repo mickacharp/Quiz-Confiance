@@ -36,7 +36,9 @@
       #email="ngModel"
       [(ngModel)]="userEmail"
     />
-    <label for="user-test">Donnez un nom à votre test : </label>
+    <label for="user-test"
+      >Donnez un nom à votre test (25 caract. max) :
+    </label>
     <input
       pInputText
       type="text"
@@ -45,6 +47,7 @@
       required
       #test="ngModel"
       [(ngModel)]="userTestName"
+      maxlength="25"
     />
     <p-button
       type="submit"

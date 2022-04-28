@@ -117,7 +117,7 @@
     <div *ngIf="userTests.length > 0" class="tests-list-container">
       <ul>
         <li *ngFor="let test of userTests; let indexOfElement = index">
-          - {{ test.name }}, fait le {{ test.date }}
+          - "{{ test.name }}", fait le {{ test.date }}
           <p-button
             label="Accéder à ce test"
             icon="pi pi-send"
