@@ -69,37 +69,44 @@
 
   <h2 class="pdf__subtitles">Votre résultat</h2>
   <div class="pdf__chart">
-    <p class="pdf__chart__interpretation">
-      Selon les réponses que vous avez fournies, vous êtes dans la catégorie de
-      personnes amenées à
+    <div class="pdf__chart__interpretation">
+      <p>
+        Selon les réponses que vous avez fournies, vous êtes dans la catégorie
+        de personnes amenées à
 
-      <span *ngIf="xCoordinate > 0 && yCoordinate > 0">
-        penser le désordre et agir dans le désordre.
-      </span>
-      <span *ngIf="xCoordinate > 0 && yCoordinate < 0">
-        penser l'ordre et agir dans le désordre.
-      </span>
-      <span *ngIf="xCoordinate < 0 && yCoordinate > 0">
-        penser le désordre et agir dans l'ordre.
-      </span>
-      <span *ngIf="xCoordinate < 0 && yCoordinate < 0">
-        penser l'ordre et agir dans l'ordre.
-      </span>
-      <span *ngIf="xCoordinate === 0 && yCoordinate > 0">
-        penser dans le désordre mais agir de manière équilibrée malgré tout.
-      </span>
-      <span *ngIf="xCoordinate === 0 && yCoordinate < 0">
-        penser dans l'ordre mais agir de manière équilibrée malgré tout.
-      </span>
-      <span *ngIf="xCoordinate > 0 && yCoordinate === 0">
-        penser de manière équilibrée mais agir dans le désordre malgré tout.
-      </span>
-      <span *ngIf="xCoordinate < 0 && yCoordinate === 0">
-        penser de manière équilibrée mais agir dans l'ordre malgré tout.
-      </span>
-    </p>
+        <span *ngIf="xCoordinate > 0 && yCoordinate > 0">
+          penser le désordre et agir dans le désordre.
+        </span>
+        <span *ngIf="xCoordinate > 0 && yCoordinate < 0">
+          penser l'ordre et agir dans le désordre.
+        </span>
+        <span *ngIf="xCoordinate < 0 && yCoordinate > 0">
+          penser le désordre et agir dans l'ordre.
+        </span>
+        <span *ngIf="xCoordinate < 0 && yCoordinate < 0">
+          penser l'ordre et agir dans l'ordre.
+        </span>
+        <span *ngIf="xCoordinate === 0 && yCoordinate > 0">
+          penser dans le désordre mais agir de manière équilibrée malgré tout.
+        </span>
+        <span *ngIf="xCoordinate === 0 && yCoordinate < 0">
+          penser dans l'ordre mais agir de manière équilibrée malgré tout.
+        </span>
+        <span *ngIf="xCoordinate > 0 && yCoordinate === 0">
+          penser de manière équilibrée mais agir dans le désordre malgré tout.
+        </span>
+        <span *ngIf="xCoordinate < 0 && yCoordinate === 0">
+          penser de manière équilibrée mais agir dans l'ordre malgré tout.
+        </span>
+      </p>
+    </div>
     <br />
-    <p-chart type="bubble" [data]="data" [options]="options"></p-chart>
+    <p-chart
+      [width]="pChartWidth"
+      type="bubble"
+      [data]="data"
+      [options]="options"
+    ></p-chart>
   </div>
 
   <h2 class="pdf__subtitles">Vos réponses</h2>

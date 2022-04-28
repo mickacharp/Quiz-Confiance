@@ -73,9 +73,13 @@
         width: 90%;
         margin: auto;
         margin-top: 10px;
+        display: flex;
+        flex-direction: column;
+        // align-items: center;
         &__interpretation {
-            font-size: 1.2em;
+            width: 100%;
             text-align: center;
+            font-size: 1.2em;
             margin-top: 10px;
             span {
                 font-weight: bold;
@@ -87,6 +91,9 @@
     ::ng-deep .p-datatable {
         margin: 0 50px;
         border: solid #4CAF50 2px;
+        @media screen and (max-width: $bp600) {
+            margin: 0;
+        }
     
         .p-datatable-thead > tr > th{
             text-align: center;
@@ -154,6 +161,7 @@
         align-items: center;
         text-align: center;
     }
+
     p {
         margin-top: 10px;
         @media screen and (max-width: $bp1220) {

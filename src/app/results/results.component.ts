@@ -29,7 +29,7 @@ export class ResultsComponent implements OnInit {
         data: [
           { x: this.xCoordinate, y: this.yCoordinate, r: this.pointRadius },
         ],
-        backgroundColor: '#f2440f',
+        backgroundColor: '#4CAF50',
       },
     ],
   };
@@ -88,6 +88,8 @@ export class ResultsComponent implements OnInit {
 
   userEmail: string = '';
   userTestName: string = '';
+
+  pChartWidth: string = '';
 
   constructor(
     private afs: AngularFirestore,
@@ -165,17 +167,44 @@ export class ResultsComponent implements OnInit {
   }
 
   generatePDF(): void {
-    const data: HTMLElement | null = document.getElementById('pdf');
-    if (data) {
-      const pdf = new jsPDF('p', 'mm', 'a4');
-      // scale: the higher the value, the higher the pdf resolution
-      html2canvas(data, { scale: 1 }).then((canvas) => {
-        const fileWidth = 210;
-        const fileHeight = (canvas.height * fileWidth) / canvas.width;
-        const docDataURL = canvas.toDataURL('image/png');
-        pdf.addImage(docDataURL, 'PNG', 0, 0, fileWidth, fileHeight);
-        pdf.save('Résultats_Test_Confiance.pdf');
-      });
+    const pChartWidthTemp: string = this.pChartWidth;
+    // since PDF is generated from the DOM, we set the viewport to 1920px width
+    // so the PDF will always be the same as if it was generated on a 1920px desktop
+    // even is generated from a mobile/iPad
+    if (window.screen.width < 1920) {
+      document
+        .getElementById('viewport')!
+        .setAttribute('content', 'width=1920');
+    }
+    this.pChartWidthFunction();
+    setTimeout(() => {
+      const data: HTMLElement | null = document.getElementById('pdf');
+      if (data) {
+        const pdf = new jsPDF('p', 'mm', 'a4');
+        // scale: the higher the value, the higher the pdf resolution
+        html2canvas(data, { scale: 1 }).then((canvas) => {
+          const fileWidth = 210;
+          const fileHeight = (canvas.height * fileWidth) / canvas.width;
+          const docDataURL = canvas.toDataURL('image/png');
+          pdf.addImage(docDataURL, 'PNG', 0, 0, fileWidth, fileHeight);
+          pdf.save('Résultats_Test_Confiance.pdf');
+        });
+      }
+      // at the end, we set viewport back to its initial value
+      if (window.screen.width < 1920) {
+        document
+          .getElementById('viewport')!
+          .setAttribute('content', 'width=device-width, initial-scale=1');
+        this.pChartWidth = pChartWidthTemp;
+      }
+    }, 1000);
+  }
+
+  pChartWidthFunction(): any {
+    const viewP: HTMLElement = document.getElementById('viewport')!;
+    const content: string = viewP.getAttribute('content')!;
+    if (content == 'width=1920') {
+      this.pChartWidth = '1320px';
     }
   }
 
