@@ -1,17 +1,3 @@
-<p-button
-  label="Refaire un test"
-  (onClick)="openConfirmationModal()"
-  icon="pi pi-replay"
-  iconPos="left"
-></p-button>
-
-<p-button
-  label="Sauvegarder mon questionnaire"
-  (onClick)="showTestModalDialog()"
-  icon="pi pi-save"
-  iconPos="left"
-  *ngIf="canSaveTest"
-></p-button>
 <p-dialog
   header="Sauvegarder mon questionnaire"
   [(visible)]="displayTestModal"
@@ -158,11 +144,45 @@
   </div>
 </div>
 
-<p-button
-  (click)="generatePDF()"
-  icon="pi pi-download"
-  iconPos="left"
-  label="Télécharger mes résultats (.pdf)"
-></p-button>
-
+<div class="options">
+  <h2 class="pdf__subtitles">Options</h2>
+  <p>
+    Si vous souhaitez télécharger votre résultat au format PDF, cliquez sur
+    "Télécharger mes résultats".
+  </p>
+  <div class="options__button-containers">
+    <p-button
+      (click)="generatePDF()"
+      icon="pi pi-download"
+      iconPos="left"
+      label="Télécharger mes résultats"
+    ></p-button>
+  </div>
+  <p>
+    Vous pouvez également sauvegarder votre résultat dans notre base de données.
+    Cela vous permettra d'accéder à tout moment à vos anciens tests afin de
+    consulter vos résultats et de les télécharger. Pour cela cliquez sur
+    "Sauvegarder mon questionnaire".
+  </p>
+  <div class="options__button-containers">
+    <p-button
+      label="Sauvegarder mon questionnaire"
+      (onClick)="showTestModalDialog()"
+      icon="pi pi-save"
+      iconPos="left"
+      *ngIf="canSaveTest"
+    ></p-button>
+  </div>
+  <p>
+    Si vous voulez commencer un nouveau test, cliquez sur "Refaire un test".
+  </p>
+  <div class="options__button-containers">
+    <p-button
+      label="Refaire un test"
+      (onClick)="openConfirmationModal()"
+      icon="pi pi-replay"
+      iconPos="left"
+    ></p-button>
+  </div>
+</div>
 <p-confirmDialog></p-confirmDialog>

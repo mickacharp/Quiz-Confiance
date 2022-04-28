@@ -1,6 +1,7 @@
 @import '../../styles/mixins';
 @import '../../styles/variables';
 
+//////////////////// PrimeNg p-chart (canvas) ////////////////////
 :host {
     ::ng-deep p-chart {
         canvas {
@@ -11,11 +12,11 @@
             margin-left: 80px;
         }
     }
-    
-    
 }
 
-// Reject button of ConfirmationDialog (when starting a new test)
+//////////////////// PrimeNg p-dialog ModalDialog (displayed when click on 'Refaire un test' button) ////////////////////
+
+// Cancel button 'Revenir aux résultats'
 ::ng-deep .p-dialog .p-dialog-footer .cancel {
     background-color:rgb(140, 47, 47);
     border:1px solid rgb(140, 47, 47);
@@ -29,38 +30,15 @@
     }
 }
 
-////////// TABLE //////////
-::ng-deep .p-datatable {
-    margin: 0 50px;
-    border: solid #4CAF50 2px;
-    
-    .p-datatable-thead > tr > th{
-        text-align: center;
-        color: white;
-        background-color: #4CAF50;
-    }
-
-    .p-datatable-tbody > tr > td {
-        padding: 6px 5px;
-    }
-    .p-datatable-tbody > tr > td:first-child {
-        font-weight: bold;
-        text-align: center;
-        color: white;
-        background-color: rgb(76, 175, 80);
-    }
-
-    .p-datatable-tbody > tr > td:last-child {
-        font-weight: bold;
-        min-width: 170px;
-    }
-}
-
+//////////////////// PDF ////////////////////
 .pdf {
     &__subtitles {
-        width: 300px;
+        width: 30%;
         margin: 0 0 20px 20px;
         border-bottom: #4CAF50 solid 2px;
+        @media screen and (max-width: $bp540) {
+            width: 50%;
+        }
     }
     ////////// HEADER //////////
     &__header {
@@ -105,6 +83,33 @@
         }
     }
 
+    ////////// TABLE //////////
+    ::ng-deep .p-datatable {
+        margin: 0 50px;
+        border: solid #4CAF50 2px;
+    
+        .p-datatable-thead > tr > th{
+            text-align: center;
+            color: white;
+            background-color: #4CAF50;
+        }
+
+        .p-datatable-tbody > tr > td {
+            padding: 6px 5px;
+        }
+        .p-datatable-tbody > tr > td:first-child {
+            font-weight: bold;
+            text-align: center;
+            color: white;
+            background-color: rgb(76, 175, 80);
+        }
+
+        .p-datatable-tbody > tr > td:last-child {
+            font-weight: bold;
+            min-width: 170px;
+        }
+    }
+
     ////////// FOOTER //////////
 
     &__footer {
@@ -134,8 +139,58 @@
             list-style-type: none;
         }
     }
+}
 
+//////////////////// OPTIONS ////////////////////
+.options {
     
+    *:not(h2) {
+        margin-left: 20px;
+    }
 
-    
+    @media screen and (max-width: $bp540) {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    p {
+        margin-top: 10px;
+        @media screen and (max-width: $bp1220) {
+            font-size: $fontSizeHomeText1220;
+        }
+        @media screen and (max-width: $bp1000) {
+            font-size: $fontSizeHomeText1000;
+        }
+        @media screen and (max-width: $bp740) {
+            font-size: $fontSizeHomeText740;
+        }
+        @media screen and (max-width: $bp380) {
+            font-size: $fontSizeHomeText380;
+        }
+
+        strong {
+            font-weight: bold;
+        }
+    }
+
+    &__button-containers {
+        margin: 10px 0;
+        display: flex;
+        justify-content: center;
+        ::ng-deep .p-button {
+            @media screen and (max-width: $bp1220) {
+                font-size: $fontSizeHomeText1220;
+            }
+            @media screen and (max-width: $bp1000) {
+                font-size: $fontSizeHomeText1000;
+            }
+            @media screen and (max-width: $bp740) {
+                font-size: $fontSizeHomeText740;
+            }
+            @media screen and (max-width: $bp380) {
+                font-size: $fontSizeHomeText380;
+            }
+        }
+    }
 }

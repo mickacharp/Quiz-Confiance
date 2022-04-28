@@ -20,12 +20,15 @@ export class ResultsComponent implements OnInit {
   // convert Coords to number putting '+' before, knowing that parseInt doesn't work and return 0
   xCoordinate: number = +localStorage.getItem('xCoordinate')!;
   yCoordinate: number = +localStorage.getItem('yCoordinate')!;
+  pointRadius: number = window.screen.width >= 1100 ? 8 : 4;
   // Chart data
   data: any = {
     datasets: [
       {
         label: 'Votre résultat',
-        data: [{ x: this.xCoordinate, y: this.yCoordinate, r: 8 }],
+        data: [
+          { x: this.xCoordinate, y: this.yCoordinate, r: this.pointRadius },
+        ],
         backgroundColor: '#f2440f',
       },
     ],
@@ -87,11 +90,11 @@ export class ResultsComponent implements OnInit {
   userTestName: string = '';
 
   constructor(
-    private questionsService: QuestionsService,
     private afs: AngularFirestore,
+    private router: Router,
+    private questionsService: QuestionsService,
     private confirmationService: ConfirmationService,
-    private message: MessageService,
-    private router: Router
+    private message: MessageService
   ) {}
 
   ngOnInit(): void {
