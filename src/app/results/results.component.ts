@@ -170,7 +170,7 @@ export class ResultsComponent implements OnInit {
     const pChartWidthTemp: string = this.pChartWidth;
     // since PDF is generated from the DOM, we set the viewport to 1920px width
     // so the PDF will always be the same as if it was generated on a 1920px desktop
-    // even is generated from a mobile/iPad
+    // even if generated from a mobile/iPad
     if (window.screen.width < 1920) {
       document
         .getElementById('viewport')!
@@ -200,7 +200,7 @@ export class ResultsComponent implements OnInit {
     }, 1000);
   }
 
-  pChartWidthFunction(): any {
+  pChartWidthFunction(): void {
     const viewP: HTMLElement = document.getElementById('viewport')!;
     const content: string = viewP.getAttribute('content')!;
     if (content == 'width=1920') {
