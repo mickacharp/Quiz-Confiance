@@ -29,7 +29,8 @@
       questionForm.valid && saveAnswerToStorage();
       questionForm.valid && calculateResults();
       questionForm.valid && calculateCoordinates();
-      questionForm.valid && openConfirmationModal()
+      questionForm.valid && openConfirmationModal();
+      questionForm.valid && clearSessionStorage()
     "
     #questionForm="ngForm"
     class="question__form"
