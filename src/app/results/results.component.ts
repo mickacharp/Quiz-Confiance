@@ -133,6 +133,11 @@ export class ResultsComponent implements OnInit {
   checkIfDisplayResultsPage(): void {
     if (localStorage.length < 26) {
       this.router.navigate(['/home']);
+      this.message.add({
+        severity: 'error',
+        summary: 'Accès impossible',
+        detail: `Vous avez été redirigé vers la page d'accueil car vous n'avez aucun résultat à afficher. Répondez d'abord au questionnaire.`,
+      });
     }
   }
 
