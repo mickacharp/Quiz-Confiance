@@ -104,8 +104,8 @@
 <div class="options">
   <h2 class="pdf__subtitles">Options</h2>
   <p>
-    Si vous souhaitez télécharger votre résultat au format PDF, cliquez sur
-    "Télécharger mes résultats".
+    Si vous souhaitez <strong>télécharger votre résultat</strong> au format PDF,
+    cliquez sur "Télécharger mes résultats".
   </p>
   <div class="options__button-containers">
     <p-button
@@ -116,10 +116,10 @@
     ></p-button>
   </div>
   <p>
-    Vous pouvez également sauvegarder votre résultat dans notre base de données.
-    Cela vous permettra d'accéder à tout moment à vos anciens tests afin de
-    consulter vos résultats et de les télécharger. Pour cela cliquez sur
-    "Sauvegarder mon questionnaire".
+    Vous pouvez également <strong>sauvegarder votre résultat</strong> dans notre
+    base de données. Cela vous permettra d'accéder à tout moment à vos anciens
+    tests afin de consulter vos résultats et de les télécharger. Pour cela
+    cliquez sur "Sauvegarder mon questionnaire".
   </p>
   <div class="options__button-containers">
     <p-button
@@ -131,7 +131,8 @@
     ></p-button>
   </div>
   <p>
-    Si vous voulez commencer un nouveau test, cliquez sur "Refaire un test".
+    Si vous voulez <strong>commencer un nouveau test</strong>, cliquez sur
+    "Refaire un test".
   </p>
   <div class="options__button-containers">
     <p-button
@@ -165,47 +166,59 @@
   [style]="{ width: '50vw' }"
   [draggable]="false"
   [resizable]="false"
+  class="save-test"
+  [breakpoints]="{ '1080px': '60vw', '890px': '70vw', '768px': '80vw' }"
 >
-  Si vous souhaitez sauvegarder vos résultats pour y accéder plus tard,
-  renseignez les champs ci-dessous.*
-  <form
-    #saveTestForm="ngForm"
-    (ngSubmit)="saveTestInDatabase(); hideTestModalDialog()"
-  >
-    <label for="user-email">Votre email : </label>
-    <input
-      pInputText
-      type="email"
-      name="user-email"
-      id="user-email"
-      required
-      #email="ngModel"
-      [(ngModel)]="userEmail"
-    />
-    <label for="user-test"
-      >Donnez un nom à votre test (25 caract. max) :
-    </label>
-    <input
-      pInputText
-      type="text"
-      name="user-test"
-      id="user-test"
-      required
-      #test="ngModel"
-      [(ngModel)]="userTestName"
-      maxlength="25"
-    />
-    <p-button
-      type="submit"
-      label="Sauvegarder mes réponses"
-      icon="pi pi-angle-right"
-      iconPos="right"
-      [disabled]="saveTestForm.valid === false"
-    ></p-button>
-  </form>
-  *Nous n'aurons pas accès à vos informations, elles vous serviront juste
-  d'identifiant pour que nous puissions retrouver votre test dans notre base de
-  données.
+  <div class="save-test-content">
+    <p>
+      Si vous souhaitez sauvegarder vos résultats pour y accéder plus tard,
+      renseignez les champs ci-dessous.*
+    </p>
+    <form
+      #saveTestForm="ngForm"
+      (ngSubmit)="saveTestInDatabase(); hideTestModalDialog()"
+    >
+      <label for="user-email">Votre email : </label>
+      <input
+        pInputText
+        type="email"
+        name="user-email"
+        id="user-email"
+        required
+        #email="ngModel"
+        [(ngModel)]="userEmail"
+      />
+      <br />
+      <label for="user-test"
+        >Donnez un nom à votre test (25 caract. max) :
+      </label>
+      <input
+        pInputText
+        type="text"
+        name="user-test"
+        id="user-test"
+        required
+        #test="ngModel"
+        [(ngModel)]="userTestName"
+        maxlength="25"
+      />
+      <p-button
+        type="submit"
+        label="Sauvegarder mes réponses"
+        icon="pi pi-angle-right"
+        iconPos="right"
+        [disabled]="saveTestForm.valid === false"
+      ></p-button>
+    </form>
+    <p class="disclaimer">
+      *Nous n'aurons pas accès à ces informations, elles vous serviront juste
+      d'identifiant pour que nous puissions retrouver votre test dans notre base
+      de données 🙂
+    </p>
+  </div>
 </p-dialog>
 
-<p-confirmDialog></p-confirmDialog>
+<p-confirmDialog
+  [style]="{ width: '60vw' }"
+  [breakpoints]="{ '1470px': '70vw', '768px': '80vw', '380px': '85vw' }"
+></p-confirmDialog>

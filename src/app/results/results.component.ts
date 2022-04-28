@@ -148,11 +148,11 @@ export class ResultsComponent implements OnInit {
 
   openConfirmationModal() {
     this.confirmationService.confirm({
-      message: `Attention, si vous voulez recommencer le questionnaire, tous les résultats et vos réponses du
-        test que vous venez de faire seront perdus ! Vous pouvez le sauvegarder en
-        cliquant sur "Sauvegarder mon questionnaire". <br />
-        Si vous êtes sûr de votre choix, alors cliquez sur "Commencer" <br />
-        (Si vous êtiez en train de consulter un de vos précédents tests, alors pas d'inquiètude, il restera enregistré dans notre base de données 😉)`,
+      message: `<p>Attention, si vous voulez recommencer le questionnaire, <strong>tous les résultats et réponses au
+        test que vous venez de faire seront perdus !</strong> Vous pouvez le sauvegarder en
+        cliquant sur "Sauvegarder mon questionnaire". </p>
+        <p>Si vous êtes sûr de votre choix, alors cliquez sur "Commencer" </p>
+        <p>(Si vous êtiez en train de consulter un de vos précédents tests, alors pas d'inquiètude, il restera enregistré dans notre base de données 😉)</p>`,
       header: 'Refaire un test',
       icon: 'pi pi-exclamation-triangle',
       acceptLabel: 'Commencer',
