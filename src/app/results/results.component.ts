@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { Test } from '../models/test.model';
+import { Router } from '@angular/router';
 import { User } from '../models/user.model';
+import { Test } from '../models/test.model';
 import { Question } from '../models/question.model';
+import { Answer } from '../models/answer.model';
 import { QuestionsService } from '../shared/questions.service';
 import { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
 import { questionsList } from 'src/assets/questions-list';
-import { Answer } from '../models/answer.model';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-results',
@@ -95,6 +95,7 @@ export class ResultsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.checkIfDisplayResultsPage();
     this.getStorageValues();
     this.getFinalAnswers();
     this.checkIfUserCanSaveTest();
@@ -126,6 +127,12 @@ export class ResultsComponent implements OnInit {
       this.canSaveTest = false;
     } else {
       this.canSaveTest = true;
+    }
+  }
+
+  checkIfDisplayResultsPage(): void {
+    if (localStorage.length < 26) {
+      this.router.navigate(['/home']);
     }
   }
 
