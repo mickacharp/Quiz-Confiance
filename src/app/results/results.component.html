@@ -51,14 +51,10 @@
       </p>
     </div>
     <br />
-    <p-chart
-      [width]="pChartWidth"
-      type="bubble"
-      [data]="data"
-      [options]="options"
-    ></p-chart>
+    <div class="chart-container" id="chart-container">
+      <p-chart type="bubble" [data]="data" [options]="options"></p-chart>
+    </div>
   </div>
-
   <h2 class="pdf__subtitles">Vos réponses</h2>
   <p-table
     [value]="finalAnswers"

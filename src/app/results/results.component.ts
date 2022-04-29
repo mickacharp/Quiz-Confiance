@@ -20,11 +20,13 @@ export class ResultsComponent implements OnInit {
   // convert Coords to number putting '+' before, knowing that parseInt doesn't work and return 0
   xCoordinate: number = +localStorage.getItem('xCoordinate')!;
   yCoordinate: number = +localStorage.getItem('yCoordinate')!;
-  pointRadius: number = window.screen.width >= 1100 ? 8 : 4;
+  pointRadius: number =
+    window.screen.width >= 1100 ? 8 : window.screen.width >= 800 ? 6 : 4;
   // Chart data
   data: any = {
     datasets: [
       {
+        order: 100000000,
         label: 'Votre résultat',
         data: [
           { x: this.xCoordinate, y: this.yCoordinate, r: this.pointRadius },
@@ -36,10 +38,11 @@ export class ResultsComponent implements OnInit {
 
   // Chart options
   options: any = {
+    aspectRatio: 1,
     scales: {
       x: {
-        min: -4,
-        max: 4,
+        min: -3,
+        max: 3,
         position: 'center',
         width: 50,
         ticks: {
@@ -52,8 +55,8 @@ export class ResultsComponent implements OnInit {
         },
       },
       y: {
-        min: -4,
-        max: 4,
+        min: -3,
+        max: 3,
         position: 'center',
         ticks: {
           display: false,
@@ -89,7 +92,7 @@ export class ResultsComponent implements OnInit {
   userEmail: string = '';
   userTestName: string = '';
 
-  pChartWidth: string = '';
+  chartContainerElement: HTMLElement | null = null;
 
   constructor(
     private afs: AngularFirestore,
@@ -104,6 +107,7 @@ export class ResultsComponent implements OnInit {
     this.getStorageValues();
     this.getFinalAnswers();
     this.checkIfUserCanSaveTest();
+    this.chartContainerElement = document.getElementById('chart-container');
   }
 
   clearStorage(): void {
@@ -167,44 +171,53 @@ export class ResultsComponent implements OnInit {
   }
 
   generatePDF(): void {
-    const pChartWidthTemp: string = this.pChartWidth;
-    // since PDF is generated from the DOM, we set the viewport to 1920px width
-    // so the PDF will always be the same as if it was generated on a 1920px desktop
-    // even if generated from a mobile/iPad
-    if (window.screen.width < 1920) {
-      document
-        .getElementById('viewport')!
-        .setAttribute('content', 'width=1920');
-    }
-    this.pChartWidthFunction();
-    setTimeout(() => {
-      const data: HTMLElement | null = document.getElementById('pdf');
-      if (data) {
-        const pdf = new jsPDF('p', 'mm', 'a4');
-        // scale: the higher the value, the higher the pdf resolution
-        html2canvas(data, { scale: 1 }).then((canvas) => {
-          const fileWidth = 210;
-          const fileHeight = (canvas.height * fileWidth) / canvas.width;
-          const docDataURL = canvas.toDataURL('image/png');
-          pdf.addImage(docDataURL, 'PNG', 0, 0, fileWidth, fileHeight);
-          pdf.save('Résultats_Test_Confiance.pdf');
-        });
-      }
-      // at the end, we set viewport back to its initial value
+    if (this.chartContainerElement) {
+      const chartWidthTemp: number = this.chartContainerElement.offsetWidth;
+
+      // since PDF is generated from the DOM, we set the viewport to 1920px width
+      // so the PDF will always be the same as if it was generated on a 1920px desktop
+      // even if generated from a mobile/iPad
       if (window.screen.width < 1920) {
         document
           .getElementById('viewport')!
-          .setAttribute('content', 'width=device-width, initial-scale=1');
-        this.pChartWidth = pChartWidthTemp;
+          .setAttribute('content', 'width=1920');
       }
-    }, 1000);
+      this.pChartWidthFunction();
+      setTimeout(() => {
+        const data: HTMLElement | null = document.getElementById('pdf');
+        if (data) {
+          const pdf = new jsPDF('p', 'mm', 'a4');
+          // scale: the higher the value, the higher the pdf resolution
+          html2canvas(data, { scale: 1 }).then((canvas) => {
+            const fileWidth = 210;
+            const fileHeight = (canvas.height * fileWidth) / canvas.width;
+            const docDataURL = canvas.toDataURL('image/png');
+            pdf.addImage(docDataURL, 'PNG', 0, 0, fileWidth, fileHeight);
+            pdf.save('Résultats_Test_Confiance.pdf');
+          });
+        }
+        // at the end, we set viewport back to its initial value
+        if (window.screen.width < 1920) {
+          document
+            .getElementById('viewport')!
+            .setAttribute('content', 'width=device-width, initial-scale=1');
+        }
+        if (this.chartContainerElement) {
+          this.chartContainerElement.style.width = `${chartWidthTemp}px`;
+        }
+      }, 1000);
+    }
   }
 
+  // cf big comment in generatePDF()
   pChartWidthFunction(): void {
     const viewP: HTMLElement = document.getElementById('viewport')!;
     const content: string = viewP.getAttribute('content')!;
+
     if (content == 'width=1920') {
-      this.pChartWidth = '1320px';
+      if (this.chartContainerElement) {
+        this.chartContainerElement.style.width = '650px';
+      }
     }
   }
 
