@@ -228,4 +228,9 @@ export class QuestionComponent implements OnInit {
       },
     });
   }
+
+  clearSessionStorage(): void {
+    // clear sessionStorage just in case (to avoid user to not be able to save his test)
+    sessionStorage.clear();
+  }
 }

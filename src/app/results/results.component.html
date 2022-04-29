@@ -1,64 +1,3 @@
-<p-button
-  label="Refaire un test"
-  (onClick)="openConfirmationModal()"
-  icon="pi pi-replay"
-  iconPos="left"
-></p-button>
-
-<p-button
-  label="Sauvegarder mon questionnaire"
-  (onClick)="showTestModalDialog()"
-  icon="pi pi-save"
-  iconPos="left"
-  *ngIf="canSaveTest"
-></p-button>
-<p-dialog
-  header="Sauvegarder mon questionnaire"
-  [(visible)]="displayTestModal"
-  [modal]="true"
-  [style]="{ width: '50vw' }"
-  [draggable]="false"
-  [resizable]="false"
->
-  Si vous souhaitez sauvegarder vos résultats pour y accéder plus tard,
-  renseignez les champs ci-dessous.*
-  <form
-    #saveTestForm="ngForm"
-    (ngSubmit)="saveTestInDatabase(); hideTestModalDialog()"
-  >
-    <label for="user-email">Votre email : </label>
-    <input
-      pInputText
-      type="email"
-      name="user-email"
-      id="user-email"
-      required
-      #email="ngModel"
-      [(ngModel)]="userEmail"
-    />
-    <label for="user-test">Donnez un nom à votre test : </label>
-    <input
-      pInputText
-      type="text"
-      name="user-test"
-      id="user-test"
-      required
-      #test="ngModel"
-      [(ngModel)]="userTestName"
-    />
-    <p-button
-      type="submit"
-      label="Sauvegarder mes réponses"
-      icon="pi pi-angle-right"
-      iconPos="right"
-      [disabled]="saveTestForm.valid === false"
-    ></p-button>
-  </form>
-  *Nous n'aurons pas accès à vos informations, elles vous serviront juste
-  d'identifiant pour que nous puissions retrouver votre test dans notre base de
-  données.
-</p-dialog>
-
 <div id="pdf" class="pdf">
   <div class="pdf__header">
     <img
@@ -67,52 +6,55 @@
       class="pdf__logo"
     />
     <div class="pdf__title">
-      <h1>
+      <h1 class="pdf__title__main-title">
         Questionnaire d'évaluation de la "confiance collective et réciproque"
       </h1>
       <h3 class="pdf__title__citation">
         "C'est la confiance que les autres mettent en nous qui nous montre le
         chemin"
       </h3>
-      <h3>François Mauriac (1885-1970)</h3>
+      <h3 class="pdf__title__citation">François Mauriac (1885-1970)</h3>
     </div>
   </div>
 
   <h2 class="pdf__subtitles">Votre résultat</h2>
   <div class="pdf__chart">
-    <p class="pdf__chart__interpretation">
-      Selon les réponses que vous avez fournies, vous êtes dans la catégorie de
-      personnes amenées à
+    <div class="pdf__chart__interpretation">
+      <p>
+        Selon les réponses que vous avez fournies, vous êtes dans la catégorie
+        de personnes amenées à
 
-      <span *ngIf="xCoordinate > 0 && yCoordinate > 0">
-        penser le désordre et agir dans le désordre.
-      </span>
-      <span *ngIf="xCoordinate > 0 && yCoordinate < 0">
-        penser l'ordre et agir dans le désordre.
-      </span>
-      <span *ngIf="xCoordinate < 0 && yCoordinate > 0">
-        penser le désordre et agir dans l'ordre.
-      </span>
-      <span *ngIf="xCoordinate < 0 && yCoordinate < 0">
-        penser l'ordre et agir dans l'ordre.
-      </span>
-      <span *ngIf="xCoordinate === 0 && yCoordinate > 0">
-        penser dans le désordre mais agir de manière équilibrée malgré tout.
-      </span>
-      <span *ngIf="xCoordinate === 0 && yCoordinate < 0">
-        penser dans l'ordre mais agir de manière équilibrée malgré tout.
-      </span>
-      <span *ngIf="xCoordinate > 0 && yCoordinate === 0">
-        penser de manière équilibrée mais agir dans le désordre malgré tout.
-      </span>
-      <span *ngIf="xCoordinate < 0 && yCoordinate === 0">
-        penser de manière équilibrée mais agir dans l'ordre malgré tout.
-      </span>
-    </p>
+        <span *ngIf="xCoordinate > 0 && yCoordinate > 0">
+          penser le désordre et agir dans le désordre.
+        </span>
+        <span *ngIf="xCoordinate > 0 && yCoordinate < 0">
+          penser l'ordre et agir dans le désordre.
+        </span>
+        <span *ngIf="xCoordinate < 0 && yCoordinate > 0">
+          penser le désordre et agir dans l'ordre.
+        </span>
+        <span *ngIf="xCoordinate < 0 && yCoordinate < 0">
+          penser l'ordre et agir dans l'ordre.
+        </span>
+        <span *ngIf="xCoordinate === 0 && yCoordinate > 0">
+          penser dans le désordre mais agir de manière équilibrée malgré tout.
+        </span>
+        <span *ngIf="xCoordinate === 0 && yCoordinate < 0">
+          penser dans l'ordre mais agir de manière équilibrée malgré tout.
+        </span>
+        <span *ngIf="xCoordinate > 0 && yCoordinate === 0">
+          penser de manière équilibrée mais agir dans le désordre malgré tout.
+        </span>
+        <span *ngIf="xCoordinate < 0 && yCoordinate === 0">
+          penser de manière équilibrée mais agir dans l'ordre malgré tout.
+        </span>
+      </p>
+    </div>
     <br />
-    <p-chart type="bubble" [data]="data" [options]="options"></p-chart>
+    <div class="chart-container" id="chart-container">
+      <p-chart type="bubble" [data]="data" [options]="options"></p-chart>
+    </div>
   </div>
-
   <h2 class="pdf__subtitles">Vos réponses</h2>
   <p-table
     [value]="finalAnswers"
@@ -137,7 +79,7 @@
     </ng-template>
   </p-table>
 
-  <div class="pdf__footer">
+  <div class="pdf__footer desktop">
     <img
       src="../../assets/logo.png"
       alt="logo de Thierry Lallia"
@@ -155,12 +97,124 @@
   </div>
 </div>
 
-<p-button
-  (click)="generatePDF()"
-  icon="pi pi-download"
-  iconPos="left"
-  label="Télécharger mes résultats (.pdf)"
-></p-button>
+<div class="options">
+  <h2 class="pdf__subtitles">Options</h2>
+  <p>
+    Si vous souhaitez <strong>télécharger votre résultat</strong> au format PDF,
+    cliquez sur "Télécharger mes résultats".
+  </p>
+  <div class="options__button-containers">
+    <p-button
+      (click)="generatePDF()"
+      icon="pi pi-download"
+      iconPos="left"
+      label="Télécharger mes résultats"
+    ></p-button>
+  </div>
+  <p>
+    Vous pouvez également <strong>sauvegarder votre résultat</strong> dans notre
+    base de données. Cela vous permettra d'accéder à tout moment à vos anciens
+    tests afin de consulter vos résultats et de les télécharger. Pour cela
+    cliquez sur "Sauvegarder mon questionnaire".
+  </p>
+  <div class="options__button-containers">
+    <p-button
+      label="Sauvegarder mon questionnaire"
+      (onClick)="showTestModalDialog()"
+      icon="pi pi-save"
+      iconPos="left"
+      *ngIf="canSaveTest"
+    ></p-button>
+  </div>
+  <p>
+    Si vous voulez <strong>commencer un nouveau test</strong>, cliquez sur
+    "Refaire un test".
+  </p>
+  <div class="options__button-containers">
+    <p-button
+      label="Refaire un test"
+      (onClick)="openConfirmationModal()"
+      icon="pi pi-replay"
+      iconPos="left"
+    ></p-button>
+  </div>
+</div>
 
-<p-confirmDialog></p-confirmDialog>
-<p-toast></p-toast>
+<!-- Footer that displays only in responsive (<1000px) -->
+<div class="pdf__footer mobile">
+  <h2 class="pdf__subtitles footer__subtitle">Contact</h2>
+  <div class="pdf__footer__name">
+    <h3>Thierry Lallia</h3>
+    <h4>Inventeur de confiance partagée</h4>
+  </div>
+  <ul class="pdf__footer__contact">
+    <li><i class="pi pi-envelope"></i> lesilencedelanuit@outlook.com</li>
+    <li><i class="pi pi-phone"></i> +33 (6) 86 58 26 69</li>
+    <li><i class="pi pi-sun"></i> Du lundi au samedi, de 9h00 à 12h00</li>
+  </ul>
+</div>
+
+<!-- Save test dialog -->
+<p-dialog
+  header="Sauvegarder mon questionnaire"
+  [(visible)]="displayTestModal"
+  [modal]="true"
+  [style]="{ width: '50vw' }"
+  [draggable]="false"
+  [resizable]="false"
+  class="save-test"
+  [breakpoints]="{ '1080px': '60vw', '890px': '70vw', '768px': '80vw' }"
+>
+  <div class="save-test-content">
+    <p>
+      Si vous souhaitez sauvegarder vos résultats pour y accéder plus tard,
+      renseignez les champs ci-dessous.*
+    </p>
+    <form
+      #saveTestForm="ngForm"
+      (ngSubmit)="saveTestInDatabase(); hideTestModalDialog()"
+    >
+      <label for="user-email">Votre email : </label>
+      <input
+        pInputText
+        type="email"
+        name="user-email"
+        id="user-email"
+        required
+        #email="ngModel"
+        [(ngModel)]="userEmail"
+      />
+      <br />
+      <label for="user-test"
+        >Donnez un nom à votre test (25 caract. max) :
+      </label>
+      <input
+        pInputText
+        type="text"
+        name="user-test"
+        id="user-test"
+        required
+        #test="ngModel"
+        [(ngModel)]="userTestName"
+        maxlength="25"
+      />
+      <p-button
+        type="submit"
+        label="Sauvegarder mes réponses"
+        icon="pi pi-angle-right"
+        iconPos="right"
+        [disabled]="saveTestForm.valid === false"
+      ></p-button>
+    </form>
+    <p class="disclaimer">
+      *Nous n'aurons pas accès à ces informations, elles vous serviront juste
+      d'identifiant pour que nous puissions retrouver votre test dans notre base
+      de données 🙂
+    </p>
+  </div>
+</p-dialog>
+
+<p-confirmDialog
+  [style]="{ width: '60vw' }"
+  [breakpoints]="{ '1470px': '70vw', '768px': '80vw', '380px': '85vw' }"
+></p-confirmDialog>
