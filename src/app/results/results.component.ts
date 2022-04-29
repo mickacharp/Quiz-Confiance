@@ -108,6 +108,12 @@ export class ResultsComponent implements OnInit {
     this.getFinalAnswers();
     this.checkIfUserCanSaveTest();
     this.chartContainerElement = document.getElementById('chart-container');
+    this.message.add({
+      severity: 'error',
+      summary: 'Accès impossible',
+      detail: `Vous avez été redirigé vers la page d'accueil car vous n'avez aucun résultat à afficher. Répondez d'abord au questionnaire.`,
+      sticky: true,
+    });
   }
 
   clearStorage(): void {
@@ -146,6 +152,7 @@ export class ResultsComponent implements OnInit {
         severity: 'error',
         summary: 'Accès impossible',
         detail: `Vous avez été redirigé vers la page d'accueil car vous n'avez aucun résultat à afficher. Répondez d'abord au questionnaire.`,
+        sticky: true,
       });
     }
   }
