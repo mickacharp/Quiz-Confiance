@@ -69,6 +69,7 @@ export class HomeComponent implements OnInit {
   }
 
   getUserTests(): void {
+    this.userTests = [];
     if (this.user.tests && this.user.tests.length > 0) {
       this.user.tests.forEach((testKey) => {
         this.questionsService.getTestsOfUser(testKey).subscribe((test) => {
@@ -103,8 +104,8 @@ export class HomeComponent implements OnInit {
       'yCoordinate',
       JSON.stringify(yCoordinateOfSelectedTest)
     );
-    // setting a property which will be verified at the results page:
-    // if user consults a previous test, button to save it in db will not show
+    // setting a property in sessionStorage which will be verified at the results page:
+    // if user consults a previous test, button to save test in db "Sauvegarder mon questionnaire" will not show
     // if it's a brand new test, button will show (cf ResultsComponent)
     sessionStorage.setItem('canSaveTest', 'false');
     this.router.navigate(['/results']);

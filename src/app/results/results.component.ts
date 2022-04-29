@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { Test } from '../models/test.model';
+import { Router } from '@angular/router';
 import { User } from '../models/user.model';
+import { Test } from '../models/test.model';
 import { Question } from '../models/question.model';
+import { Answer } from '../models/answer.model';
 import { QuestionsService } from '../shared/questions.service';
 import { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
 import { questionsList } from 'src/assets/questions-list';
-import { Answer } from '../models/answer.model';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-results',
@@ -20,23 +20,29 @@ export class ResultsComponent implements OnInit {
   // convert Coords to number putting '+' before, knowing that parseInt doesn't work and return 0
   xCoordinate: number = +localStorage.getItem('xCoordinate')!;
   yCoordinate: number = +localStorage.getItem('yCoordinate')!;
+  pointRadius: number =
+    window.screen.width >= 1100 ? 8 : window.screen.width >= 800 ? 6 : 4;
   // Chart data
   data: any = {
     datasets: [
       {
+        order: 100000000,
         label: 'Votre résultat',
-        data: [{ x: this.xCoordinate, y: this.yCoordinate, r: 8 }],
-        backgroundColor: '#f2440f',
+        data: [
+          { x: this.xCoordinate, y: this.yCoordinate, r: this.pointRadius },
+        ],
+        backgroundColor: '#4CAF50',
       },
     ],
   };
 
   // Chart options
   options: any = {
+    aspectRatio: 1,
     scales: {
       x: {
-        min: -4,
-        max: 4,
+        min: -3,
+        max: 3,
         position: 'center',
         width: 50,
         ticks: {
@@ -49,8 +55,8 @@ export class ResultsComponent implements OnInit {
         },
       },
       y: {
-        min: -4,
-        max: 4,
+        min: -3,
+        max: 3,
         position: 'center',
         ticks: {
           display: false,
@@ -86,18 +92,28 @@ export class ResultsComponent implements OnInit {
   userEmail: string = '';
   userTestName: string = '';
 
+  chartContainerElement: HTMLElement | null = null;
+
   constructor(
-    private questionsService: QuestionsService,
     private afs: AngularFirestore,
+    private router: Router,
+    private questionsService: QuestionsService,
     private confirmationService: ConfirmationService,
-    private message: MessageService,
-    private router: Router
+    private message: MessageService
   ) {}
 
   ngOnInit(): void {
+    this.checkIfDisplayResultsPage();
     this.getStorageValues();
     this.getFinalAnswers();
     this.checkIfUserCanSaveTest();
+    this.chartContainerElement = document.getElementById('chart-container');
+    this.message.add({
+      severity: 'error',
+      summary: 'Accès impossible',
+      detail: `Vous avez été redirigé vers la page d'accueil car vous n'avez aucun résultat à afficher. Répondez d'abord au questionnaire.`,
+      sticky: true,
+    });
   }
 
   clearStorage(): void {
@@ -129,13 +145,25 @@ export class ResultsComponent implements OnInit {
     }
   }
 
+  checkIfDisplayResultsPage(): void {
+    if (localStorage.length < 26) {
+      this.router.navigate(['/home']);
+      this.message.add({
+        severity: 'error',
+        summary: 'Accès impossible',
+        detail: `Vous avez été redirigé vers la page d'accueil car vous n'avez aucun résultat à afficher. Répondez d'abord au questionnaire.`,
+        sticky: true,
+      });
+    }
+  }
+
   openConfirmationModal() {
     this.confirmationService.confirm({
-      message: `Attention, si vous voulez recommencer le questionnaire, tous les résultats et vos réponses du
-        test que vous venez de faire seront perdus ! Vous pouvez le sauvegarder en
-        cliquant sur "Sauvegarder mon questionnaire". <br />
-        Si vous êtes sûr de votre choix, alors cliquez sur "Commencer" <br />
-        (Si vous êtiez en train de consulter un de vos précédents tests, alors pas d'inquiètude, il restera enregistré dans notre base de données 😉)`,
+      message: `<p>Attention, si vous voulez recommencer le questionnaire, <strong>tous les résultats et réponses au
+        test que vous venez de faire seront perdus !</strong> Vous pouvez le sauvegarder en
+        cliquant sur "Sauvegarder mon questionnaire". </p>
+        <p>Si vous êtes sûr de votre choix, alors cliquez sur "Commencer" </p>
+        <p>(Si vous êtiez en train de consulter un de vos précédents tests, alors pas d'inquiètude, il restera enregistré dans notre base de données 😉)</p>`,
       header: 'Refaire un test',
       icon: 'pi pi-exclamation-triangle',
       acceptLabel: 'Commencer',
@@ -150,17 +178,53 @@ export class ResultsComponent implements OnInit {
   }
 
   generatePDF(): void {
-    const data: HTMLElement | null = document.getElementById('pdf');
-    if (data) {
-      const pdf = new jsPDF('p', 'mm', 'a4');
-      // scale: the higher the value, the higher the pdf resolution
-      html2canvas(data, { scale: 1 }).then((canvas) => {
-        const fileWidth = 210;
-        const fileHeight = (canvas.height * fileWidth) / canvas.width;
-        const docDataURL = canvas.toDataURL('image/png');
-        pdf.addImage(docDataURL, 'PNG', 0, 0, fileWidth, fileHeight);
-        pdf.save('Résultats_Test_Confiance.pdf');
-      });
+    if (this.chartContainerElement) {
+      const chartWidthTemp: number = this.chartContainerElement.offsetWidth;
+
+      // since PDF is generated from the DOM, we set the viewport to 1920px width
+      // so the PDF will always be the same as if it was generated on a 1920px desktop
+      // even if generated from a mobile/iPad
+      if (window.screen.width < 1920) {
+        document
+          .getElementById('viewport')!
+          .setAttribute('content', 'width=1920');
+      }
+      this.pChartWidthFunction();
+      setTimeout(() => {
+        const data: HTMLElement | null = document.getElementById('pdf');
+        if (data) {
+          const pdf = new jsPDF('p', 'mm', 'a4');
+          // scale: the higher the value, the higher the pdf resolution
+          html2canvas(data, { scale: 1 }).then((canvas) => {
+            const fileWidth = 210;
+            const fileHeight = (canvas.height * fileWidth) / canvas.width;
+            const docDataURL = canvas.toDataURL('image/png');
+            pdf.addImage(docDataURL, 'PNG', 0, 0, fileWidth, fileHeight);
+            pdf.save('Résultats_Test_Confiance.pdf');
+          });
+        }
+        // at the end, we set viewport back to its initial value
+        if (window.screen.width < 1920) {
+          document
+            .getElementById('viewport')!
+            .setAttribute('content', 'width=device-width, initial-scale=1');
+        }
+        if (this.chartContainerElement) {
+          this.chartContainerElement.style.width = `${chartWidthTemp}px`;
+        }
+      }, 1000);
+    }
+  }
+
+  // cf big comment in generatePDF()
+  pChartWidthFunction(): void {
+    const viewP: HTMLElement = document.getElementById('viewport')!;
+    const content: string = viewP.getAttribute('content')!;
+
+    if (content == 'width=1920') {
+      if (this.chartContainerElement) {
+        this.chartContainerElement.style.width = '650px';
+      }
     }
   }
 
