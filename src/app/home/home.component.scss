@@ -111,7 +111,7 @@
         }
 
         &__subtitles {
-            width: 30%;
+            width: fit-content;
             margin-top: 20px;
             border-bottom: solid rgb(76, 175, 79) 2px;
             @media screen and (max-width: $bp1220) {
