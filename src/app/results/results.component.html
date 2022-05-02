@@ -111,7 +111,7 @@
       label="Télécharger mes résultats"
     ></p-button>
   </div>
-  <p>
+  <p *ngIf="canSaveTest">
     Vous pouvez également <strong>sauvegarder votre résultat</strong> dans notre
     base de données. Cela vous permettra d'accéder à tout moment à vos anciens
     tests afin de consulter vos résultats et de les télécharger. Pour cela
