@@ -21,17 +21,18 @@ export class ResultsComponent implements OnInit {
   xCoordinate: number = +localStorage.getItem('xCoordinate')!;
   yCoordinate: number = +localStorage.getItem('yCoordinate')!;
   pointRadius: number =
-    window.screen.width >= 1100 ? 8 : window.screen.width >= 800 ? 6 : 4;
+    window.screen.width >= 1100 ? 10 : window.screen.width >= 800 ? 7 : 5;
   // Chart data
   data: any = {
     datasets: [
       {
-        order: 100000000,
         label: 'Votre résultat',
         data: [
           { x: this.xCoordinate, y: this.yCoordinate, r: this.pointRadius },
         ],
-        backgroundColor: '#4CAF50',
+        backgroundColor: '#ff5550',
+        borderWidth: 3,
+        borderColor: '#FFFFFF',
       },
     ],
   };
@@ -108,12 +109,6 @@ export class ResultsComponent implements OnInit {
     this.getFinalAnswers();
     this.checkIfUserCanSaveTest();
     this.chartContainerElement = document.getElementById('chart-container');
-    this.message.add({
-      severity: 'error',
-      summary: 'Accès impossible',
-      detail: `Vous avez été redirigé vers la page d'accueil car vous n'avez aucun résultat à afficher. Répondez d'abord au questionnaire.`,
-      sticky: true,
-    });
   }
 
   clearStorage(): void {
@@ -152,7 +147,6 @@ export class ResultsComponent implements OnInit {
         severity: 'error',
         summary: 'Accès impossible',
         detail: `Vous avez été redirigé vers la page d'accueil car vous n'avez aucun résultat à afficher. Répondez d'abord au questionnaire.`,
-        sticky: true,
       });
     }
   }
@@ -183,8 +177,8 @@ export class ResultsComponent implements OnInit {
 
       // since PDF is generated from the DOM, we set the viewport to 1920px width
       // so the PDF will always be the same as if it was generated on a 1920px desktop
-      // even if generated from a mobile/iPad
-      if (window.screen.width < 1920) {
+      // even if generated from a mobile/iPad or large screens
+      if (window.screen.width != 1920) {
         document
           .getElementById('viewport')!
           .setAttribute('content', 'width=1920');
