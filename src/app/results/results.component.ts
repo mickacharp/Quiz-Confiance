@@ -198,7 +198,7 @@ export class ResultsComponent implements OnInit {
           });
         }
         // at the end, we set viewport back to its initial value
-        if (window.screen.width < 1920) {
+        if (window.screen.width != 1920) {
           document
             .getElementById('viewport')!
             .setAttribute('content', 'width=device-width, initial-scale=1');
