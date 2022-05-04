@@ -172,7 +172,7 @@
             @media screen and (max-width: $bp540) {
                 font-size: $fontSizeHomeText740;
             }
-            span {
+            span:not(span:first-child) {
                 font-weight: bold;
             }
         }
