@@ -183,32 +183,47 @@ export class ResultsComponent implements OnInit {
 
     // Fonts
     function setFontToMainTitle(): jsPDF {
-      return pdf.setFont('Helvetica', 'bold').setFontSize(15);
+      return pdf.setFont('Helvetica', 'bold').setFontSize(14);
     }
     function setFontToCitation(): jsPDF {
       return pdf.setFont('Helvetica', 'italic').setFontSize(10);
     }
+    function setFontToSubtitles(): jsPDF {
+      return pdf.setFont('Helvetica', 'bold').setFontSize(11);
+    }
+    function setFontToParagraph(): jsPDF {
+      return pdf.setFont('Helvetica', 'normal').setFontSize(8);
+    }
+    function setFontToName(): jsPDF {
+      return pdf.setFont('Helvetica', 'bold').setFontSize(9);
+    }
+    function setFontToJob(): jsPDF {
+      return pdf.setFont('Helvetica', 'bold').setFontSize(8);
+    }
 
     setTimeout(() => {
       html2canvas(chart, { scale: 1 }).then((canvas) => {
-        //////////// HEADER ////////////
+        //////////////////////// HEADER ////////////////////////
 
         // Top-left Logo
         const logo = new Image();
         logo.src = '../assets/logo.png';
         pdf.addImage(logo, 'png', 2, 0, 20, 20);
+
         // Main Title
         setFontToMainTitle();
         const mainTitle: Element = document.querySelector('#main-title')!;
-        pdf.text(mainTitle.innerHTML, pdfWidth / 2 + 5, 10, {
+        pdf.text(mainTitle.innerHTML, pdfWidth / 2 + 2, 10, {
           align: 'center',
         });
+
         // Citation
         setFontToCitation();
         const citation: Element = document.querySelector('#citation')!;
         pdf.text(citation.innerHTML, pdfWidth / 2, 15, {
           align: 'center',
         });
+
         // Citation author
         const citationAuthor: Element =
           document.querySelector('#citation-author')!;
@@ -216,13 +231,17 @@ export class ResultsComponent implements OnInit {
           align: 'center',
         });
 
-        //////////// CONTENT ////////////
+        //////////////////////// CONTENT ////////////////////////
 
         // Subtitle "Votre résultat"
+        setFontToSubtitles();
         const subtitleResults: Element =
           document.querySelector('#subtitle-results')!;
-        pdf.text(subtitleResults.innerHTML, 0, 40);
+        pdf.text(subtitleResults.innerHTML, 3, 27);
+        pdf.setDrawColor('#4CAF50').setLineWidth(0.5).line(3, 28, 80, 28); // green underline
+
         // Interpretation
+        setFontToParagraph();
         const interpretationStart: Element = document.querySelector(
           '#interpretation-start'
         )!;
@@ -230,51 +249,82 @@ export class ResultsComponent implements OnInit {
           '#interpretation p span:not(#interpretation-start)'
         )!;
         const interpretationTotal: string = `${interpretationStart.innerHTML}${interpretationEnd.innerHTML}`;
-        const font = pdf
-          .setFont('Helvetica', 'normal')
-          .setFontSize(20)
-          .splitTextToSize(interpretationTotal, 200);
-        pdf.text(font, 0, 50);
+        pdf.text(interpretationTotal, pdfWidth / 2, 33, {
+          align: 'center',
+        });
+
         // Chart image
-        pdf.addImage(canvas.toDataURL('image/png'), 'png', 20, 70, 100, 100);
-        // Subtitle "Votre résultat"
+        pdf.addImage(canvas.toDataURL('image/png'), 'png', 60, 38, 100, 100);
+        pdf.setDrawColor('#FFFFFF').setLineWidth(1).line(158, 38, 158, 124); // white line to hide unwanted grey line
+
+        // Subtitle "Vos réponses"
+        setFontToSubtitles();
         const subtitleAnswers: Element =
           document.querySelector('#subtitle-answers')!;
-        pdf.text(subtitleAnswers.innerHTML, 0, 70);
+        pdf.text(subtitleAnswers.innerHTML, 3, 129);
+        pdf.setDrawColor('#4CAF50').setLineWidth(0.5).line(3, 130, 80, 130); // green underline
+
         // Answers Table
         autoTable(pdf, {
           head: [['#', 'Question', 'Réponse']],
-          headStyles: { fillColor: '#4CAF50', halign: 'center' },
+          headStyles: {
+            fillColor: '#4CAF50',
+            halign: 'center',
+            valign: 'middle',
+            fontSize: 9,
+          },
           body: this.tableBodyArray,
           bodyStyles: { fontSize: 6.5, overflow: 'linebreak', cellPadding: 1 },
           columnStyles: {
-            0: { cellWidth: 6, halign: 'center' },
+            0: {
+              cellWidth: 6,
+              halign: 'center',
+              valign: 'middle',
+              fillColor: '#4CAF50',
+              textColor: '#FFFFFF',
+            },
             1: { cellWidth: 'auto' },
-            2: { cellWidth: 25 },
+            2: { cellWidth: 25, fontStyle: 'bold' },
           },
-          startY: 130,
+          startY: 134,
           margin: 5,
         });
 
-        //////////// FOOTER ////////////
+        //////////////////////// FOOTER ////////////////////////
 
         // Bottom-left Logo
-        pdf.addImage(logo, 'png', 0, 277, 20, 20);
+        pdf.addImage(logo, 'png', 2, 275, 20, 20);
+
         // Name
+        setFontToName();
         const clientName: Element = document.querySelector('#client-name')!;
-        pdf.text(clientName.innerHTML, 0, 80);
+        pdf.text(clientName.innerHTML, pdfWidth / 3, 284, { align: 'center' });
+
         // Job
+        setFontToJob();
         const clientJob: Element = document.querySelector('#client-job')!;
-        pdf.text(clientJob.innerHTML, 0, 90);
+        pdf.text(clientJob.innerHTML, pdfWidth / 3, 288, {
+          align: 'center',
+        });
+
         // Email
+        setFontToParagraph();
         const clientEmail: Element = document.querySelector('#client-email')!;
-        pdf.text(clientEmail.innerHTML, 0, 100);
+        pdf.text(clientEmail.innerHTML, (2 * pdfWidth) / 3, 283, {
+          align: 'center',
+        });
+
         // Phone
         const clientPhone: Element = document.querySelector('#client-phone')!;
-        pdf.text(clientPhone.innerHTML, 0, 110);
+        pdf.text(clientPhone.innerHTML, (2 * pdfWidth) / 3, 286, {
+          align: 'center',
+        });
+
         // Hours
         const clientHours: Element = document.querySelector('#client-hours')!;
-        pdf.text(clientHours.innerHTML, 0, 120);
+        pdf.text(clientHours.innerHTML, (2 * pdfWidth) / 3, 289, {
+          align: 'center',
+        });
 
         pdf.save('test.pdf');
       });
