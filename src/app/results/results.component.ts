@@ -94,6 +94,8 @@ export class ResultsComponent implements OnInit {
   userEmail: string = '';
   userTestName: string = '';
 
+  tableBodyArray: any = [];
+
   constructor(
     private afs: AngularFirestore,
     private router: Router,
@@ -107,7 +109,6 @@ export class ResultsComponent implements OnInit {
     this.getStorageValues();
     this.getFinalAnswers();
     this.checkIfUserCanSaveTest();
-    console.log(new jsPDF().getFontList());
   }
 
   clearStorage(): void {
@@ -268,9 +269,9 @@ export class ResultsComponent implements OnInit {
         autoTable(pdf, {
           head: [['#', 'Question', 'Réponse']],
           headStyles: {
-            fillColor: '#4CAF50',
             halign: 'center',
             valign: 'middle',
+            fillColor: '#4CAF50',
             fontSize: 9,
           },
           body: this.tableBodyArray,
@@ -284,7 +285,12 @@ export class ResultsComponent implements OnInit {
               textColor: '#FFFFFF',
             },
             1: { cellWidth: 'auto' },
-            2: { cellWidth: 25, fontStyle: 'bold' },
+            2: {
+              cellWidth: 25,
+              halign: 'center',
+              valign: 'middle',
+              fontStyle: 'bold',
+            },
           },
           startY: 134,
           margin: 5,
@@ -333,7 +339,6 @@ export class ResultsComponent implements OnInit {
     }, 500);
   }
 
-  tableBodyArray: any = [];
   createTableBody(): any {
     for (let i = 0; i < this.finalAnswers.length; i++) {
       this.tableBodyArray.push([

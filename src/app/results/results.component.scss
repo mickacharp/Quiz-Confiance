@@ -214,6 +214,7 @@
 
         .p-datatable-tbody > tr > td:last-child {
             font-weight: bold;
+            text-align: center;
             min-width: 170px;
             @media screen and (max-width: $bp1220) {
                 min-width: initial;
