@@ -6,6 +6,7 @@ import { Question } from '../models/question.model';
 import { Answer } from '../models/answer.model';
 import { QuestionsService } from '../shared/questions.service';
 import { jsPDF } from 'jspdf';
+import autoTable from 'jspdf-autotable';
 import html2canvas from 'html2canvas';
 import { questionsList } from 'src/assets/questions-list';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
@@ -21,7 +22,7 @@ export class ResultsComponent implements OnInit {
   xCoordinate: number = +localStorage.getItem('xCoordinate')!;
   yCoordinate: number = +localStorage.getItem('yCoordinate')!;
   pointRadius: number =
-    window.screen.width >= 1100 ? 10 : window.screen.width >= 800 ? 7 : 5;
+    window.screen.width >= 1100 ? 12 : window.screen.width >= 800 ? 10 : 8;
   // Chart data
   data: any = {
     datasets: [
@@ -93,7 +94,7 @@ export class ResultsComponent implements OnInit {
   userEmail: string = '';
   userTestName: string = '';
 
-  chartContainerElement: HTMLElement | null = null;
+  tableBodyArray: any = [];
 
   constructor(
     private afs: AngularFirestore,
@@ -108,7 +109,6 @@ export class ResultsComponent implements OnInit {
     this.getStorageValues();
     this.getFinalAnswers();
     this.checkIfUserCanSaveTest();
-    this.chartContainerElement = document.getElementById('chart-container');
   }
 
   clearStorage(): void {
@@ -172,53 +172,180 @@ export class ResultsComponent implements OnInit {
   }
 
   generatePDF(): void {
-    if (this.chartContainerElement) {
-      const chartWidthTemp: number = this.chartContainerElement.offsetWidth;
+    const pdf = new jsPDF('p', 'mm', 'a4');
+    const pdfWidth = pdf.internal.pageSize.getWidth();
 
-      // since PDF is generated from the DOM, we set the viewport to 1920px width
-      // so the PDF will always be the same as if it was generated on a 1920px desktop
-      // even if generated from a mobile/iPad or large screens
-      if (window.screen.width != 1920) {
-        document
-          .getElementById('viewport')!
-          .setAttribute('content', 'width=1920');
-      }
-      this.pChartWidthFunction();
-      setTimeout(() => {
-        const data: HTMLElement | null = document.getElementById('pdf');
-        if (data) {
-          const pdf = new jsPDF('p', 'mm', 'a4');
-          // scale: the higher the value, the higher the pdf resolution
-          html2canvas(data, { scale: 1 }).then((canvas) => {
-            const fileWidth = 210;
-            const fileHeight = (canvas.height * fileWidth) / canvas.width;
-            const docDataURL = canvas.toDataURL('image/png');
-            pdf.addImage(docDataURL, 'PNG', 0, 0, fileWidth, fileHeight);
-            pdf.save('Résultats_Test_Confiance.pdf');
-          });
-        }
-        // at the end, we set viewport back to its initial value
-        if (window.screen.width != 1920) {
-          document
-            .getElementById('viewport')!
-            .setAttribute('content', 'width=device-width, initial-scale=1');
-        }
-        if (this.chartContainerElement) {
-          this.chartContainerElement.style.width = `${chartWidthTemp}px`;
-        }
-      }, 1000);
+    // Chart initialization
+    const chart: HTMLElement = document.querySelector('#chart-container')!;
+    const chartWidthTemp: number = chart.offsetWidth;
+    const chartHeightTemp: number = chart.offsetHeight;
+    chart.style.width = '650px';
+    chart.style.height = '650px';
+
+    // Fonts
+    function setFontToMainTitle(): jsPDF {
+      return pdf.setFont('Helvetica', 'bold').setFontSize(14);
     }
+    function setFontToCitation(): jsPDF {
+      return pdf.setFont('Helvetica', 'italic').setFontSize(10);
+    }
+    function setFontToSubtitles(): jsPDF {
+      return pdf.setFont('Helvetica', 'bold').setFontSize(11);
+    }
+    function setFontToParagraph(): jsPDF {
+      return pdf.setFont('Helvetica', 'normal').setFontSize(8);
+    }
+    function setFontToName(): jsPDF {
+      return pdf.setFont('Helvetica', 'bold').setFontSize(9);
+    }
+    function setFontToJob(): jsPDF {
+      return pdf.setFont('Helvetica', 'bold').setFontSize(8);
+    }
+
+    setTimeout(() => {
+      html2canvas(chart, { scale: 1 }).then((canvas) => {
+        //////////////////////// HEADER ////////////////////////
+
+        // Top-left Logo
+        const logo = new Image();
+        logo.src = '../assets/logo.png';
+        pdf.addImage(logo, 'png', 2, 0, 20, 20);
+
+        // Main Title
+        setFontToMainTitle();
+        const mainTitle: Element = document.querySelector('#main-title')!;
+        pdf.text(mainTitle.innerHTML, pdfWidth / 2 + 2, 10, {
+          align: 'center',
+        });
+
+        // Citation
+        setFontToCitation();
+        const citation: Element = document.querySelector('#citation')!;
+        pdf.text(citation.innerHTML, pdfWidth / 2, 15, {
+          align: 'center',
+        });
+
+        // Citation author
+        const citationAuthor: Element =
+          document.querySelector('#citation-author')!;
+        pdf.text(citationAuthor.innerHTML, pdfWidth / 2, 19, {
+          align: 'center',
+        });
+
+        //////////////////////// CONTENT ////////////////////////
+
+        // Subtitle "Votre résultat"
+        setFontToSubtitles();
+        const subtitleResults: Element =
+          document.querySelector('#subtitle-results')!;
+        pdf.text(subtitleResults.innerHTML, 3, 27);
+        pdf.setDrawColor('#4CAF50').setLineWidth(0.5).line(3, 28, 80, 28); // green underline
+
+        // Interpretation
+        setFontToParagraph();
+        const interpretationStart: Element = document.querySelector(
+          '#interpretation-start'
+        )!;
+        const interpretationEnd: Element = document.querySelector(
+          '#interpretation p span:not(#interpretation-start)'
+        )!;
+        const interpretationTotal: string = `${interpretationStart.innerHTML}${interpretationEnd.innerHTML}`;
+        pdf.text(interpretationTotal, pdfWidth / 2, 33, {
+          align: 'center',
+        });
+
+        // Chart image
+        pdf.addImage(canvas.toDataURL('image/png'), 'png', 60, 38, 100, 100);
+        pdf.setDrawColor('#FFFFFF').setLineWidth(1).line(158, 38, 158, 124); // white line to hide unwanted grey line
+
+        // Subtitle "Vos réponses"
+        setFontToSubtitles();
+        const subtitleAnswers: Element =
+          document.querySelector('#subtitle-answers')!;
+        pdf.text(subtitleAnswers.innerHTML, 3, 129);
+        pdf.setDrawColor('#4CAF50').setLineWidth(0.5).line(3, 130, 80, 130); // green underline
+
+        // Answers Table
+        autoTable(pdf, {
+          head: [['#', 'Question', 'Réponse']],
+          headStyles: {
+            halign: 'center',
+            valign: 'middle',
+            fillColor: '#4CAF50',
+            fontSize: 9,
+          },
+          body: this.tableBodyArray,
+          bodyStyles: { fontSize: 6.5, overflow: 'linebreak', cellPadding: 1 },
+          columnStyles: {
+            0: {
+              cellWidth: 6,
+              halign: 'center',
+              valign: 'middle',
+              fillColor: '#4CAF50',
+              textColor: '#FFFFFF',
+            },
+            1: { cellWidth: 'auto' },
+            2: {
+              cellWidth: 25,
+              halign: 'center',
+              valign: 'middle',
+              fontStyle: 'bold',
+            },
+          },
+          startY: 134,
+          margin: 5,
+        });
+
+        //////////////////////// FOOTER ////////////////////////
+
+        // Bottom-left Logo
+        pdf.addImage(logo, 'png', 2, 275, 20, 20);
+
+        // Name
+        setFontToName();
+        const clientName: Element = document.querySelector('#client-name')!;
+        pdf.text(clientName.innerHTML, pdfWidth / 3, 284, { align: 'center' });
+
+        // Job
+        setFontToJob();
+        const clientJob: Element = document.querySelector('#client-job')!;
+        pdf.text(clientJob.innerHTML, pdfWidth / 3, 288, {
+          align: 'center',
+        });
+
+        // Email
+        setFontToParagraph();
+        const clientEmail: Element = document.querySelector('#client-email')!;
+        pdf.text(clientEmail.innerHTML, (2 * pdfWidth) / 3, 283, {
+          align: 'center',
+        });
+
+        // Phone
+        const clientPhone: Element = document.querySelector('#client-phone')!;
+        pdf.text(clientPhone.innerHTML, (2 * pdfWidth) / 3, 286, {
+          align: 'center',
+        });
+
+        // Hours
+        const clientHours: Element = document.querySelector('#client-hours')!;
+        pdf.text(clientHours.innerHTML, (2 * pdfWidth) / 3, 289, {
+          align: 'center',
+        });
+
+        pdf.save('test.pdf');
+      });
+      chart.style.width = `${chartWidthTemp}px`;
+      chart.style.height = `${chartHeightTemp}px`;
+    }, 500);
   }
 
-  // cf big comment in generatePDF()
-  pChartWidthFunction(): void {
-    const viewP: HTMLElement = document.getElementById('viewport')!;
-    const content: string = viewP.getAttribute('content')!;
-
-    if (content == 'width=1920') {
-      if (this.chartContainerElement) {
-        this.chartContainerElement.style.width = '650px';
-      }
+  createTableBody(): any {
+    for (let i = 0; i < this.finalAnswers.length; i++) {
+      this.tableBodyArray.push([
+        this.finalAnswers[i].questionNb,
+        this.finalAnswers[i].question,
+        this.finalAnswers[i].answer,
+      ]);
     }
   }
 
@@ -296,6 +423,7 @@ export class ResultsComponent implements OnInit {
             : 'non, absolument pas',
       });
     }
+    this.createTableBody();
   }
 
   // convert Date into string of 'dd/mm/yyy hh:min' format
