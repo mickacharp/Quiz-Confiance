@@ -6,26 +6,30 @@
       class="pdf__logo"
     />
     <div class="pdf__title">
-      <h1 class="pdf__title__main-title">
+      <h1 class="pdf__title__main-title" id="main-title">
         Questionnaire d'évaluation de la "confiance collective et réciproque"
       </h1>
-      <h3 class="pdf__title__citation">
+      <h3 class="pdf__title__citation" id="citation">
         "C'est la confiance que les autres mettent en nous qui nous montre le
         chemin"
       </h3>
-      <h3 class="pdf__title__citation">François Mauriac (1885-1970)</h3>
+      <h3 class="pdf__title__citation" id="citation-author">
+        François Mauriac (1885-1970)
+      </h3>
     </div>
   </div>
 
-  <h2 class="pdf__subtitles">Votre résultat</h2>
+  <h2 class="pdf__subtitles" id="subtitle-results">Votre résultat</h2>
   <div class="pdf__chart">
-    <div class="pdf__chart__interpretation">
+    <div class="pdf__chart__interpretation" id="interpretation">
       <p>
-        Selon les réponses que vous avez fournies, vous êtes dans la catégorie
-        de personnes amenées à
+        <span id="interpretation-start">
+          Selon les réponses que vous avez fournies, vous êtes dans la catégorie
+          de personnes amenées à
+        </span>
 
-        <span *ngIf="xCoordinate > 0 && yCoordinate > 0">
-          penser le désordre et agir dans le désordre.
+        <span *ngIf="xCoordinate > 0 && yCoordinate > 0"
+          >penser le désordre et agir dans le désordre.
         </span>
         <span *ngIf="xCoordinate > 0 && yCoordinate < 0">
           penser l'ordre et agir dans le désordre.
@@ -55,13 +59,14 @@
       <p-chart type="bubble" [data]="data" [options]="options"></p-chart>
     </div>
   </div>
-  <h2 class="pdf__subtitles">Vos réponses</h2>
+  <h2 class="pdf__subtitles" id="subtitle-answers">Vos réponses</h2>
   <p-table
     [value]="finalAnswers"
     selectionMode="single"
     [(selection)]="selectedAnswer"
     dataKey="questionNb"
     responsiveLayout="scroll"
+    id="answers-table"
   >
     <ng-template pTemplate="header">
       <tr>
@@ -86,13 +91,22 @@
       class="pdf__footer__logo"
     />
     <div class="pdf__footer__name">
-      <h3>Thierry Lallia</h3>
-      <h4>Inventeur de confiance partagée</h4>
+      <h3 id="client-name">Thierry Lallia</h3>
+      <h4 id="client-job">Inventeur de confiance partagée</h4>
     </div>
     <ul class="pdf__footer__contact">
-      <li><i class="pi pi-envelope"></i> lesilencedelanuit@outlook.com</li>
-      <li><i class="pi pi-phone"></i> +33 (6) 86 58 26 69</li>
-      <li><i class="pi pi-sun"></i> Du lundi au samedi, de 9h00 à 12h00</li>
+      <li>
+        <i class="pi pi-envelope"></i>
+        <span id="client-email"> lesilencedelanuit@outlook.com</span>
+      </li>
+      <li>
+        <i class="pi pi-phone"></i
+        ><span id="client-phone"> +33 (6) 86 58 26 69</span>
+      </li>
+      <li>
+        <i class="pi pi-sun"></i>
+        <span id="client-hours"> Du lundi au samedi, de 9h00 à 12h00</span>
+      </li>
     </ul>
   </div>
 </div>

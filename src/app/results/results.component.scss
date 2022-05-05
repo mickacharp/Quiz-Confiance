@@ -172,7 +172,7 @@
             @media screen and (max-width: $bp540) {
                 font-size: $fontSizeHomeText740;
             }
-            span {
+            span:not(span:first-child) {
                 font-weight: bold;
             }
         }
@@ -214,6 +214,7 @@
 
         .p-datatable-tbody > tr > td:last-child {
             font-weight: bold;
+            text-align: center;
             min-width: 170px;
             @media screen and (max-width: $bp1220) {
                 min-width: initial;
