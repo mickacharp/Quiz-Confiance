@@ -332,7 +332,12 @@ export class ResultsComponent implements OnInit {
           align: 'center',
         });
 
-        pdf.save('test.pdf');
+        pdf.save(
+          `Résultats_Test_Confiance_${this.formatDate(new Date())
+            .slice(0, 10)
+            .split('/')
+            .join('-')}.pdf`
+        );
       });
       chart.style.width = `${chartWidthTemp}px`;
       chart.style.height = `${chartHeightTemp}px`;
