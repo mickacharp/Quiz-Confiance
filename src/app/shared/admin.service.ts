@@ -2,16 +2,22 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
+import { Observable } from 'rxjs';
+import firebase from 'firebase/compat';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AdminService {
+  adminData: Observable<firebase.User | null>;
+
   constructor(
     private afAuth: AngularFireAuth,
     private messageService: MessageService,
     private router: Router
-  ) {}
+  ) {
+    this.adminData = afAuth.authState;
+  }
 
   /* Admin Access */
   signIn(email: string, password: string) {
@@ -45,5 +51,16 @@ export class AdminService {
       .catch((err) => {
         console.log('Something is wrong: ', err.message);
       });
+  }
+
+  async signOut() {
+    await this.afAuth.signOut();
+    this.router.navigate(['/']);
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Déconnexion',
+      detail: `Vous êtes bien déconnecté. À bientôt !`,
+      icon: 'pi-moon',
+    });
   }
 }

@@ -43,6 +43,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { AppComponent } from './app.component';
 import { QuestionsService } from './shared/questions.service';
 import { ResultsService } from './shared/results.service';
+import { AdminService } from './shared/admin.service';
 import { QuestionComponent } from './question/question.component';
 import { QuizComponent } from './quiz/quiz.component';
 import { ResultsComponent } from './results/results.component';
@@ -94,6 +95,7 @@ import { AdminComponent } from './admin/admin.component';
     ResultsService,
     ConfirmationService,
     MessageService,
+    AdminService,
   ],
   bootstrap: [AppComponent],
 })

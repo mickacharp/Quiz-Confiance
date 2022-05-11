@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AdminService } from '../shared/admin.service';
 
 @Component({
   selector: 'app-admin',
@@ -6,7 +7,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./admin.component.scss'],
 })
 export class AdminComponent implements OnInit {
-  constructor() {}
+  constructor(private adminService: AdminService) {}
 
   ngOnInit(): void {}
+
+  signOut() {
+    this.adminService.signOut();
+  }
 }
