@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { User } from '../models/user.model';
 import { AdminService } from '../shared/admin.service';
 import { QuestionsService } from '../shared/questions.service';
@@ -14,7 +15,8 @@ export class AdminComponent implements OnInit {
 
   constructor(
     private adminService: AdminService,
-    private questionsService: QuestionsService
+    private questionsService: QuestionsService,
+    private afs: AngularFirestore
   ) {}
 
   ngOnInit(): void {
@@ -25,5 +27,12 @@ export class AdminComponent implements OnInit {
 
   signOut() {
     this.adminService.signOut();
+  }
+
+  updateUser(userToUpdate: User): void {
+    this.afs
+      .collection<User>('users')
+      .doc<User>(userToUpdate.uid)
+      .update({ isRelanced: userToUpdate.isRelanced });
   }
 }

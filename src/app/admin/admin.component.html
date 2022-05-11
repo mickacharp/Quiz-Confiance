@@ -24,7 +24,11 @@
       <td>{{ user.email }}</td>
       <td>{{ user.tests.length }}</td>
       <td>
-        <p-checkbox [(ngModel)]="user.isRelanced" [binary]="true"></p-checkbox>
+        <p-checkbox
+          [(ngModel)]="user.isRelanced"
+          [binary]="true"
+          (onChange)="updateUser(user)"
+        ></p-checkbox>
       </td>
     </tr>
   </ng-template>
