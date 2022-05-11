@@ -355,7 +355,12 @@ export class ResultsComponent implements OnInit {
   }
 
   saveTestInDatabase(): void {
-    const userToSave: User = new User(this.afs.createId(), this.userEmail, []);
+    const userToSave: User = new User(
+      this.afs.createId(),
+      this.userEmail,
+      [],
+      false
+    );
     const testToSave: Test = new Test(
       [],
       this.userTestName,

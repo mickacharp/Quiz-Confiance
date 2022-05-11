@@ -1,7 +1,31 @@
-admin
 <p-button
   (click)="signOut()"
   icon="pi pi-sign-out"
   iconPos="right"
   label="Déconnexion"
 ></p-button>
+<p-table
+  [value]="usersList"
+  selectionMode="single"
+  [(selection)]="selectedAnswer"
+  dataKey="email"
+  responsiveLayout="scroll"
+  id="users-table"
+>
+  <ng-template pTemplate="header">
+    <tr>
+      <th>Email</th>
+      <th>Nb de tests effectués</th>
+      <th>Relancé</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-user>
+    <tr [pSelectableRow]="user" class="test">
+      <td>{{ user.email }}</td>
+      <td>{{ user.tests.length }}</td>
+      <td>
+        <p-checkbox [(ngModel)]="user.isRelanced" [binary]="true"></p-checkbox>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>

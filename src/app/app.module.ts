@@ -38,6 +38,7 @@ import { TableModule } from 'primeng/table';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ToastModule } from 'primeng/toast';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { CheckboxModule } from 'primeng/checkbox';
 
 // Components
 import { AppComponent } from './app.component';
@@ -74,6 +75,7 @@ import { AdminComponent } from './admin/admin.component';
     TableModule,
     ConfirmDialogModule,
     ToastModule,
+    CheckboxModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
     AngularFirestoreModule,

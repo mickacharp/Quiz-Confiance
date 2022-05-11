@@ -41,7 +41,7 @@ export class QuestionsService {
               // if no user is found, he is created with newTest's id
             } else {
               this.saveUserInDatabase(
-                new User(newUser.uid, newUser.email, [docRef.id])
+                new User(newUser.uid, newUser.email, [docRef.id], false)
               );
             }
           });

@@ -17,7 +17,7 @@ export class HomeComponent implements OnInit {
   homeModalVisible: boolean = true;
 
   allUsersList: User[] = [];
-  user: User = new User('', '', []);
+  user: User = new User('', '', [], false);
   userTests: Test[] = [];
   userEmail: string = '';
   filteredEmails: string[] = [];
