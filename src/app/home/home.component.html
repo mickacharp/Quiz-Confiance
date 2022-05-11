@@ -129,3 +129,54 @@
     </div>
   </div>
 </p-dialog>
+<p-button
+  label="Accès Admin"
+  icon="pi pi-lock"
+  iconPos="left"
+  (onClick)="showAdminModalDialog()"
+></p-button>
+<p-dialog
+  header="Accès Administrateur"
+  [(visible)]="displayAdminModal"
+  [modal]="true"
+  [style]="{ width: '50vw' }"
+  [draggable]="false"
+  [resizable]="false"
+  [breakpoints]="{ '1080px': '60vw', '890px': '70vw', '768px': '80vw' }"
+>
+  <label for="admin-email">Email Administrateur:</label>
+  <input
+    pInputText
+    type="text"
+    id="admin-email"
+    name="admin-email"
+    [(ngModel)]="adminEmail"
+    placeholder="Email"
+    class="admin__email"
+  />
+  <label for="admin-password">Mot de passe Administrateur:</label>
+  <input
+    pInputText
+    type="password"
+    id="admin-password"
+    name="admin-password"
+    [(ngModel)]="adminPassword"
+    placeholder="Mot de passe"
+    class="admin__password"
+  />
+  <p-button
+    (click)="signIn()"
+    icon="pi pi-sign-in"
+    iconPos="right"
+    label="Login"
+    class="admin__login-button"
+  ></p-button>
+
+  <p-button
+    (click)="signUp()"
+    icon="pi pi-user-plus"
+    iconPos="right"
+    label="Sign up"
+    class="admin__sign-up-button"
+  ></p-button>
+</p-dialog>
