@@ -3,9 +3,8 @@ import { Router } from '@angular/router';
 import { take } from 'rxjs';
 import { Test } from '../models/test.model';
 import { User } from '../models/user.model';
+import { AdminService } from '../shared/admin.service';
 import { QuestionsService } from '../shared/questions.service';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-home',
@@ -29,8 +28,7 @@ export class HomeComponent implements OnInit {
   constructor(
     private questionsService: QuestionsService,
     private router: Router,
-    private afAuth: AngularFireAuth,
-    private messageService: MessageService
+    private adminService: AdminService
   ) {}
 
   ngOnInit(): void {
@@ -125,37 +123,14 @@ export class HomeComponent implements OnInit {
 
   /* Admin Access */
   signIn() {
-    this.afAuth
-      .signInWithEmailAndPassword(this.adminEmail, this.adminPassword)
-      .then((res) => {
-        console.log('Successfully signed in!', res);
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Bonjour Thierry',
-          detail: `Vous êtes bien connecté en tant qu'administrateur`,
-        });
-        this.router.navigate(['/admin']);
-      })
-      .catch((err) => {
-        console.log('Something is wrong: ', err.message);
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Mauvaise saisie',
-          detail: `Vérifiez que votre email et/ou votre mot de passe sont corrects`,
-        });
-      });
+    this.adminService.signIn(this.adminEmail, this.adminPassword);
     this.adminEmail = '';
     this.adminPassword = '';
   }
 
   signUp() {
-    this.afAuth
-      .createUserWithEmailAndPassword(this.adminEmail, this.adminPassword)
-      .then((res) => {
-        console.log('Successfully signed up!', res);
-      })
-      .catch((err) => {
-        console.log('Something is wrong: ', err.message);
-      });
+    this.adminService.signUp(this.adminEmail, this.adminPassword);
+    this.adminEmail = '';
+    this.adminPassword = '';
   }
 }
