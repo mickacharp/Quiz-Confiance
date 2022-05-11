@@ -186,12 +186,27 @@ export class QuestionComponent implements OnInit {
           break;
         case 'PoC':
           this.resultsService.poC++;
+          if (i === 20 || i === 21) {
+            this.resultsService.pdC++;
+            this.resultsService.pdA++;
+          }
           break;
         case 'Pda':
-          this.resultsService.pdA++;
+          if (i === 13) {
+            this.resultsService.pdC++;
+          }
+          if (i === 20 || i === 21) {
+            void 0;
+          } else {
+            this.resultsService.pdA++;
+          }
           break;
         case 'PdC':
-          this.resultsService.pdC++;
+          if (i === 13 || i === 20 || i === 21) {
+            void 0;
+          } else {
+            this.resultsService.pdC++;
+          }
           break;
         case 'Aoa':
           this.resultsService.aoA++;
