@@ -63,10 +63,11 @@
     }
 
     &__logo {
+        height: 100%;
         position: absolute;
         top: 0;
         left: 20px;
-        height: 100%;
+        cursor: pointer;
         @media screen and (max-width: $bp1000) {
             all: initial;
             height: 100px;

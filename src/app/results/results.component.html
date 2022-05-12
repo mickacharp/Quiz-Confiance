@@ -3,7 +3,9 @@
     <img
       src="../../assets/logo.png"
       alt="logo de Thierry Lallia"
+      routerLink="/"
       class="pdf__logo"
+      title="Retour à l'accueil"
     />
     <div class="pdf__title">
       <h1 class="pdf__title__main-title" id="main-title">
@@ -220,11 +222,11 @@
         [disabled]="saveTestForm.valid === false"
       ></p-button>
     </form>
-    <p class="disclaimer">
+    <!-- <p class="disclaimer">
       *Nous n'aurons pas accès à ces informations, elles vous serviront juste
       d'identifiant pour que nous puissions retrouver votre test dans notre base
       de données 🙂
-    </p>
+    </p> -->
   </div>
 </p-dialog>
 
