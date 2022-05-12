@@ -1,0 +1,17 @@
+.signout-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px 0;
+}
+
+::ng-deep {
+    .p-button {
+        font-size: clamp(10px, 2vw, 1rem);
+    }
+
+    .p-datatable  {
+        font-size: clamp(10px, 2vw, 1rem);
+    }
+}
+

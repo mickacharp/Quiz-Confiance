@@ -1,9 +1,11 @@
-<p-button
-  (click)="signOut()"
-  icon="pi pi-sign-out"
-  iconPos="left"
-  label="Déconnexion"
-></p-button>
+<div class="signout-button">
+  <p-button
+    (click)="signOut()"
+    icon="pi pi-sign-out"
+    iconPos="left"
+    label="Déconnexion"
+  ></p-button>
+</div>
 <p-table
   [value]="usersList"
   selectionMode="single"
