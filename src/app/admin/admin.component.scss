@@ -6,11 +6,7 @@
 }
 
 ::ng-deep {
-    .p-button {
-        font-size: clamp(10px, 2vw, 1rem);
-    }
-
-    .p-datatable  {
+    .p-button, .p-datatable {
         font-size: clamp(10px, 2vw, 1rem);
     }
 }
