@@ -1,29 +1,6 @@
 @import '../../styles/mixins';
 @import '../../styles/variables';
-::ng-deep .p-toast {
-    width: 20vw;
-    @media screen and (max-width: $bp1740) {
-        width: 30vw;
-    }
-    @media screen and (max-width: $bp1220) {
-        width: 40vw;
-    }
-    @media screen and (max-width: $bp900) {
-        width: 50vw;
-    }
-    @media screen and (max-width: $bp740) {
-        width: 60vw;
-    }
-    @media screen and (max-width: $bp600) {
-        width: 70vw;
-    }
-    @media screen and (max-width: $bp540) {
-        width: 80vw;
-    }
-    @media screen and (max-width: $bp440) {
-        width: 90vw;
-    }
-}
+
 //////////////////// PrimeNg p-chart (canvas) ////////////////////
 :host {
     ::ng-deep p-chart {
@@ -86,10 +63,11 @@
     }
 
     &__logo {
+        height: 100%;
         position: absolute;
         top: 0;
         left: 20px;
-        height: 100%;
+        cursor: pointer;
         @media screen and (max-width: $bp1000) {
             all: initial;
             height: 100px;
@@ -437,5 +415,31 @@
 
     .disclaimer {
         font-size: .9em;
+    }
+}
+
+/////////////////////// Toast ///////////////////////
+::ng-deep .p-toast {
+    width: 20vw;
+    @media screen and (max-width: $bp1740) {
+        width: 30vw;
+    }
+    @media screen and (max-width: $bp1220) {
+        width: 40vw;
+    }
+    @media screen and (max-width: $bp900) {
+        width: 50vw;
+    }
+    @media screen and (max-width: $bp740) {
+        width: 60vw;
+    }
+    @media screen and (max-width: $bp600) {
+        width: 70vw;
+    }
+    @media screen and (max-width: $bp540) {
+        width: 80vw;
+    }
+    @media screen and (max-width: $bp440) {
+        width: 90vw;
     }
 }

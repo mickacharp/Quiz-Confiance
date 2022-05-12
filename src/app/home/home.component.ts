@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { take } from 'rxjs';
 import { Test } from '../models/test.model';
 import { User } from '../models/user.model';
+import { AdminService } from '../shared/admin.service';
 import { QuestionsService } from '../shared/questions.service';
 
 @Component({
@@ -12,17 +13,22 @@ import { QuestionsService } from '../shared/questions.service';
 })
 export class HomeComponent implements OnInit {
   displayModal: boolean = false;
+  displayAdminModal: boolean = false;
   homeModalVisible: boolean = true;
 
   allUsersList: User[] = [];
-  user: User = new User('', '', []);
+  user: User = new User('', '', [], false);
   userTests: Test[] = [];
   userEmail: string = '';
   filteredEmails: string[] = [];
 
+  adminEmail: string = '';
+  adminPassword: string = '';
+
   constructor(
     private questionsService: QuestionsService,
-    private router: Router
+    private router: Router,
+    private adminService: AdminService
   ) {}
 
   ngOnInit(): void {
@@ -37,6 +43,10 @@ export class HomeComponent implements OnInit {
 
   showModalDialog(): void {
     this.displayModal = true;
+  }
+
+  showAdminModalDialog(): void {
+    this.displayAdminModal = true;
   }
 
   filterEmail(event: any) {
@@ -109,5 +119,18 @@ export class HomeComponent implements OnInit {
     // if it's a brand new test, button will show (cf ResultsComponent)
     sessionStorage.setItem('canSaveTest', 'false');
     this.router.navigate(['/results']);
+  }
+
+  /* Admin Access */
+  signIn() {
+    this.adminService.signIn(this.adminEmail, this.adminPassword);
+    this.adminEmail = '';
+    this.adminPassword = '';
+  }
+
+  signUp() {
+    this.adminService.signUp(this.adminEmail, this.adminPassword);
+    this.adminEmail = '';
+    this.adminPassword = '';
   }
 }
