@@ -7,8 +7,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; 
 // AngularFire
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
-import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { environment } from '../environments/environment';
+
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import {
   provideAnalytics,
   getAnalytics,
@@ -36,15 +38,18 @@ import { TableModule } from 'primeng/table';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ToastModule } from 'primeng/toast';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { CheckboxModule } from 'primeng/checkbox';
 
 // Components
 import { AppComponent } from './app.component';
 import { QuestionsService } from './shared/questions.service';
 import { ResultsService } from './shared/results.service';
+import { AdminService } from './shared/admin.service';
 import { QuestionComponent } from './question/question.component';
 import { QuizComponent } from './quiz/quiz.component';
 import { ResultsComponent } from './results/results.component';
 import { HomeComponent } from './home/home.component';
+import { AdminComponent } from './admin/admin.component';
 
 @NgModule({
   declarations: [
@@ -53,6 +58,7 @@ import { HomeComponent } from './home/home.component';
     QuizComponent,
     ResultsComponent,
     HomeComponent,
+    AdminComponent,
   ],
   imports: [
     BrowserModule,
@@ -69,7 +75,9 @@ import { HomeComponent } from './home/home.component';
     TableModule,
     ConfirmDialogModule,
     ToastModule,
+    CheckboxModule,
     AngularFireModule.initializeApp(environment.firebase),
+    AngularFireAuthModule,
     AngularFirestoreModule,
     // provideDatabase(() => getDatabase()),
     // provideMessaging(() => getMessaging()),
@@ -89,6 +97,7 @@ import { HomeComponent } from './home/home.component';
     ResultsService,
     ConfirmationService,
     MessageService,
+    AdminService,
   ],
   bootstrap: [AppComponent],
 })
