@@ -23,8 +23,7 @@ export class AdminService {
   signIn(email: string, password: string) {
     this.afAuth
       .signInWithEmailAndPassword(email, password)
-      .then((res) => {
-        console.log('Successfully signed in!', res);
+      .then(() => {
         this.messageService.add({
           severity: 'success',
           summary: 'Bonjour Thierry',
@@ -32,8 +31,7 @@ export class AdminService {
         });
         this.router.navigate(['/admin']);
       })
-      .catch((err) => {
-        console.log('Something is wrong: ', err.message);
+      .catch(() => {
         this.messageService.add({
           severity: 'error',
           summary: 'Mauvaise saisie',
