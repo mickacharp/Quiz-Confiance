@@ -238,25 +238,28 @@ export class ResultsComponent implements OnInit {
         setFontToSubtitles();
         const subtitleResults: Element =
           document.querySelector('#subtitle-results')!;
-        pdf.text(subtitleResults.innerHTML, 3, 27);
-        pdf.setDrawColor('#4CAF50').setLineWidth(0.5).line(3, 28, 80, 28); // green underline
+        pdf.text(subtitleResults.innerHTML, 3, 25);
+        pdf.setDrawColor('#4CAF50').setLineWidth(0.5).line(3, 26, 80, 26); // green underline
 
         // Interpretation
         setFontToParagraph();
         const interpretationStart: Element = document.querySelector(
           '#interpretation-start'
         )!;
+        pdf.text(interpretationStart.innerHTML, pdfWidth / 2, 32, {
+          align: 'center',
+        });
+        setFontToJob();
         const interpretationEnd: Element = document.querySelector(
           '#interpretation p span:not(#interpretation-start)'
         )!;
-        const interpretationTotal: string = `${interpretationStart.innerHTML}${interpretationEnd.innerHTML}`;
-        pdf.text(interpretationTotal, pdfWidth / 2, 33, {
+        pdf.text(interpretationEnd.innerHTML, pdfWidth / 2, 36, {
           align: 'center',
         });
 
         // Chart image
-        pdf.addImage(canvas.toDataURL('image/png'), 'png', 60, 38, 100, 100);
-        pdf.setDrawColor('#FFFFFF').setLineWidth(1).line(158, 38, 158, 124); // white line to hide unwanted grey line
+        pdf.addImage(canvas.toDataURL('image/png'), 'png', 60, 40, 100, 100);
+        pdf.setDrawColor('#FFFFFF').setLineWidth(1).line(158, 40, 158, 126); // white line to hide unwanted grey line
 
         // Subtitle "Vos réponses"
         setFontToSubtitles();
