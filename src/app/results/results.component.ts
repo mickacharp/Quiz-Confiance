@@ -165,7 +165,9 @@ export class ResultsComponent implements OnInit {
       dismissableMask: true,
       rejectButtonStyleClass: 'cancel',
       accept: () => {
+        const userEmailOfLocalStorage = localStorage.getItem('userEmail');
         this.clearStorage();
+        localStorage.setItem('userEmail', userEmailOfLocalStorage!);
         this.router.navigate(['/questions/1']);
       },
     });
