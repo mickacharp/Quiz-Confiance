@@ -104,6 +104,7 @@ export class HomeComponent implements OnInit {
         this.user = userFound[0];
         this.getUserTests();
       });
+    localStorage.setItem('userEmail', this.userEmail);
   }
 
   getUserTests(): void {
@@ -118,6 +119,7 @@ export class HomeComponent implements OnInit {
   }
 
   goToSelectedTest(index: number): void {
+    const userEmailFromLocalStorage = localStorage.getItem('userEmail');
     this.clearStorages();
     // setting answers in localStorage
     const answersOfSelectedTest = this.userTests[index].answers;
@@ -142,6 +144,10 @@ export class HomeComponent implements OnInit {
       'yCoordinate',
       JSON.stringify(yCoordinateOfSelectedTest)
     );
+
+    // setting back userEmail in localStorage
+    localStorage.setItem('userEmail', userEmailFromLocalStorage!);
+
     // setting a property in sessionStorage which will be verified at the results page:
     // if user consults a previous test, button to save test in db "Sauvegarder mon questionnaire" will not show
     // if it's a brand new test, button will show (cf ResultsComponent)
@@ -152,12 +158,6 @@ export class HomeComponent implements OnInit {
   /* Admin Access */
   signIn() {
     this.adminService.signIn(this.adminEmail, this.adminPassword);
-    this.adminEmail = '';
-    this.adminPassword = '';
-  }
-
-  signUp() {
-    this.adminService.signUp(this.adminEmail, this.adminPassword);
     this.adminEmail = '';
     this.adminPassword = '';
   }
