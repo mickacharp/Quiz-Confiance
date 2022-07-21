@@ -14,12 +14,14 @@ import { QuestionsService } from '../shared/questions.service';
 export class HomeComponent implements OnInit {
   displayModal: boolean = false;
   displayAdminModal: boolean = false;
+  displayNewTestModal: boolean = false;
   homeModalVisible: boolean = true;
 
   allUsersList: User[] = [];
   user: User = new User('', '', [], false);
   userTests: Test[] = [];
   userEmail: string = '';
+  newTestUserEmail: string = '';
   filteredEmails: string[] = [];
 
   adminEmail: string = '';
@@ -49,6 +51,10 @@ export class HomeComponent implements OnInit {
     this.displayAdminModal = true;
   }
 
+  showNewTestModalDialog(): void {
+    this.displayNewTestModal = true;
+  }
+
   filterEmail(event: any) {
     let filtered: string[] = [];
     let query = event.query;
@@ -63,7 +69,12 @@ export class HomeComponent implements OnInit {
     this.filteredEmails = filtered;
   }
 
-  clearStorage(): void {
+  addUserEmailInLocalStorageAndStartTest(): void {
+    localStorage.setItem('userEmail', this.newTestUserEmail);
+    this.router.navigate(['/questions/1']);
+  }
+
+  clearStorages(): void {
     localStorage.clear();
     sessionStorage.clear();
   }
@@ -90,7 +101,7 @@ export class HomeComponent implements OnInit {
   }
 
   goToSelectedTest(index: number): void {
-    this.clearStorage();
+    this.clearStorages();
     // setting answers in localStorage
     const answersOfSelectedTest = this.userTests[index].answers;
     for (let i = 0; i < answersOfSelectedTest.length; i++) {

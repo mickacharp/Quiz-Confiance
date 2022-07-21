@@ -37,7 +37,8 @@ export class QuizComponent implements OnInit {
       if (
         storageKey != null &&
         storageKey != 'xCoordinate' &&
-        storageKey != 'yCoordinate'
+        storageKey != 'yCoordinate' &&
+        storageKey != 'userEmail'
       ) {
         this.stepItems[parseInt(storageKey) - 1].disabled = false;
       }
