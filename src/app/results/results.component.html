@@ -183,27 +183,15 @@
 >
   <div class="save-test-content">
     <p>
-      Si vous souhaitez sauvegarder vos résultats pour y accéder plus tard,
-      renseignez les champs ci-dessous.
+      Si vous souhaitez sauvegarder vos résultats, renseignez un nom pour votre
+      test. Vous pourrez ainsi y accéder grâce à votre adresse email à tout
+      moment depuis la page d'accueil.
     </p>
     <form
       #saveTestForm="ngForm"
       (ngSubmit)="saveTestInDatabase(); hideTestModalDialog()"
     >
-      <label for="user-email">Votre email : </label>
-      <input
-        pInputText
-        type="email"
-        name="user-email"
-        id="user-email"
-        required
-        #email="ngModel"
-        [(ngModel)]="userEmail"
-      />
-      <br />
-      <label for="user-test"
-        >Donnez un nom à votre test (25 caract. max) :
-      </label>
+      <label for="user-test">Nom de votre test (25 caract. max) : </label>
       <input
         pInputText
         type="text"

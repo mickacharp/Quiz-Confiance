@@ -22,28 +22,21 @@ export class QuestionsService {
       .set(JSON.parse(JSON.stringify(newUser))); // we need to JSON the file before pushing it to Firebase
   }
 
-  saveTestInDatabase(newTest: Test, newUser: User): void {
+  saveTestInDatabase(newTest: Test, userEmail: string): void {
     // add the test in db (collection 'tests')
     this.afs
       .collection<Test>('tests')
       .add(JSON.parse(JSON.stringify(newTest)))
       .then((docRef) => {
-        // then search in db if any user has the same email as the newUser
-        this.getUserByEmail(newUser.email)
+        // then search user in db
+        this.getUserByEmail(userEmail)
           .pipe(take(1))
           .subscribe(([userExists]) => {
-            // if so, add the newTest's id (docRef.id) in the tests array of the user in db
-            if (userExists) {
-              this.afs
-                .collection('users')
-                .doc(userExists.uid)
-                .set({ tests: arrayUnion(docRef.id) }, { merge: true });
-              // if no user is found, he is created with newTest's id
-            } else {
-              this.saveUserInDatabase(
-                new User(newUser.uid, newUser.email, [docRef.id], false)
-              );
-            }
+            // add the newTest's id (docRef.id) in the tests array of the user in db
+            this.afs
+              .collection('users')
+              .doc(userExists.uid)
+              .set({ tests: arrayUnion(docRef.id) }, { merge: true });
           });
       });
   }
