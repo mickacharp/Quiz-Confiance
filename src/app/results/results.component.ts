@@ -404,7 +404,8 @@ export class ResultsComponent implements OnInit {
       if (
         storageKey != null &&
         storageKey != 'xCoordinate' &&
-        storageKey != 'yCoordinate'
+        storageKey != 'yCoordinate' &&
+        storageKey != 'userEmail'
       ) {
         const storageValue: string | null = localStorage.getItem(storageKey);
         if (storageValue != null) {
