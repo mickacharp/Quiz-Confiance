@@ -165,7 +165,9 @@ export class ResultsComponent implements OnInit {
       dismissableMask: true,
       rejectButtonStyleClass: 'cancel',
       accept: () => {
+        const userEmailOfLocalStorage = localStorage.getItem('userEmail');
         this.clearStorage();
+        localStorage.setItem('userEmail', userEmailOfLocalStorage!);
         this.router.navigate(['/questions/1']);
       },
     });
@@ -358,12 +360,7 @@ export class ResultsComponent implements OnInit {
   }
 
   saveTestInDatabase(): void {
-    const userToSave: User = new User(
-      this.afs.createId(),
-      this.userEmail,
-      [],
-      false
-    );
+    const userEmailFromLocalStorage = localStorage.getItem('userEmail');
     const testToSave: Test = new Test(
       [],
       this.userTestName,
@@ -377,7 +374,8 @@ export class ResultsComponent implements OnInit {
       if (
         storageKey != null &&
         storageKey != 'xCoordinate' &&
-        storageKey != 'yCoordinate'
+        storageKey != 'yCoordinate' &&
+        storageKey != 'userEmail'
       ) {
         const storageValue: string | null = localStorage.getItem(storageKey);
         if (storageValue != null) {
@@ -393,7 +391,12 @@ export class ResultsComponent implements OnInit {
       return a.questionNb - b.questionNb;
     });
 
-    this.questionsService.saveTestInDatabase(testToSave, userToSave);
+    if (userEmailFromLocalStorage) {
+      this.questionsService.saveTestInDatabase(
+        testToSave,
+        userEmailFromLocalStorage.replace(/"/g, '')
+      );
+    }
     // canSaveTest is set to false to avoid user to save multiple times his same test
     this.canSaveTest = false;
   }
@@ -404,7 +407,8 @@ export class ResultsComponent implements OnInit {
       if (
         storageKey != null &&
         storageKey != 'xCoordinate' &&
-        storageKey != 'yCoordinate'
+        storageKey != 'yCoordinate' &&
+        storageKey != 'userEmail'
       ) {
         const storageValue: string | null = localStorage.getItem(storageKey);
         if (storageValue != null) {

@@ -54,8 +54,7 @@
         label="Démarrer un test"
         icon="pi pi-play"
         iconPos="left"
-        routerLink="/questions/1"
-        (onClick)="clearStorage()"
+        (onClick)="showNewTestModalDialog(); clearStorages()"
         class="home__start-button"
       ></p-button>
     </div>
@@ -81,6 +80,43 @@
     </div>
   </div>
 </div>
+
+<!-- ModalDialog opening when user clicks on "Démarrer un test" -->
+<p-dialog
+  header="Démarrer un test"
+  [(visible)]="displayNewTestModal"
+  [modal]="true"
+  [style]="{ width: '50vw' }"
+  [draggable]="false"
+  [resizable]="false"
+  class="save-test"
+  [breakpoints]="{ '1080px': '60vw', '890px': '70vw', '768px': '80vw' }"
+>
+  <div class="dialog-content">
+    <p>
+      Entrez votre adresse mail et cliquez sur "Commencer" pour débuter le test.
+    </p>
+    <form #startNewTestWithEmailForm="ngForm" (ngSubmit)="startNewTest()">
+      <label for="new-test-user-email">Votre email : </label>
+      <input
+        pInputText
+        type="email"
+        name="new-test-user-email"
+        id="new-test-user-email"
+        required
+        #email="ngModel"
+        [(ngModel)]="newTestUserEmail"
+      />
+      <p-button
+        type="submit"
+        label="Commencer"
+        icon="pi pi-angle-right"
+        iconPos="right"
+        [disabled]="startNewTestWithEmailForm.valid === false"
+      ></p-button>
+    </form>
+  </div>
+</p-dialog>
 
 <!-- ModalDialog opening when user clicks on "Accéder à mes anciens tests" -->
 <p-dialog
@@ -185,12 +221,5 @@
       label="Se connecter"
       class="admin__login-button"
     ></p-button>
-
-    <!-- <p-button
-    (click)="signUp()"
-    icon="pi pi-user-plus"
-    iconPos="left"
-    label="Sign up"
-  ></p-button> -->
   </div>
 </p-dialog>

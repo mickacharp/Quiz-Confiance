@@ -5,6 +5,7 @@ import { Test } from '../models/test.model';
 import { User } from '../models/user.model';
 import { AdminService } from '../shared/admin.service';
 import { QuestionsService } from '../shared/questions.service';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 
 @Component({
   selector: 'app-home',
@@ -14,18 +15,21 @@ import { QuestionsService } from '../shared/questions.service';
 export class HomeComponent implements OnInit {
   displayModal: boolean = false;
   displayAdminModal: boolean = false;
+  displayNewTestModal: boolean = false;
   homeModalVisible: boolean = true;
 
   allUsersList: User[] = [];
   user: User = new User('', '', [], false);
   userTests: Test[] = [];
   userEmail: string = '';
+  newTestUserEmail: string = '';
   filteredEmails: string[] = [];
 
   adminEmail: string = '';
   adminPassword: string = '';
 
   constructor(
+    private afs: AngularFirestore,
     private questionsService: QuestionsService,
     private router: Router,
     private adminService: AdminService
@@ -49,6 +53,10 @@ export class HomeComponent implements OnInit {
     this.displayAdminModal = true;
   }
 
+  showNewTestModalDialog(): void {
+    this.displayNewTestModal = true;
+  }
+
   filterEmail(event: any) {
     let filtered: string[] = [];
     let query = event.query;
@@ -63,7 +71,27 @@ export class HomeComponent implements OnInit {
     this.filteredEmails = filtered;
   }
 
-  clearStorage(): void {
+  addUserInDatabaseWhenStartingNewTest(): void {
+    const userToSave: User = new User(
+      this.afs.createId(),
+      this.newTestUserEmail,
+      [],
+      false
+    );
+    this.questionsService.saveUserInDatabase(userToSave);
+  }
+
+  addUserEmailInLocalStorageAndStartTest(): void {
+    localStorage.setItem('userEmail', this.newTestUserEmail);
+    this.router.navigate(['/questions/1']);
+  }
+
+  startNewTest(): void {
+    this.addUserInDatabaseWhenStartingNewTest();
+    this.addUserEmailInLocalStorageAndStartTest();
+  }
+
+  clearStorages(): void {
     localStorage.clear();
     sessionStorage.clear();
   }
@@ -76,6 +104,7 @@ export class HomeComponent implements OnInit {
         this.user = userFound[0];
         this.getUserTests();
       });
+    localStorage.setItem('userEmail', this.userEmail);
   }
 
   getUserTests(): void {
@@ -90,7 +119,8 @@ export class HomeComponent implements OnInit {
   }
 
   goToSelectedTest(index: number): void {
-    this.clearStorage();
+    const userEmailFromLocalStorage = localStorage.getItem('userEmail');
+    this.clearStorages();
     // setting answers in localStorage
     const answersOfSelectedTest = this.userTests[index].answers;
     for (let i = 0; i < answersOfSelectedTest.length; i++) {
@@ -114,6 +144,10 @@ export class HomeComponent implements OnInit {
       'yCoordinate',
       JSON.stringify(yCoordinateOfSelectedTest)
     );
+
+    // setting back userEmail in localStorage
+    localStorage.setItem('userEmail', userEmailFromLocalStorage!);
+
     // setting a property in sessionStorage which will be verified at the results page:
     // if user consults a previous test, button to save test in db "Sauvegarder mon questionnaire" will not show
     // if it's a brand new test, button will show (cf ResultsComponent)
@@ -124,12 +158,6 @@ export class HomeComponent implements OnInit {
   /* Admin Access */
   signIn() {
     this.adminService.signIn(this.adminEmail, this.adminPassword);
-    this.adminEmail = '';
-    this.adminPassword = '';
-  }
-
-  signUp() {
-    this.adminService.signUp(this.adminEmail, this.adminPassword);
     this.adminEmail = '';
     this.adminPassword = '';
   }
