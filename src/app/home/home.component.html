@@ -96,10 +96,7 @@
     <p>
       Entrez votre adresse mail et cliquez sur "Commencer" pour débuter le test.
     </p>
-    <form
-      #startNewTestWithEmailForm="ngForm"
-      (ngSubmit)="addUserEmailInLocalStorageAndStartTest()"
-    >
+    <form #startNewTestWithEmailForm="ngForm" (ngSubmit)="startNewTest()">
       <label for="new-test-user-email">Votre email : </label>
       <input
         pInputText

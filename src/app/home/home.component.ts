@@ -5,6 +5,7 @@ import { Test } from '../models/test.model';
 import { User } from '../models/user.model';
 import { AdminService } from '../shared/admin.service';
 import { QuestionsService } from '../shared/questions.service';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 
 @Component({
   selector: 'app-home',
@@ -28,6 +29,7 @@ export class HomeComponent implements OnInit {
   adminPassword: string = '';
 
   constructor(
+    private afs: AngularFirestore,
     private questionsService: QuestionsService,
     private router: Router,
     private adminService: AdminService
@@ -69,9 +71,24 @@ export class HomeComponent implements OnInit {
     this.filteredEmails = filtered;
   }
 
+  addUserInDatabaseWhenStartingNewTest(): void {
+    const userToSave: User = new User(
+      this.afs.createId(),
+      this.newTestUserEmail,
+      [],
+      false
+    );
+    this.questionsService.saveUserInDatabase(userToSave);
+  }
+
   addUserEmailInLocalStorageAndStartTest(): void {
     localStorage.setItem('userEmail', this.newTestUserEmail);
     this.router.navigate(['/questions/1']);
+  }
+
+  startNewTest(): void {
+    this.addUserInDatabaseWhenStartingNewTest();
+    this.addUserEmailInLocalStorageAndStartTest();
   }
 
   clearStorages(): void {
