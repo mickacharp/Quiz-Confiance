@@ -197,6 +197,32 @@
     }
 }
 
+.start-dialog-content {
+    p {
+        margin: 10px 0;
+    }
+
+    &__search {
+        @media screen and (max-width: $bp540) {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            label {
+                margin-bottom: 10px;
+            }
+        }
+    }
+
+    ::ng-deep .start-button .p-button {
+        margin-left: 10px;
+        @media screen and (max-width: $bp540) {
+            margin: auto;
+            margin-left: 0;
+            margin-top: 10px;
+        }
+    }
+}
+
 .dialog-content {
     @media screen and (max-width: $bp540) {
         display: flex;

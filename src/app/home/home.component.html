@@ -92,28 +92,31 @@
   class="save-test"
   [breakpoints]="{ '1080px': '60vw', '890px': '70vw', '768px': '80vw' }"
 >
-  <div class="dialog-content">
+  <div class="start-dialog-content">
     <p>
       Entrez votre adresse mail et cliquez sur "Commencer" pour débuter le test.
     </p>
     <form #startNewTestWithEmailForm="ngForm" (ngSubmit)="startNewTest()">
-      <label for="new-test-user-email">Votre email : </label>
-      <input
-        pInputText
-        type="email"
-        name="new-test-user-email"
-        id="new-test-user-email"
-        required
-        #email="ngModel"
-        [(ngModel)]="newTestUserEmail"
-      />
-      <p-button
-        type="submit"
-        label="Commencer"
-        icon="pi pi-angle-right"
-        iconPos="right"
-        [disabled]="startNewTestWithEmailForm.valid === false"
-      ></p-button>
+      <div class="start-dialog-content__search">
+        <label for="new-test-user-email">Votre email : </label>
+        <input
+          pInputText
+          type="email"
+          name="new-test-user-email"
+          id="new-test-user-email"
+          required
+          #email="ngModel"
+          [(ngModel)]="newTestUserEmail"
+        />
+        <p-button
+          type="submit"
+          label="Commencer"
+          icon="pi pi-angle-right"
+          iconPos="right"
+          [disabled]="startNewTestWithEmailForm.valid === false"
+          class="start-button"
+        ></p-button>
+      </div>
     </form>
   </div>
 </p-dialog>
